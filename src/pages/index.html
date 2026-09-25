@@ -275,6 +275,36 @@
   }
   .btn-outline:hover { background: var(--bg-alt); }
 
+  .gh-live-stats {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 20px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+  }
+
+  .gh-stat-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: var(--ink-dim);
+    background: var(--white);
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .gh-stat-pill:hover {
+    color: var(--ink);
+    border-color: var(--ink-dim);
+  }
+
+  .gh-stat-icon {
+    font-size: 13px;
+  }
+
   /* Right column */
   .hero-right {
     border-left: 1px solid var(--line);
@@ -379,10 +409,11 @@
     color: var(--brand, var(--ink-dim));
   }
 
-  .logo-item--text span {
-    font-weight: 600;
-    letter-spacing: -0.01em;
-    color: var(--ink);
+  .logo-img {
+    height: 22px;
+    width: auto;
+    display: block;
+    flex-shrink: 0;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -680,6 +711,17 @@
       <a href="https://github.com/angkutdigital/tandem-crm" target="_blank" rel="noopener" class="btn btn-dark">View on GitHub</a>
       <a href="#how" class="btn btn-outline">See how it works</a>
     </div>
+
+    <div class="gh-live-stats">
+      <a href="https://github.com/angkutdigital/tandem-crm/stargazers" target="_blank" rel="noopener" class="gh-stat-pill">
+        <span class="gh-stat-icon">&#9733;</span> Star
+        <span data-gh-stat="stars">&ndash;</span>
+      </a>
+      <a href="https://github.com/angkutdigital/tandem-crm/fork" target="_blank" rel="noopener" class="gh-stat-pill">
+        <span class="gh-stat-icon">&#8991;</span> Fork
+        <span data-gh-stat="forks">&ndash;</span>
+      </a>
+    </div>
   </div>
 
   <aside class="hero-right">
@@ -738,8 +780,8 @@
           <svg role="img" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><title>Prisma</title><path d="M21.8068 18.2848L13.5528.7565c-.207-.4382-.639-.7273-1.1286-.7541-.5023-.0293-.9523.213-1.2062.6253L2.266 15.1271c-.2773.4518-.2718 1.0091.0158 1.4555l4.3759 6.7786c.2608.4046.7127.6388 1.1823.6388.1332 0 .267-.0188.3987-.0577l12.7019-3.7568c.3891-.1151.7072-.3904.8737-.7553s.1633-.7828-.0075-1.1454zm-1.8481.7519L9.1814 22.2242c-.3292.0975-.6448-.1873-.5756-.5194l3.8501-18.4386c.072-.3448.5486-.3996.699-.0803l7.1288 15.138c.1344.2856-.019.6224-.325.7128z"/></svg>
           <span>Prisma</span>
         </span>
-        <span class="logo-item logo-item--text">
-          <span>Amazon RDS for PostgreSQL</span>
+        <span class="logo-item">
+          <img src="/logos/aws.png" alt="Amazon RDS for PostgreSQL" class="logo-img logo-img--aws" />
         </span>
         <span class="logo-item" style="--brand:#34D59A">
           <svg role="img" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><title>Neon</title><path d="M24 0V24l-9.365-8.045V24H0V0ZM2.942 21.087h8.751V9.563l9.365 8.204V2.919L2.942 2.914Z"/></svg>
@@ -749,8 +791,8 @@
           <svg role="img" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><title>Supabase</title><path d="M11.9 1.036c-.015-.986-1.26-1.41-1.874-.637L.764 12.05C-.33 13.427.65 15.455 2.409 15.455h9.579l.113 7.51c.014.985 1.259 1.408 1.873.636l9.262-11.653c1.093-1.375.113-3.403-1.645-3.403h-9.642z"/></svg>
           <span>Supabase</span>
         </span>
-        <span class="logo-item logo-item--text">
-          <span>Aiven</span>
+        <span class="logo-item">
+          <img src="/logos/aiven.png" alt="Aiven" class="logo-img logo-img--aiven" />
         </span>
       </div>
       <div class="logo-group" data-copy="2">
@@ -762,8 +804,8 @@
           <svg role="img" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><title>Prisma</title><path d="M21.8068 18.2848L13.5528.7565c-.207-.4382-.639-.7273-1.1286-.7541-.5023-.0293-.9523.213-1.2062.6253L2.266 15.1271c-.2773.4518-.2718 1.0091.0158 1.4555l4.3759 6.7786c.2608.4046.7127.6388 1.1823.6388.1332 0 .267-.0188.3987-.0577l12.7019-3.7568c.3891-.1151.7072-.3904.8737-.7553s.1633-.7828-.0075-1.1454zm-1.8481.7519L9.1814 22.2242c-.3292.0975-.6448-.1873-.5756-.5194l3.8501-18.4386c.072-.3448.5486-.3996.699-.0803l7.1288 15.138c.1344.2856-.019.6224-.325.7128z"/></svg>
           <span>Prisma</span>
         </span>
-        <span class="logo-item logo-item--text">
-          <span>Amazon RDS for PostgreSQL</span>
+        <span class="logo-item">
+          <img src="/logos/aws.png" alt="Amazon RDS for PostgreSQL" class="logo-img logo-img--aws" />
         </span>
         <span class="logo-item" style="--brand:#34D59A">
           <svg role="img" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><title>Neon</title><path d="M24 0V24l-9.365-8.045V24H0V0ZM2.942 21.087h8.751V9.563l9.365 8.204V2.919L2.942 2.914Z"/></svg>
@@ -773,8 +815,8 @@
           <svg role="img" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><title>Supabase</title><path d="M11.9 1.036c-.015-.986-1.26-1.41-1.874-.637L.764 12.05C-.33 13.427.65 15.455 2.409 15.455h9.579l.113 7.51c.014.985 1.259 1.408 1.873.636l9.262-11.653c1.093-1.375.113-3.403-1.645-3.403h-9.642z"/></svg>
           <span>Supabase</span>
         </span>
-        <span class="logo-item logo-item--text">
-          <span>Aiven</span>
+        <span class="logo-item">
+          <img src="/logos/aiven.png" alt="Aiven" class="logo-img logo-img--aiven" />
         </span>
       </div>
     </div>
@@ -954,6 +996,26 @@
     wrap.addEventListener('mouseenter', () => controls.pause());
     wrap.addEventListener('mouseleave', () => controls.play());
   }
+</script>
+
+<script>
+  (function () {
+    var format = function (n) {
+      return Intl.NumberFormat('en', { notation: 'compact' }).format(n);
+    };
+    fetch('https://api.github.com/repos/angkutdigital/tandem-crm')
+      .then(function (res) { return res.ok ? res.json() : null; })
+      .then(function (data) {
+        if (!data) return;
+        document.querySelectorAll('[data-gh-stat="stars"]').forEach(function (el) {
+          el.textContent = format(data.stargazers_count);
+        });
+        document.querySelectorAll('[data-gh-stat="forks"]').forEach(function (el) {
+          el.textContent = format(data.forks_count);
+        });
+      })
+      .catch(function () {});
+  })();
 </script>
 
 </body>
