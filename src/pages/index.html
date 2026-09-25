@@ -6,6 +6,16 @@
 <title>TandemCRM — Partner commission engine for Next.js</title>
 <meta name="description" content="An embeddable, event-sourced partner commission engine for Next.js. Runs in your own Postgres. No servers, no workers, no vendor lock-in." />
 <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<meta property="og:title" content="TandemCRM — Partner commission engine for Next.js" />
+<meta property="og:description" content="An embeddable, event-sourced partner commission engine for Next.js. Runs in your own Postgres. No servers, no workers, no vendor lock-in." />
+<meta property="og:image" content="/og-image.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="TandemCRM — Partner commission engine for Next.js" />
+<meta name="twitter:description" content="An embeddable, event-sourced partner commission engine for Next.js. Runs in your own Postgres. No servers, no workers, no vendor lock-in." />
+<meta name="twitter:image" content="/og-image.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -62,45 +72,15 @@
   }
 
   .logo {
-    font-weight: 700;
-    font-size: 22px;
-    letter-spacing: -0.04em;
     display: flex;
     align-items: center;
-    gap: 8px;
     flex-shrink: 0;
   }
 
-  .logo-mark {
-    width: 22px;
-    height: 22px;
-    background: var(--ink);
-    border-radius: 50%;
-    position: relative;
-  }
-
-  .logo-mark::before,
-  .logo-mark::after {
-    content: '';
-    position: absolute;
-    background: var(--ink);
-    left: 50%;
-    top: 50%;
-  }
-
-  .logo-mark::before {
-    width: 30px;
-    height: 8px;
-    transform: translate(-50%, -50%);
-    clip-path: polygon(0 50%, 15% 0, 15% 100%, 25% 0, 25% 100%, 35% 0, 35% 100%, 45% 0, 45% 100%, 55% 0, 55% 100%, 65% 0, 65% 100%, 75% 0, 75% 100%, 85% 0, 85% 100%, 100% 50%);
-  }
-
-  .logo-mark::after {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--bg);
-    transform: translate(-50%, -50%);
+  .logo img {
+    height: 26px;
+    width: auto;
+    display: block;
   }
 
   .nav-links {
@@ -652,8 +632,7 @@
 <nav>
   <div class="nav-inner">
     <a href="#" class="logo">
-      <span class="logo-mark"></span>
-      tandem-crm
+      <img src="/logo.svg" alt="tandem-crm" />
     </a>
     <div class="nav-links">
       <a href="#features">Features</a>
