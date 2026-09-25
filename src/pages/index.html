@@ -3,18 +3,18 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>TandemCRM: Partner commission engine for Postgres</title>
-<meta name="description" content="An embeddable, event-sourced partner commission engine for Postgres. No separate worker to babysit, and no vendor you're locked into." />
+<title>TandemCRM: a partner commission engine for Postgres</title>
+<meta name="description" content="An open source, event-sourced commission engine you can run inside your own Postgres database, or let us host as Tandem Cloud." />
 <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-<meta property="og:title" content="TandemCRM: Partner commission engine for Postgres" />
-<meta property="og:description" content="An embeddable, event-sourced partner commission engine for Postgres. No separate worker to babysit, and no vendor you're locked into." />
+<meta property="og:title" content="TandemCRM: a partner commission engine for Postgres" />
+<meta property="og:description" content="An open source, event-sourced commission engine you can run inside your own Postgres database, or let us host as Tandem Cloud." />
 <meta property="og:image" content="/og-image.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="TandemCRM: Partner commission engine for Postgres" />
-<meta name="twitter:description" content="An embeddable, event-sourced partner commission engine for Postgres. No separate worker to babysit, and no vendor you're locked into." />
+<meta name="twitter:title" content="TandemCRM: a partner commission engine for Postgres" />
+<meta name="twitter:description" content="An open source, event-sourced commission engine you can run inside your own Postgres database, or let us host as Tandem Cloud." />
 <meta name="twitter:image" content="/og-image.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -699,18 +699,18 @@
   <div class="hero-center">
     <div class="announcement-pill">
       <span class="tag">EARLY</span>
-      <span class="text">Open source. Pre-1.0. Looking for first users →</span>
+      <span class="text">Pre-1.0 and looking for our first real users →</span>
     </div>
 
     <h1>
-      Partner commissions.<br />
-      <span class="light">Inside your own Postgres.</span>
+      Partner commissions,<br />
+      <span class="light">running in your own Postgres.</span>
     </h1>
 
     <p class="hero-sub">
-      An embeddable, event-sourced commission engine for Postgres.
-      The event log is the source of truth. Escrow release runs inside Postgres, ready for pg_cron.
-      There's no separate worker to babysit, and no vendor you're locked into.
+      TandemCRM is an event-sourced commission engine you install straight into your Node app.
+      The event log is the source of truth, and escrow release runs as a plain Postgres function you can
+      schedule with pg_cron. Self-host it for free, or let us run it for you on Tandem Cloud.
     </p>
 
     <div class="hero-buttons">
@@ -873,12 +873,12 @@
 <section class="block" id="features">
   <div class="eyebrow">// WHAT IT DOES</div>
   <h2>
-    Event-sourced attribution.<br />
-    <span class="light">Integer money math. Postgres-native.</span>
+    Everything the engine does<br />
+    <span class="light">lives inside Postgres, as pure functions.</span>
   </h2>
   <p class="lead">
-    Every piece is a pure function you can test in isolation.
-    The engine never touches money; it emits payout tasks.
+    Each piece is testable in isolation, and the engine never moves money itself.
+    It just decides what should happen and emits the payout task for your app to act on.
   </p>
 
   <div class="feature-grid">
@@ -900,7 +900,7 @@
     <div class="feature-cell">
       <div class="num">04 / RULES</div>
       <h3>Qualification &amp; routing</h3>
-      <p>A vehicle-count threshold decides automated setup vs. manual review. Round-robin, least-loaded, or manual routing presets recommend an agent; your app decides whether to act on it.</p>
+      <p>You set a qualification threshold that decides automated setup vs. manual review. Round-robin, least-loaded, or manual routing presets suggest an agent, and your app decides whether to act on it.</p>
     </div>
     <div class="feature-cell">
       <div class="num">05 / ESCROW</div>
@@ -919,11 +919,11 @@
 <section class="block" id="how">
   <div class="eyebrow">// HOW IT WORKS</div>
   <h2>
-    Four steps.<br />
-    <span class="light">No orchestration.</span>
+    Four steps,<br />
+    <span class="light">no orchestration layer to run.</span>
   </h2>
   <p class="lead">
-    Everything runs inside your existing Node app and Postgres database.
+    It runs inside the Node app and Postgres database you already have.
   </p>
 
   <div class="code-window">
@@ -943,7 +943,7 @@
 <span class="cm">// Adapters map external payloads into typed events, then write them</span>
 <span class="cm">// inside a transaction scoped to the caller's identity.</span>
 <span class="kw">await</span> <span class="fn">withTandemSession</span>(pool, userId, <span class="kw">async</span> (client) => {
-  <span class="kw">const</span> { status } = <span class="fn">qualifyLead</span>({ vehicleCount: <span class="str">12</span> }, defaultTandemConfig);
+  <span class="kw">const</span> { status } = <span class="fn">qualifyLead</span>({ qualificationMetric: <span class="str">12</span> }, defaultTandemConfig);
   <span class="kw">await</span> client.<span class="fn">query</span>(<span class="str">'insert into tandem.events (...) values (...)'</span>, [<span class="cm">/* ... */</span>]);
 });
 
@@ -956,11 +956,11 @@
 <section class="block" id="roadmap">
   <div class="eyebrow">// ROADMAP</div>
   <h2>
-    What's built.<br />
-    <span class="light">What's coming.</span>
+    Where things actually stand,<br />
+    <span class="light">module by module.</span>
   </h2>
   <p class="lead">
-    This is the honest current state. No features are promised before they exist.
+    We'd rather list something as "in progress" than promise a feature before it exists.
   </p>
 
   <div class="roadmap">
@@ -992,7 +992,7 @@
     <div class="roadmap-cell">
       <span class="status status-soon">Planned</span>
       <h3>Tandem Cloud</h3>
-      <p>Managed hosting. Provisioning, monitoring, upgrades. Not started. Not before the open-source packages have real users.</p>
+      <p>A hosted version of the same open-source engine, at tandemcrm.dev, for teams who'd rather not run their own migrations and cron jobs. Same license underneath, just less ops. Not started yet.</p>
     </div>
   </div>
 </section>
@@ -1001,11 +1001,11 @@
 <section class="cta-block">
   <div class="eyebrow">// READ THE CODE</div>
   <h2>
-    One runtime dependency.<br />
-    <span class="light">Read it in an afternoon.</span>
+    One runtime dependency,<br />
+    <span class="light">small enough to read in an afternoon.</span>
   </h2>
   <p class="lead">
-    MIT licensed. Self-host it, fork it, replace the UI, tree-shake out what you don't need.
+    It's MIT licensed, so you can self-host it, fork it, swap out the UI, or strip out whatever you don't need.
   </p>
   <div class="hero-buttons" style="justify-content: center;">
     <a href="https://github.com/angkutdigital/tandem-crm" target="_blank" rel="noopener" class="btn btn-dark">View on GitHub</a>
