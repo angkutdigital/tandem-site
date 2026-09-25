@@ -1,3 +1,7 @@
+# Astro
+.astro/
+dist/
+
 # Logs
 logs
 *.log
