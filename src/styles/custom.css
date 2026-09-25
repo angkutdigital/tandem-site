@@ -1,0 +1,32 @@
+/* Brand tokens copied from src/pages/index.html so the docs match the landing page. */
+:root,
+:root[data-theme='light'] {
+  --sl-font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --sl-font-mono: 'IBM Plex Mono', 'SF Mono', monospace;
+
+  --sl-color-bg: #f5f4ef;
+  --sl-color-bg-nav: #ebe9e2;
+  --sl-color-bg-sidebar: #ebe9e2;
+  --sl-color-bg-inline-code: #ebe9e2;
+  --sl-color-bg-accent: #f0d800;
+
+  --sl-color-white: #0a0a0a;
+  --sl-color-text: #0a0a0a;
+  --sl-color-text-accent: #0a0a0a;
+  --sl-color-text-invert: #f5f4ef;
+
+  --sl-color-accent-low: #ebe9e2;
+  --sl-color-accent: #0a0a0a;
+  --sl-color-accent-high: #0a0a0a;
+
+  --sl-color-hairline: #d6d3c9;
+  --sl-color-hairline-light: #d6d3c9;
+  --sl-color-hairline-shade: #d6d3c9;
+}
+
+/* The site has one brand look, not a separate dark theme, so the light/dark
+   toggle has nothing to switch between; hide it rather than ship a control
+   that does nothing. */
+starlight-theme-select {
+  display: none;
+}
