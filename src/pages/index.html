@@ -4,17 +4,17 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>TandemCRM: Partner commission engine for Next.js</title>
-<meta name="description" content="An embeddable, event-sourced partner commission engine for Next.js. Runs in your own Postgres. No servers, no workers, no vendor lock-in." />
+<meta name="description" content="An embeddable, event-sourced partner commission engine for Next.js. Runs in your own Postgres, so there's no separate worker to babysit and no vendor you're locked into." />
 <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 <meta property="og:title" content="TandemCRM: Partner commission engine for Next.js" />
-<meta property="og:description" content="An embeddable, event-sourced partner commission engine for Next.js. Runs in your own Postgres. No servers, no workers, no vendor lock-in." />
+<meta property="og:description" content="An embeddable, event-sourced partner commission engine for Next.js. Runs in your own Postgres, so there's no separate worker to babysit and no vendor you're locked into." />
 <meta property="og:image" content="/og-image.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="TandemCRM: Partner commission engine for Next.js" />
-<meta name="twitter:description" content="An embeddable, event-sourced partner commission engine for Next.js. Runs in your own Postgres. No servers, no workers, no vendor lock-in." />
+<meta name="twitter:description" content="An embeddable, event-sourced partner commission engine for Next.js. Runs in your own Postgres, so there's no separate worker to babysit and no vendor you're locked into." />
 <meta name="twitter:image" content="/og-image.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -544,6 +544,12 @@
     color: var(--ink-dim);
   }
 
+  .status-progress {
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--ink);
+  }
+
   .roadmap-cell h3 {
     font-size: 18px;
     font-weight: 600;
@@ -683,7 +689,7 @@
     <p class="hero-sub">
       An embeddable, event-sourced commission engine for Next.js.
       The event log is the source of truth. Escrow release runs inside Postgres, ready for pg_cron.
-      No servers, no workers, no vendor lock-in.
+      There's no separate worker to babysit, and no vendor you're locked into.
     </p>
 
     <div class="hero-buttons">
@@ -719,12 +725,12 @@
           <span class="status">· in use</span>
         </li>
         <li>
-          <span class="pkg">CRM / Admin UI</span>
-          <span class="status">· planned</span>
+          <span class="pkg">Ramp</span>
+          <span class="status">· in use</span>
         </li>
         <li>
-          <span class="pkg">Ramp</span>
-          <span class="status">· planned</span>
+          <span class="pkg">CRM / Admin UI</span>
+          <span class="status">· in progress</span>
         </li>
         <li>
           <span class="pkg">Coaster</span>
@@ -932,17 +938,17 @@
     <div class="roadmap-cell">
       <span class="status status-live">Live</span>
       <h3>Core</h3>
-      <p>The engine, and the one module every install needs. Event log, projections, integer money math, idempotency, an escrow release function ready for <code>pg_cron</code>, and an RLS layer verified on both Supabase and plain Postgres. Running in production on Supabase.</p>
+      <p>The engine, and the one module every install needs. Event log, projections, integer money math, idempotency, lead routing, an escrow release function ready for <code>pg_cron</code>, and an RLS layer verified on both Supabase and plain Postgres. Running in production on Supabase.</p>
     </div>
     <div class="roadmap-cell">
-      <span class="status status-soon">Planned</span>
-      <h3>CRM / Admin UI</h3>
-      <p>Contacts, kanban, timeline, and an optional shadcn/ui admin. A module of <code>tandem-crm</code>, tree-shaken out if you don't use it.</p>
-    </div>
-    <div class="roadmap-cell">
-      <span class="status status-soon">Planned</span>
+      <span class="status status-live">Live</span>
       <h3>Ramp</h3>
-      <p>Sales onboarding orchestration. Reads Core's events, ships its own event types.</p>
+      <p>Agent onboarding and certification. Its own event log, reducers, and RLS, sitting next to Core's. An agent works through the required steps and certifies themselves once they're done; your app decides what certification unlocks.</p>
+    </div>
+    <div class="roadmap-cell">
+      <span class="status status-progress">In progress</span>
+      <h3>CRM / Admin UI</h3>
+      <p>A reference dashboard in <code>examples/dashboard</code>, built on shadcn/ui. The overview page and the Ramp onboarding flow work end to end against a real Postgres database. Leads, payouts, and routing screens are next.</p>
     </div>
     <div class="roadmap-cell">
       <span class="status status-soon">Planned</span>
