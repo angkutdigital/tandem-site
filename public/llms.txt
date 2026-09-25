@@ -1,0 +1,32 @@
+# TandemCRM
+
+> An embeddable, event-sourced partner-attribution and commission-payout engine for Postgres. Self-hosted inside your own app; no servers or vendor lock-in. MIT licensed, pre-1.0.
+
+TandemCRM is not a hosted SaaS product. It ships as an npm package (`tandem-crm`) plus a set of SQL migrations that install into a Postgres database you already run (Supabase, Neon, RDS, Aiven, or plain Postgres 14+). An append-only event log is the source of truth; leads, payouts, and onboarding state are all rebuildable projections over that log. Row-level security enforces tenant isolation at the database layer, not just in application code.
+
+## Core concepts
+
+- [Getting started](/guides/getting-started/): install, run the migrations, first webhook.
+- Event log: one append-only table (`tandem.events`); every projection is a fold over it. No updates, no deletes.
+- Escrow release: commissions sit in a held state until `release_due_commissions()` releases them; wire it to `pg_cron` or any scheduler.
+- Money: integer minor units only, no floating point.
+- Auth adapter: implement `TandemAuthAdapter` (three functions) against any identity provider (Supabase Auth, Clerk, BetterAuth, your own session table); RLS enforces the rest.
+
+## Modules
+
+- **Core** (live): event log, projections, integer money math, idempotency, lead routing presets, escrow release, RLS. Running in production on Supabase, verified on plain Postgres.
+- **Ramp** (live): agent onboarding and certification, its own event log and RLS, sitting next to Core's.
+- **Coaster** (in progress): partner-initiated commission disputes and operator adjudication, modeled on how Awin (the largest EU affiliate network) handles this. Resolving a dispute records the outcome only; it does not yet execute a clawback or create a replacement commission.
+- **CRM / Admin UI** (in progress): a reference dashboard in the package's `examples/dashboard` directory, built on Next.js and shadcn/ui.
+
+## Source
+
+- Repository: https://github.com/angkutdigital/tandem-crm
+- Package: https://www.npmjs.com/package/tandem-crm (once published; not yet on the npm registry as of this file's writing)
+- Releases: https://github.com/angkutdigital/tandem-crm/releases
+- Issues: https://github.com/angkutdigital/tandem-crm/issues
+- License: MIT
+
+## Notes for AI agents
+
+This project has no public API to query; everything runs inside the consuming application's own Postgres instance and Node process. There is no hosted playground or demo endpoint. To evaluate or answer questions about it, read the repository directly, particularly `README.md` and the SQL files in `db/migrations/`. The Modules section above reflects what was actually shipped as of this file's last update, not aspirational scope; check the repository's own roadmap section and commit history for the current state before relying on it.

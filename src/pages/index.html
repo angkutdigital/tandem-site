@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>TandemCRM: Partner commission engine for Postgres</title>
+<meta name="description" content="An embeddable, event-sourced partner commission engine for Postgres. No separate worker to babysit, and no vendor you're locked into." />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<meta property="og:title" content="TandemCRM: Partner commission engine for Postgres" />
+<meta property="og:description" content="An embeddable, event-sourced partner commission engine for Postgres. No separate worker to babysit, and no vendor you're locked into." />
+<meta property="og:image" content="/og-image.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="TandemCRM: Partner commission engine for Postgres" />
+<meta name="twitter:description" content="An embeddable, event-sourced partner commission engine for Postgres. No separate worker to babysit, and no vendor you're locked into." />
+<meta name="twitter:image" content="/og-image.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef;
+    --bg-alt: #ebe9e2;
+    --ink: #0a0a0a;
+    --ink-dim: #6b6b6b;
+    --ink-faint: #a8a8a0;
+    --line: #d6d3c9;
+    --accent: #f0d800;
+    --white: #ffffff;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  .mono {
+    font-family: 'IBM Plex Mono', 'SF Mono', monospace;
+    font-size: 13px;
+    letter-spacing: -0.01em;
+  }
+
+  /* Nav */
+  nav {
+    border-bottom: 1px solid var(--line);
+    background: var(--bg);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .nav-inner {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 72px;
+    gap: 32px;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .logo img {
+    height: 26px;
+    width: auto;
+    display: block;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 28px;
+    font-size: 14px;
+    font-weight: 500;
+    flex: 1;
+    margin-left: 24px;
+  }
+
+  .nav-links a { color: var(--ink); }
+  .nav-links a:hover { color: var(--ink-dim); }
+
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+  }
+
+  .nav-cta {
+    background: var(--ink);
+    color: var(--white);
+    padding: 10px 18px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  /* Hero grid */
+  .hero {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: 220px 1fr 220px;
+    gap: 0;
+  }
+
+  .hero-left {
+    border-left: 1px solid var(--line);
+    border-right: 1px solid var(--line);
+  }
+
+  .stat-block {
+    padding: 24px 20px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .stat-block:first-child {
+    padding-top: 28px;
+    min-height: 120px;
+  }
+
+  .hero-title-block {
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.3;
+  }
+
+  .stat-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--ink-dim);
+    margin-bottom: 6px;
+  }
+
+  .stat-value {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  .stat-sub {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--ink-dim);
+    margin-top: 4px;
+  }
+
+  .hero-center {
+    padding: 80px 60px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 620px;
+  }
+
+  .announcement-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid var(--line);
+    padding: 5px;
+    border-radius: 999px;
+    font-size: 13px;
+    margin-bottom: 32px;
+    background: var(--white);
+  }
+
+  .announcement-pill .tag {
+    border: 1px solid var(--ink);
+    border-radius: 999px;
+    padding: 3px 12px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+  }
+
+  .announcement-pill .text {
+    padding-right: 14px;
+    font-size: 13px;
+  }
+
+  h1 {
+    font-size: clamp(40px, 6.5vw, 84px);
+    font-weight: 700;
+    letter-spacing: -0.045em;
+    line-height: 0.98;
+    margin-bottom: 28px;
+    max-width: 820px;
+  }
+
+  h1 .light {
+    font-weight: 400;
+    color: var(--ink-dim);
+  }
+
+  .hero-sub {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 15px;
+    color: var(--ink-dim);
+    max-width: 580px;
+    margin: 0 auto 40px;
+    line-height: 1.7;
+  }
+
+  .hero-buttons {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 24px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 500;
+    border: 1.5px solid var(--ink);
+    cursor: pointer;
+    transition: transform 0.1s ease, background 0.15s ease;
+  }
+
+  .btn-dark {
+    background: var(--ink);
+    color: var(--white);
+  }
+  .btn-dark:hover { transform: translateY(-1px); }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--ink);
+  }
+  .btn-outline:hover { background: var(--bg-alt); }
+
+  .gh-live-stats {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 20px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+  }
+
+  .gh-stat-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: var(--ink-dim);
+    background: var(--white);
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .gh-stat-pill:hover {
+    color: var(--ink);
+    border-color: var(--ink-dim);
+  }
+
+  .version-link {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .version-link:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .gh-stat-icon {
+    font-size: 13px;
+  }
+
+  /* Right column */
+  .hero-right {
+    border-left: 1px solid var(--line);
+    border-right: 1px solid var(--line);
+  }
+
+  .right-block {
+    padding: 24px 20px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .right-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--ink-dim);
+    margin-bottom: 4px;
+  }
+
+  .right-value {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    text-align: right;
+  }
+
+  .stack-list {
+    list-style: none;
+    text-align: right;
+    font-size: 13px;
+  }
+
+  .stack-list li {
+    padding: 6px 0;
+  }
+
+  .stack-list .pkg {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+  }
+
+  .stack-list .status {
+    color: var(--ink-dim);
+    font-size: 12px;
+    margin-left: 6px;
+  }
+
+  .module-version {
+    display: block;
+    font-size: 11px;
+    color: var(--ink-dim);
+    margin-top: 2px;
+  }
+
+  .module-version:hover {
+    color: var(--ink);
+  }
+
+  /* Logo marquee */
+  .logos-block {
+    border-top: 1px solid var(--line);
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 40px 0;
+  }
+
+  .logos-eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    color: var(--ink-dim);
+    letter-spacing: 0.02em;
+    text-align: center;
+    margin-bottom: 28px;
+  }
+
+  .logo-marquee {
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+    mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  }
+
+  .logo-track {
+    display: flex;
+    align-items: center;
+    width: max-content;
+    will-change: transform;
+  }
+
+  .logo-group {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .logo-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 18px;
+    color: var(--ink-dim);
+    white-space: nowrap;
+    flex-shrink: 0;
+    padding: 0 40px;
+  }
+
+  .logo-item svg {
+    width: 30px;
+    height: 30px;
+    flex-shrink: 0;
+    color: var(--brand, var(--ink-dim));
+  }
+
+  .logo-img {
+    height: 30px;
+    width: auto;
+    display: block;
+    flex-shrink: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .logo-track { transform: none !important; }
+    .logo-group[data-copy="2"] { display: none; }
+  }
+
+  /* Feature grid */
+  section.block {
+    border-top: 1px solid var(--line);
+    padding: 96px 24px;
+    max-width: 1440px;
+    margin: 0 auto;
+  }
+
+  .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    color: var(--ink-dim);
+    margin-bottom: 16px;
+    letter-spacing: 0.02em;
+  }
+
+  h2 {
+    font-size: clamp(32px, 4.5vw, 52px);
+    font-weight: 700;
+    letter-spacing: -0.035em;
+    line-height: 1.02;
+    margin-bottom: 24px;
+    max-width: 720px;
+  }
+
+  h2 .light { font-weight: 400; color: var(--ink-dim); }
+
+  .lead {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 15px;
+    color: var(--ink-dim);
+    max-width: 620px;
+    line-height: 1.7;
+    margin-bottom: 56px;
+  }
+
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-top: 1px solid var(--line);
+    border-left: 1px solid var(--line);
+  }
+
+  .feature-cell {
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 32px 28px;
+    min-height: 220px;
+  }
+
+  .feature-cell .num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--ink-faint);
+    margin-bottom: 40px;
+  }
+
+  .feature-cell h3 {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin-bottom: 10px;
+  }
+
+  .feature-cell p {
+    font-size: 14px;
+    color: var(--ink-dim);
+    line-height: 1.65;
+  }
+
+  /* Code block */
+  .code-window {
+    background: var(--ink);
+    color: #e8e8e0;
+    border-radius: 10px;
+    overflow: hidden;
+    max-width: 780px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13.5px;
+    line-height: 1.75;
+  }
+
+  .code-header {
+    padding: 12px 18px;
+    border-bottom: 1px solid #2a2a2a;
+    font-size: 12px;
+    color: #888;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .code-header .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .dot-r { background: #ff5f57; }
+  .dot-y { background: #febc2e; }
+  .dot-g { background: #28c840; }
+
+  pre {
+    padding: 24px;
+    overflow-x: auto;
+    color: #c8c8be;
+  }
+  .kw { color: #f0d800; }
+  .str { color: #9dffb0; }
+  .fn { color: #7cc4ff; }
+  .cm { color: #6b6b6b; font-style: italic; }
+
+  /* Roadmap */
+  .roadmap {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-top: 1px solid var(--line);
+    border-left: 1px solid var(--line);
+  }
+
+  .roadmap-cell {
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 28px 24px;
+  }
+
+  .roadmap-cell .status {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 4px;
+  }
+
+  .status-live {
+    background: var(--accent);
+    color: var(--ink);
+  }
+
+  .status-soon {
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--ink-dim);
+  }
+
+  .status-progress {
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--ink);
+  }
+
+  .roadmap-cell h3 {
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  .roadmap-cell p {
+    font-size: 14px;
+    color: var(--ink-dim);
+    line-height: 1.6;
+  }
+
+  /* CTA */
+  .cta-block {
+    border-top: 1px solid var(--line);
+    padding: 120px 24px;
+    text-align: center;
+    max-width: 1440px;
+    margin: 0 auto;
+  }
+
+  .cta-block h2 {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    max-width: 720px;
+  }
+
+  .cta-block .lead {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+  }
+
+  /* Footer */
+  footer {
+    border-top: 1px solid var(--line);
+    padding: 32px 24px;
+    max-width: 1440px;
+    margin: 0 auto;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--ink-dim);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .footer-links { display: flex; gap: 24px; }
+  .footer-links a:hover { color: var(--ink); }
+
+  @media (max-width: 1024px) {
+    .hero { grid-template-columns: 180px 1fr 180px; }
+    .hero-center { padding: 60px 32px; }
+    .feature-grid, .roadmap { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .hero { grid-template-columns: 1fr; padding: 0 16px; }
+    .hero-left, .hero-right {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-left: 1px solid var(--line);
+      border-right: 1px solid var(--line);
+    }
+    .hero-left > *, .hero-right > * {
+      border-right: 1px solid var(--line);
+    }
+    .hero-center {
+      padding: 48px 20px;
+      min-height: auto;
+      border-left: 1px solid var(--line);
+      border-right: 1px solid var(--line);
+    }
+    .feature-grid, .roadmap { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="logo">
+      <img src="/logo.svg" alt="tandem-crm" />
+    </a>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#how">How it works</a>
+      <a href="#roadmap">Roadmap</a>
+      <a href="https://github.com/angkutdigital/tandem-crm" target="_blank" rel="noopener">GitHub</a>
+    </div>
+    <div class="nav-right">
+      <a href="https://github.com/angkutdigital/tandem-crm" target="_blank" rel="noopener" class="nav-cta">GitHub →</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <aside class="hero-left">
+    <div class="stat-block">
+      <div class="hero-title-block">Partner<br />Commission<br />Engine</div>
+    </div>
+    <div class="stat-block">
+      <div class="stat-label">Runtime deps</div>
+      <div class="stat-value">1</div>
+      <div class="stat-sub">pg</div>
+    </div>
+    <div class="stat-block">
+      <div class="stat-label">Database</div>
+      <div class="stat-value">Postgres</div>
+      <div class="stat-sub">14+ · any host</div>
+    </div>
+    <div class="stat-block">
+      <div class="stat-label">License</div>
+      <div class="stat-value">MIT</div>
+      <div class="stat-sub">Angkut Digital Enterprise</div>
+    </div>
+  </aside>
+
+  <div class="hero-center">
+    <div class="announcement-pill">
+      <span class="tag">EARLY</span>
+      <span class="text">Open source. Pre-1.0. Looking for first users →</span>
+    </div>
+
+    <h1>
+      Partner commissions.<br />
+      <span class="light">Inside your own Postgres.</span>
+    </h1>
+
+    <p class="hero-sub">
+      An embeddable, event-sourced commission engine for Postgres.
+      The event log is the source of truth. Escrow release runs inside Postgres, ready for pg_cron.
+      There's no separate worker to babysit, and no vendor you're locked into.
+    </p>
+
+    <div class="hero-buttons">
+      <a href="https://github.com/angkutdigital/tandem-crm" target="_blank" rel="noopener" class="btn btn-dark">View on GitHub</a>
+      <a href="#how" class="btn btn-outline">See how it works</a>
+    </div>
+
+    <div class="gh-live-stats">
+      <a href="https://github.com/angkutdigital/tandem-crm/stargazers" target="_blank" rel="noopener" class="gh-stat-pill">
+        <span class="gh-stat-icon">&#9733;</span> Star
+        <span data-gh-stat="stars"></span>
+      </a>
+      <a href="https://github.com/angkutdigital/tandem-crm/fork" target="_blank" rel="noopener" class="gh-stat-pill">
+        <span class="gh-stat-icon">&#8991;</span> Fork
+        <span data-gh-stat="forks"></span>
+      </a>
+    </div>
+  </div>
+
+  <aside class="hero-right">
+    <div class="right-block">
+      <div class="right-header">
+        <span>Status</span>
+      </div>
+      <div class="right-value">Pre-1.0</div>
+    </div>
+
+    <div class="right-block">
+      <!-- Every shipped module currently ships under one package version
+           (there is no independent per-module release process yet), so
+           each one links to the same GitHub releases page and picks up
+           the same fetched tag. The per-row layout is here so that if
+           this project ever does tag modules independently, only the
+           fetch logic needs to change, not this markup. -->
+      <div class="right-header" style="justify-content: flex-end; margin-bottom: 8px;">Modules</div>
+      <ul class="stack-list">
+        <li>
+          <span class="pkg">Core</span>
+          <span class="status">· in use</span>
+          <a href="https://github.com/angkutdigital/tandem-crm/releases" target="_blank" rel="noopener" class="version-link module-version" data-gh-version>v0.1.0</a>
+        </li>
+        <li>
+          <span class="pkg">Ramp</span>
+          <span class="status">· in use</span>
+          <a href="https://github.com/angkutdigital/tandem-crm/releases" target="_blank" rel="noopener" class="version-link module-version" data-gh-version>v0.1.0</a>
+        </li>
+        <li>
+          <span class="pkg">CRM / Admin UI</span>
+          <span class="status">· in progress</span>
+        </li>
+        <li>
+          <span class="pkg">Coaster</span>
+          <span class="status">· planned</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="right-block">
+      <div class="right-header" style="justify-content: flex-end; margin-bottom: 8px;">Docs</div>
+      <ul class="stack-list">
+        <li><a href="/guides/getting-started/" style="text-decoration: underline; text-underline-offset: 3px;">Getting started</a></li>
+        <li><a href="/guides/getting-started/" style="text-decoration: underline; text-underline-offset: 3px;">Event log</a></li>
+        <li><a href="/guides/getting-started/" style="text-decoration: underline; text-underline-offset: 3px;">Escrow &amp; pg_cron</a></li>
+        <li><a href="/guides/getting-started/" style="text-decoration: underline; text-underline-offset: 3px;">Configuration</a></li>
+      </ul>
+    </div>
+  </aside>
+</section>
+
+<!-- Logo marquee -->
+<section class="logos-block">
+  <div class="logos-eyebrow">// RUNS ON YOUR POSTGRES, WHEREVER IT LIVES</div>
+  <div class="logo-marquee" role="img" aria-label="Compatible with Alibaba Cloud, Prisma, Amazon RDS for PostgreSQL, Neon, Supabase, Aiven, Fly.io, Render, Scaleway, and DigitalOcean">
+    <div class="logo-track" aria-hidden="true">
+      <div class="logo-group" data-copy="1">
+        <span class="logo-item" style="--brand:#FF6A00">
+          <svg role="img" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><title>Alibaba Cloud</title><path d="M3.996 4.517h5.291L8.01 6.324 4.153 7.506a1.668 1.668 0 0 0-1.165 1.601v5.786a1.668 1.668 0 0 0 1.165 1.6l3.857 1.183 1.277 1.807H3.996A3.996 3.996 0 0 1 0 15.487V8.513a3.996 3.996 0 0 1 3.996-3.996m16.008 0h-5.291l1.277 1.807 3.857 1.182c.715.227 1.17.889 1.165 1.601v5.786a1.668 1.668 0 0 1-1.165 1.6l-3.857 1.183-1.277 1.807h5.291A3.996 3.996 0 0 0 24 15.487V8.513a3.996 3.996 0 0 0-3.996-3.996m-4.007 8.345H8.002v-1.804h7.995Z"/></svg>
+          <span>Alibaba Cloud</span>
+        </span>
+        <span class="logo-item" style="--brand:#2D3748">
+          <svg role="img" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><title>Prisma</title><path d="M21.8068 18.2848L13.5528.7565c-.207-.4382-.639-.7273-1.1286-.7541-.5023-.0293-.9523.213-1.2062.6253L2.266 15.1271c-.2773.4518-.2718 1.0091.0158 1.4555l4.3759 6.7786c.2608.4046.7127.6388 1.1823.6388.1332 0 .267-.0188.3987-.0577l12.7019-3.7568c.3891-.1151.7072-.3904.8737-.7553s.1633-.7828-.0075-1.1454zm-1.8481.7519L9.1814 22.2242c-.3292.0975-.6448-.1873-.5756-.5194l3.8501-18.4386c.072-.3448.5486-.3996.699-.0803l7.1288 15.138c.1344.2856-.019.6224-.325.7128z"/></svg>
+          <span>Prisma</span>
+        </span>
+        <span class="logo-item">
+          <img src="/logos/aws.png" alt="Amazon RDS for PostgreSQL" class="logo-img logo-img--aws" />
+        </span>
+        <span class="logo-item" style="--brand:#34D59A">
+          <svg role="img" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><title>Neon</title><path d="M24 0V24l-9.365-8.045V24H0V0ZM2.942 21.087h8.751V9.563l9.365 8.204V2.919L2.942 2.914Z"/></svg>
+          <span>Neon</span>
+        </span>
+        <span class="logo-item" style="--brand:#3FCF8E">
+          <svg role="img" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><title>Supabase</title><path d="M11.9 1.036c-.015-.986-1.26-1.41-1.874-.637L.764 12.05C-.33 13.427.65 15.455 2.409 15.455h9.579l.113 7.51c.014.985 1.259 1.408 1.873.636l9.262-11.653c1.093-1.375.113-3.403-1.645-3.403h-9.642z"/></svg>
+          <span>Supabase</span>
+        </span>
+        <span class="logo-item">
+          <img src="/logos/aiven.png" alt="Aiven" class="logo-img logo-img--aiven" />
+        </span>
+        <span class="logo-item" style="--brand:#24175B">
+          <svg role="img" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><title>Fly.io</title><path d="M11.987 0c-2.45-.01-5.002.925-6.541 2.897-1.17 1.502-1.664 3.474-1.49 5.356.29 2.112 1.476 3.96 2.676 5.672a41.5 41.5 0 0 0 4.216 4.831c-1.063.832-1.943 2.286-1.357 3.644.821 2.32 4.665 2.05 5.122-.372.39-1.288-.694-2.533-1.428-3.309 2.388-2.431 4.706-5.036 6.17-8.145.595-1.32.902-2.802.614-4.24-.28-2.341-1.823-4.473-3.967-5.46C14.76.266 13.364.016 11.987 0m-.236 1.577v15.534C9.881 13.483 7.724 9.266 8.73 5.069c.35-1.539 1.253-3.309 3.02-3.492m1.996.04c1.534.357 3.031 1.096 3.906 2.48 1.3 1.93 1.318 4.55.1 6.521-1.268 2.395-3.06 4.463-4.916 6.415 1.472-2.974 3.074-6.106 3.182-9.5-.043-2.08-.438-4.612-2.272-5.916M11.97 20.103c.848.342 1.597 1.983.153 2.173-.664.15-1.367-.599-.995-1.222.213-.355.488-.73.842-.95"/></svg>
+          <span>Fly.io</span>
+        </span>
+        <span class="logo-item" style="--brand:#000000">
+          <svg role="img" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><title>Render</title><path d="M18.263.007c-3.121-.147-5.744 2.109-6.192 5.082-.018.138-.045.272-.067.405-.696 3.703-3.936 6.507-7.827 6.507-1.388 0-2.691-.356-3.825-.979a.2024.2024 0 0 0-.302.178V24H12v-8.999c0-1.656 1.338-3 2.987-3h2.988c3.382 0 6.103-2.817 5.97-6.244-.12-3.084-2.61-5.603-5.682-5.75"/></svg>
+          <span>Render</span>
+        </span>
+        <span class="logo-item" style="--brand:#4F0599">
+          <svg role="img" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><title>Scaleway</title><path d="M16.605 11.11v5.72a1.77 1.77 0 01-1.54 1.69h-4a1.43 1.43 0 01-1.31-1.22 1.09 1.09 0 010-.18 1.37 1.37 0 011.37-1.36h1.74a1 1 0 001-1v-3.62a1.4 1.4 0 011.18-1.39h.17a1.37 1.37 0 011.39 1.36zm-6.46 1.74V9.26a1 1 0 011-1h1.85a1.37 1.37 0 001.37-1.37 1 1 0 000-.17 1.45 1.45 0 00-1.41-1.2h-3.96a1.81 1.81 0 00-1.58 1.66v5.7a1.37 1.37 0 001.37 1.37h.21a1.4 1.4 0 001.15-1.4zm12-4.29V20a4.53 4.53 0 01-4.15 4h-7.58a8.57 8.57 0 01-8.56-8.57V4.54A4.54 4.54 0 016.395 0h7.18a8.56 8.56 0 018.56 8.56zm-2.74 0a5.83 5.83 0 00-5.82-5.82h-7.19a1.79 1.79 0 00-1.8 1.8v10.89a5.83 5.83 0 005.82 5.8h7.44a1.79 1.79 0 001.54-1.48z"/></svg>
+          <span>Scaleway</span>
+        </span>
+        <span class="logo-item" style="--brand:#0080FF">
+          <svg role="img" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><title>DigitalOcean</title><path d="M12.04 0C5.408-.02.005 5.37.005 11.992h4.638c0-4.923 4.882-8.731 10.064-6.855a6.95 6.95 0 014.147 4.148c1.889 5.177-1.924 10.055-6.84 10.064v-4.61H7.391v4.623h4.61V24c7.86 0 13.967-7.588 11.397-15.83-1.115-3.59-3.985-6.446-7.575-7.575A12.8 12.8 0 0012.039 0zM7.39 19.362H3.828v3.564H7.39zm-3.563 0v-2.978H.85v2.978z"/></svg>
+          <span>DigitalOcean</span>
+        </span>
+      </div>
+      <div class="logo-group" data-copy="2">
+        <span class="logo-item" style="--brand:#FF6A00">
+          <svg role="img" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><title>Alibaba Cloud</title><path d="M3.996 4.517h5.291L8.01 6.324 4.153 7.506a1.668 1.668 0 0 0-1.165 1.601v5.786a1.668 1.668 0 0 0 1.165 1.6l3.857 1.183 1.277 1.807H3.996A3.996 3.996 0 0 1 0 15.487V8.513a3.996 3.996 0 0 1 3.996-3.996m16.008 0h-5.291l1.277 1.807 3.857 1.182c.715.227 1.17.889 1.165 1.601v5.786a1.668 1.668 0 0 1-1.165 1.6l-3.857 1.183-1.277 1.807h5.291A3.996 3.996 0 0 0 24 15.487V8.513a3.996 3.996 0 0 0-3.996-3.996m-4.007 8.345H8.002v-1.804h7.995Z"/></svg>
+          <span>Alibaba Cloud</span>
+        </span>
+        <span class="logo-item" style="--brand:#2D3748">
+          <svg role="img" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><title>Prisma</title><path d="M21.8068 18.2848L13.5528.7565c-.207-.4382-.639-.7273-1.1286-.7541-.5023-.0293-.9523.213-1.2062.6253L2.266 15.1271c-.2773.4518-.2718 1.0091.0158 1.4555l4.3759 6.7786c.2608.4046.7127.6388 1.1823.6388.1332 0 .267-.0188.3987-.0577l12.7019-3.7568c.3891-.1151.7072-.3904.8737-.7553s.1633-.7828-.0075-1.1454zm-1.8481.7519L9.1814 22.2242c-.3292.0975-.6448-.1873-.5756-.5194l3.8501-18.4386c.072-.3448.5486-.3996.699-.0803l7.1288 15.138c.1344.2856-.019.6224-.325.7128z"/></svg>
+          <span>Prisma</span>
+        </span>
+        <span class="logo-item">
+          <img src="/logos/aws.png" alt="Amazon RDS for PostgreSQL" class="logo-img logo-img--aws" />
+        </span>
+        <span class="logo-item" style="--brand:#34D59A">
+          <svg role="img" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><title>Neon</title><path d="M24 0V24l-9.365-8.045V24H0V0ZM2.942 21.087h8.751V9.563l9.365 8.204V2.919L2.942 2.914Z"/></svg>
+          <span>Neon</span>
+        </span>
+        <span class="logo-item" style="--brand:#3FCF8E">
+          <svg role="img" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><title>Supabase</title><path d="M11.9 1.036c-.015-.986-1.26-1.41-1.874-.637L.764 12.05C-.33 13.427.65 15.455 2.409 15.455h9.579l.113 7.51c.014.985 1.259 1.408 1.873.636l9.262-11.653c1.093-1.375.113-3.403-1.645-3.403h-9.642z"/></svg>
+          <span>Supabase</span>
+        </span>
+        <span class="logo-item">
+          <img src="/logos/aiven.png" alt="Aiven" class="logo-img logo-img--aiven" />
+        </span>
+        <span class="logo-item" style="--brand:#24175B">
+          <svg role="img" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><title>Fly.io</title><path d="M11.987 0c-2.45-.01-5.002.925-6.541 2.897-1.17 1.502-1.664 3.474-1.49 5.356.29 2.112 1.476 3.96 2.676 5.672a41.5 41.5 0 0 0 4.216 4.831c-1.063.832-1.943 2.286-1.357 3.644.821 2.32 4.665 2.05 5.122-.372.39-1.288-.694-2.533-1.428-3.309 2.388-2.431 4.706-5.036 6.17-8.145.595-1.32.902-2.802.614-4.24-.28-2.341-1.823-4.473-3.967-5.46C14.76.266 13.364.016 11.987 0m-.236 1.577v15.534C9.881 13.483 7.724 9.266 8.73 5.069c.35-1.539 1.253-3.309 3.02-3.492m1.996.04c1.534.357 3.031 1.096 3.906 2.48 1.3 1.93 1.318 4.55.1 6.521-1.268 2.395-3.06 4.463-4.916 6.415 1.472-2.974 3.074-6.106 3.182-9.5-.043-2.08-.438-4.612-2.272-5.916M11.97 20.103c.848.342 1.597 1.983.153 2.173-.664.15-1.367-.599-.995-1.222.213-.355.488-.73.842-.95"/></svg>
+          <span>Fly.io</span>
+        </span>
+        <span class="logo-item" style="--brand:#000000">
+          <svg role="img" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><title>Render</title><path d="M18.263.007c-3.121-.147-5.744 2.109-6.192 5.082-.018.138-.045.272-.067.405-.696 3.703-3.936 6.507-7.827 6.507-1.388 0-2.691-.356-3.825-.979a.2024.2024 0 0 0-.302.178V24H12v-8.999c0-1.656 1.338-3 2.987-3h2.988c3.382 0 6.103-2.817 5.97-6.244-.12-3.084-2.61-5.603-5.682-5.75"/></svg>
+          <span>Render</span>
+        </span>
+        <span class="logo-item" style="--brand:#4F0599">
+          <svg role="img" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><title>Scaleway</title><path d="M16.605 11.11v5.72a1.77 1.77 0 01-1.54 1.69h-4a1.43 1.43 0 01-1.31-1.22 1.09 1.09 0 010-.18 1.37 1.37 0 011.37-1.36h1.74a1 1 0 001-1v-3.62a1.4 1.4 0 011.18-1.39h.17a1.37 1.37 0 011.39 1.36zm-6.46 1.74V9.26a1 1 0 011-1h1.85a1.37 1.37 0 001.37-1.37 1 1 0 000-.17 1.45 1.45 0 00-1.41-1.2h-3.96a1.81 1.81 0 00-1.58 1.66v5.7a1.37 1.37 0 001.37 1.37h.21a1.4 1.4 0 001.15-1.4zm12-4.29V20a4.53 4.53 0 01-4.15 4h-7.58a8.57 8.57 0 01-8.56-8.57V4.54A4.54 4.54 0 016.395 0h7.18a8.56 8.56 0 018.56 8.56zm-2.74 0a5.83 5.83 0 00-5.82-5.82h-7.19a1.79 1.79 0 00-1.8 1.8v10.89a5.83 5.83 0 005.82 5.8h7.44a1.79 1.79 0 001.54-1.48z"/></svg>
+          <span>Scaleway</span>
+        </span>
+        <span class="logo-item" style="--brand:#0080FF">
+          <svg role="img" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><title>DigitalOcean</title><path d="M12.04 0C5.408-.02.005 5.37.005 11.992h4.638c0-4.923 4.882-8.731 10.064-6.855a6.95 6.95 0 014.147 4.148c1.889 5.177-1.924 10.055-6.84 10.064v-4.61H7.391v4.623h4.61V24c7.86 0 13.967-7.588 11.397-15.83-1.115-3.59-3.985-6.446-7.575-7.575A12.8 12.8 0 0012.039 0zM7.39 19.362H3.828v3.564H7.39zm-3.563 0v-2.978H.85v2.978z"/></svg>
+          <span>DigitalOcean</span>
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Features -->
+<section class="block" id="features">
+  <div class="eyebrow">// WHAT IT DOES</div>
+  <h2>
+    Event-sourced attribution.<br />
+    <span class="light">Integer money math. Postgres-native.</span>
+  </h2>
+  <p class="lead">
+    Every piece is a pure function you can test in isolation.
+    The engine never touches money; it emits payout tasks.
+  </p>
+
+  <div class="feature-grid">
+    <div class="feature-cell">
+      <div class="num">01 / EVENT LOG</div>
+      <h3>Append-only source of truth</h3>
+      <p>One table. Typed events. No updates, no deletes. Every projection is a fold over this log.</p>
+    </div>
+    <div class="feature-cell">
+      <div class="num">02 / PROJECTIONS</div>
+      <h3>Rebuildable state</h3>
+      <p>Leads, payouts, and timelines derive from the event log. Drop a table, replay, done.</p>
+    </div>
+    <div class="feature-cell">
+      <div class="num">03 / MONEY</div>
+      <h3>Integer minor units</h3>
+      <p>No floats. Commission math uses exact integer arithmetic. Rounding rules are explicit.</p>
+    </div>
+    <div class="feature-cell">
+      <div class="num">04 / RULES</div>
+      <h3>Qualification &amp; routing</h3>
+      <p>A vehicle-count threshold decides automated setup vs. manual review. Round-robin, least-loaded, or manual routing presets recommend an agent; your app decides whether to act on it.</p>
+    </div>
+    <div class="feature-cell">
+      <div class="num">05 / ESCROW</div>
+      <h3>Escrow, ready to schedule</h3>
+      <p>Commissions sit in a held state. <code>release_due_commissions()</code> does the release atomically inside Postgres; wiring it to pg_cron (or any scheduler) is a migration you write for your own project.</p>
+    </div>
+    <div class="feature-cell">
+      <div class="num">06 / AUTH</div>
+      <h3>Vendor-neutral RLS</h3>
+      <p>Policies resolve identity through a portable session variable, falling back to Supabase's <code>auth.uid()</code> only where it exists. Verified on plain Postgres, not just Supabase.</p>
+    </div>
+  </div>
+</section>
+
+<!-- How -->
+<section class="block" id="how">
+  <div class="eyebrow">// HOW IT WORKS</div>
+  <h2>
+    Four steps.<br />
+    <span class="light">No orchestration.</span>
+  </h2>
+  <p class="lead">
+    Everything runs inside your existing Node app and Postgres database.
+  </p>
+
+  <div class="code-window">
+    <div class="code-header">
+      <span class="dot dot-r"></span>
+      <span class="dot dot-y"></span>
+      <span class="dot dot-g"></span>
+      <span style="margin-left: 12px;">app/api/webhooks/route.ts</span>
+    </div>
+<pre><span class="cm">// Minimal install: engine + Postgres. Nothing else.</span>
+<span class="kw">import</span> { createTandemPool, applyTandemMigrations, withTandemSession } <span class="kw">from</span> <span class="str">'tandem-crm/db'</span>;
+<span class="kw">import</span> { qualifyLead, defaultTandemConfig } <span class="kw">from</span> <span class="str">'tandem-crm'</span>;
+
+<span class="kw">const</span> pool = <span class="fn">createTandemPool</span>(process.env.<span class="fn">DATABASE_URL</span>);
+<span class="kw">await</span> <span class="fn">applyTandemMigrations</span>(pool);
+
+<span class="cm">// Adapters map external payloads into typed events, then write them</span>
+<span class="cm">// inside a transaction scoped to the caller's identity.</span>
+<span class="kw">await</span> <span class="fn">withTandemSession</span>(pool, userId, <span class="kw">async</span> (client) => {
+  <span class="kw">const</span> { status } = <span class="fn">qualifyLead</span>({ vehicleCount: <span class="str">12</span> }, defaultTandemConfig);
+  <span class="kw">await</span> client.<span class="fn">query</span>(<span class="str">'insert into tandem.events (...) values (...)'</span>, [<span class="cm">/* ... */</span>]);
+});
+
+<span class="cm">// release_due_commissions() runs inside Postgres. Wire it to pg_cron</span>
+<span class="cm">// or any scheduler you already have. No separate worker process.</span></pre>
+  </div>
+</section>
+
+<!-- Roadmap -->
+<section class="block" id="roadmap">
+  <div class="eyebrow">// ROADMAP</div>
+  <h2>
+    What's built.<br />
+    <span class="light">What's coming.</span>
+  </h2>
+  <p class="lead">
+    This is the honest current state. No features are promised before they exist.
+  </p>
+
+  <div class="roadmap">
+    <div class="roadmap-cell">
+      <span class="status status-live">Live</span>
+      <h3>Core</h3>
+      <p>The engine, and the one module every install needs. Event log, projections, integer money math, idempotency, lead routing, an escrow release function ready for <code>pg_cron</code>, and an RLS layer verified on both Supabase and plain Postgres. Running in production on Supabase.</p>
+    </div>
+    <div class="roadmap-cell">
+      <span class="status status-live">Live</span>
+      <h3>Ramp</h3>
+      <p>Agent onboarding and certification. Its own event log, reducers, and RLS, sitting next to Core's. An agent works through the required steps and certifies themselves once they're done; your app decides what certification unlocks.</p>
+    </div>
+    <div class="roadmap-cell">
+      <span class="status status-progress">In progress</span>
+      <h3>CRM / Admin UI</h3>
+      <p>A reference dashboard in <code>examples/dashboard</code>, built on shadcn/ui. The overview page and the Ramp onboarding flow work end to end against a real Postgres database. Leads, payouts, and routing screens are next.</p>
+    </div>
+    <div class="roadmap-cell">
+      <span class="status status-soon">Planned</span>
+      <h3>Coaster</h3>
+      <p>Clawbacks, disputes, and payout blocking. The brakes on the commission engine.</p>
+    </div>
+    <div class="roadmap-cell">
+      <span class="status status-live">Live</span>
+      <h3>Auth adapter</h3>
+      <p>Three functions are all Tandem needs from your identity provider: who's signed in, and their membership row. Implement them once against Supabase Auth, Clerk, BetterAuth, or a table you built yourself, and RLS enforces the rest.</p>
+    </div>
+    <div class="roadmap-cell">
+      <span class="status status-soon">Planned</span>
+      <h3>Tandem Cloud</h3>
+      <p>Managed hosting. Provisioning, monitoring, upgrades. Not started. Not before the open-source packages have real users.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-block">
+  <div class="eyebrow">// READ THE CODE</div>
+  <h2>
+    One runtime dependency.<br />
+    <span class="light">Read it in an afternoon.</span>
+  </h2>
+  <p class="lead">
+    MIT licensed. Self-host it, fork it, replace the UI, tree-shake out what you don't need.
+  </p>
+  <div class="hero-buttons" style="justify-content: center;">
+    <a href="https://github.com/angkutdigital/tandem-crm" target="_blank" rel="noopener" class="btn btn-dark">View on GitHub</a>
+    <a href="/guides/getting-started/" class="btn btn-outline">Read the docs</a>
+  </div>
+</section>
+
+<footer>
+  <div>© 2026 Angkut Digital Enterprise. MIT licensed.</div>
+  <div class="footer-links">
+    <a href="https://github.com/angkutdigital/tandem-crm" target="_blank" rel="noopener">GitHub</a>
+    <a href="/guides/getting-started/">Docs</a>
+    <a href="/llms.txt">For AI</a>
+    <a href="https://github.com/angkutdigital/tandem-crm/issues" target="_blank" rel="noopener">Contact</a>
+  </div>
+</footer>
+
+<script type="module">
+  import { animate, inView, stagger } from '/vendor/motion-animate.mjs';
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const track = document.querySelector('.logo-track');
+
+  function startMarquee() {
+    if (!track || reduceMotion) return;
+    const firstGroup = track.querySelector('.logo-group');
+    if (!firstGroup) return;
+
+    // Measured only after every image in the track has finished loading:
+    // measuring earlier under-counts the track's real width (images still
+    // at 0x0) and makes the loop snap back before the second copy lines up.
+    const groupWidth = firstGroup.getBoundingClientRect().width;
+    const wrap = track.closest('.logo-marquee');
+    const viewportWidth = wrap.getBoundingClientRect().width || window.innerWidth;
+
+    // Two copies is only enough on narrow screens. On a wide viewport, two
+    // copies can be shorter than the visible area itself, so the track runs
+    // out of content mid-loop and visibly "ends" before the next copy
+    // catches up. Keep cloning the first group until there's at least a
+    // full two viewport-widths of content queued.
+    const existingGroups = track.querySelectorAll('.logo-group').length;
+    const neededGroups = Math.max(2, Math.ceil((viewportWidth * 2) / groupWidth));
+    for (let i = existingGroups; i < neededGroups; i++) {
+      track.appendChild(firstGroup.cloneNode(true));
+    }
+
+    // Distance is always exactly one group's width: consecutive groups are
+    // identical, so looping by that amount is seamless no matter how many
+    // total copies ended up queued above.
+    const controls = animate(
+      track,
+      { x: [0, -groupWidth] },
+      { duration: 32, repeat: Infinity, ease: 'linear' }
+    );
+
+    wrap.addEventListener('mouseenter', () => controls.pause());
+    wrap.addEventListener('mouseleave', () => controls.play());
+  }
+
+  if (track) {
+    const images = Array.from(track.querySelectorAll('img'));
+    const pending = images.filter((img) => !img.complete);
+    if (pending.length === 0) {
+      startMarquee();
+    } else {
+      let remaining = pending.length;
+      const onSettle = () => {
+        remaining -= 1;
+        if (remaining <= 0) startMarquee();
+      };
+      pending.forEach((img) => {
+        img.addEventListener('load', onSettle, { once: true });
+        img.addEventListener('error', onSettle, { once: true });
+      });
+    }
+  }
+
+  if (!reduceMotion) {
+    const revealTargets = document.querySelectorAll(
+      '.eyebrow, .block h2, .cta-block h2, .feature-cell, .roadmap-cell'
+    );
+    revealTargets.forEach((el) => {
+      el.style.opacity = '0';
+    });
+    inView(
+      revealTargets,
+      (el) => {
+        animate(
+          el,
+          { opacity: [0, 1], y: [16, 0] },
+          { duration: 0.5, ease: 'easeOut' }
+        );
+      },
+      { margin: '0px 0px -10% 0px', amount: 0.2 }
+    );
+  }
+</script>
+
+<script>
+  (function () {
+    var format = function (n) {
+      return Intl.NumberFormat('en', { notation: 'compact' }).format(n);
+    };
+    fetch('https://api.github.com/repos/angkutdigital/tandem-crm')
+      .then(function (res) { return res.ok ? res.json() : null; })
+      .then(function (data) {
+        if (!data) return;
+        document.querySelectorAll('[data-gh-stat="stars"]').forEach(function (el) {
+          el.textContent = format(data.stargazers_count);
+        });
+        document.querySelectorAll('[data-gh-stat="forks"]').forEach(function (el) {
+          el.textContent = format(data.forks_count);
+        });
+      })
+      .catch(function () {});
+
+    // 404s until the repo cuts its first tagged release; the markup's
+    // hardcoded v0.1.0 (package.json's current version) stands in until then.
+    fetch('https://api.github.com/repos/angkutdigital/tandem-crm/releases/latest')
+      .then(function (res) { return res.ok ? res.json() : null; })
+      .then(function (data) {
+        if (!data || !data.tag_name) return;
+        document.querySelectorAll('[data-gh-version]').forEach(function (el) {
+          el.textContent = data.tag_name;
+        });
+      })
+      .catch(function () {});
+  })();
+</script>
+
+</body>
+</html>
