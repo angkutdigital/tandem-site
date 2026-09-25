@@ -20,5 +20,8 @@
   "dependencies": {
     "@astrojs/starlight": "^0.42.4",
     "astro": "^7.3.5"
+  },
+  "devDependencies": {
+    "motion": "^13.4.4"
   }
 }
