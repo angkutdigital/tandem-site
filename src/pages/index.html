@@ -675,8 +675,8 @@
     </div>
     <div class="stat-block">
       <div class="stat-label">Runtime deps</div>
-      <div class="stat-value">1</div>
-      <div class="stat-sub">pg</div>
+      <div class="stat-value">0</div>
+      <div class="stat-sub">pure TypeScript</div>
     </div>
     <div class="stat-block">
       <div class="stat-label">Database</div>
@@ -733,22 +733,22 @@
     </div>
 
     <div class="right-block">
-      <div class="right-header" style="justify-content: flex-end; margin-bottom: 8px;">Packages</div>
+      <div class="right-header" style="justify-content: flex-end; margin-bottom: 8px;">Modules</div>
       <ul class="stack-list">
         <li>
-          <span class="pkg">tandem-core</span>
+          <span class="pkg">Core</span>
           <span class="status">— in use</span>
         </li>
         <li>
-          <span class="pkg">tandem-crm</span>
+          <span class="pkg">CRM / Admin UI</span>
           <span class="status">— planned</span>
         </li>
         <li>
-          <span class="pkg">tandem-ramp</span>
+          <span class="pkg">Ramp</span>
           <span class="status">— planned</span>
         </li>
         <li>
-          <span class="pkg">tandem-coaster</span>
+          <span class="pkg">Coaster</span>
           <span class="status">— planned</span>
         </li>
       </ul>
@@ -888,7 +888,7 @@
       <span style="margin-left: 12px;">app/api/stripe/route.ts</span>
     </div>
 <pre><span class="cm">// Minimal install: engine + Postgres. Nothing else.</span>
-<span class="kw">import</span> { init } <span class="kw">from</span> <span class="str">'tandem-core'</span>;
+<span class="kw">import</span> { init } <span class="kw">from</span> <span class="str">'tandem-crm'</span>;
 
 <span class="kw">const</span> crm = <span class="fn">init</span>({
   db: { connectionString: process.env.<span class="fn">DATABASE_URL</span> },
@@ -922,22 +922,22 @@
   <div class="roadmap">
     <div class="roadmap-cell">
       <span class="status status-live">Live</span>
-      <h3>tandem-core</h3>
-      <p>The engine. Event log, projections, integer money math, idempotency, escrow release via <code>pg_cron</code>, Supabase auth adapter. Running in production.</p>
+      <h3>Core</h3>
+      <p>The engine, and the one module every install needs. Event log, projections, integer money math, idempotency, escrow release via <code>pg_cron</code>, Supabase auth adapter. Running in production.</p>
     </div>
     <div class="roadmap-cell">
       <span class="status status-soon">Planned</span>
-      <h3>tandem-crm</h3>
-      <p>The CRM surface. Contacts, kanban, timeline, and an optional shadcn/ui admin. Built on <code>tandem-core</code>.</p>
+      <h3>CRM / Admin UI</h3>
+      <p>Contacts, kanban, timeline, and an optional shadcn/ui admin. A module of <code>tandem-crm</code>, tree-shaken out if you don't use it.</p>
     </div>
     <div class="roadmap-cell">
       <span class="status status-soon">Planned</span>
-      <h3>tandem-ramp</h3>
-      <p>Sales onboarding orchestration. Reads <code>tandem-core</code> events, ships its own event types.</p>
+      <h3>Ramp</h3>
+      <p>Sales onboarding orchestration. Reads Core's events, ships its own event types.</p>
     </div>
     <div class="roadmap-cell">
       <span class="status status-soon">Planned</span>
-      <h3>tandem-coaster</h3>
+      <h3>Coaster</h3>
       <p>Clawbacks, disputes, and payout blocking. The brakes on the commission engine.</p>
     </div>
     <div class="roadmap-cell">
@@ -957,11 +957,11 @@
 <section class="cta-block">
   <div class="eyebrow">// READ THE CODE</div>
   <h2>
-    One runtime dependency.<br />
+    Zero runtime dependencies.<br />
     <span class="light">Read it in an afternoon.</span>
   </h2>
   <p class="lead">
-    MIT licensed. Self-host it, fork it, replace the UI, delete what you don't need.
+    MIT licensed. Self-host it, fork it, replace the UI, tree-shake out what you don't need.
   </p>
   <div class="hero-buttons" style="justify-content: center;">
     <a href="https://github.com/angkutdigital/tandem-crm" target="_blank" rel="noopener" class="btn btn-dark">View on GitHub</a>
@@ -979,12 +979,16 @@
 </footer>
 
 <script type="module">
-  import { animate } from '/vendor/motion-animate.mjs';
+  import { animate, inView, stagger } from '/vendor/motion-animate.mjs';
 
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const track = document.querySelector('.logo-track');
 
-  if (track && !reduceMotion) {
+  function startMarquee() {
+    if (!track || reduceMotion) return;
+    // Measured only after every image in the track has finished loading —
+    // measuring earlier under-counts the track's real width (images still
+    // at 0x0) and makes the loop snap back before the second copy lines up.
     const distance = track.scrollWidth / 2;
     const controls = animate(
       track,
@@ -995,6 +999,44 @@
     const wrap = track.closest('.logo-marquee');
     wrap.addEventListener('mouseenter', () => controls.pause());
     wrap.addEventListener('mouseleave', () => controls.play());
+  }
+
+  if (track) {
+    const images = Array.from(track.querySelectorAll('img'));
+    const pending = images.filter((img) => !img.complete);
+    if (pending.length === 0) {
+      startMarquee();
+    } else {
+      let remaining = pending.length;
+      const onSettle = () => {
+        remaining -= 1;
+        if (remaining <= 0) startMarquee();
+      };
+      pending.forEach((img) => {
+        img.addEventListener('load', onSettle, { once: true });
+        img.addEventListener('error', onSettle, { once: true });
+      });
+    }
+  }
+
+  if (!reduceMotion) {
+    const revealTargets = document.querySelectorAll(
+      '.eyebrow, .block h2, .cta-block h2, .feature-cell, .roadmap-cell'
+    );
+    revealTargets.forEach((el) => {
+      el.style.opacity = '0';
+    });
+    inView(
+      revealTargets,
+      (el) => {
+        animate(
+          el,
+          { opacity: [0, 1], y: [16, 0] },
+          { duration: 0.5, ease: 'easeOut' }
+        );
+      },
+      { margin: '0px 0px -10% 0px', amount: 0.2 }
+    );
   }
 </script>
 
