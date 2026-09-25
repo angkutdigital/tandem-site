@@ -682,7 +682,7 @@
 
     <p class="hero-sub">
       An embeddable, event-sourced commission engine for Next.js.
-      The event log is the source of truth. Escrow release runs on pg_cron.
+      The event log is the source of truth. Escrow release runs inside Postgres, ready for pg_cron.
       No servers, no workers, no vendor lock-in.
     </p>
 
@@ -864,18 +864,18 @@
     </div>
     <div class="feature-cell">
       <div class="num">04 / RULES</div>
-      <h3>Attribution &amp; qualification</h3>
-      <p>First-touch, last-touch, or custom. Sensible defaults, fully overridable via config.</p>
+      <h3>Qualification &amp; routing</h3>
+      <p>A vehicle-count threshold decides automated setup vs. manual review. Round-robin, least-loaded, or manual routing presets recommend an agent; your app decides whether to act on it.</p>
     </div>
     <div class="feature-cell">
       <div class="num">05 / ESCROW</div>
-      <h3>pg_cron holds and releases</h3>
-      <p>Commissions sit in a held state. The database itself releases them on schedule. No worker process.</p>
+      <h3>Escrow, ready to schedule</h3>
+      <p>Commissions sit in a held state. <code>release_due_commissions()</code> does the release atomically inside Postgres; wiring it to pg_cron (or any scheduler) is a migration you write for your own project.</p>
     </div>
     <div class="feature-cell">
       <div class="num">06 / AUTH</div>
-      <h3>Vendor-neutral adapter</h3>
-      <p>RLS policies check a session variable, not a provider-specific UID. Supabase adapter ships first.</p>
+      <h3>Vendor-neutral RLS</h3>
+      <p>Policies resolve identity through a portable session variable, falling back to Supabase's <code>auth.uid()</code> only where it exists. Verified on plain Postgres, not just Supabase.</p>
     </div>
   </div>
 </section>
@@ -896,26 +896,24 @@
       <span class="dot dot-r"></span>
       <span class="dot dot-y"></span>
       <span class="dot dot-g"></span>
-      <span style="margin-left: 12px;">app/api/stripe/route.ts</span>
+      <span style="margin-left: 12px;">app/api/webhooks/route.ts</span>
     </div>
 <pre><span class="cm">// Minimal install: engine + Postgres. Nothing else.</span>
-<span class="kw">import</span> { init } <span class="kw">from</span> <span class="str">'tandem-crm'</span>;
+<span class="kw">import</span> { createTandemPool, applyTandemMigrations, withTandemSession } <span class="kw">from</span> <span class="str">'tandem-crm/db'</span>;
+<span class="kw">import</span> { qualifyLead, defaultTandemConfig } <span class="kw">from</span> <span class="str">'tandem-crm'</span>;
 
-<span class="kw">const</span> crm = <span class="fn">init</span>({
-  db: { connectionString: process.env.<span class="fn">DATABASE_URL</span> },
-  escrow: { holdDays: <span class="str">30</span> },
-  attribution: { strategy: <span class="str">'first-touch'</span> },
+<span class="kw">const</span> pool = <span class="fn">createTandemPool</span>(process.env.<span class="fn">DATABASE_URL</span>);
+<span class="kw">await</span> <span class="fn">applyTandemMigrations</span>(pool);
+
+<span class="cm">// Adapters map external payloads into typed events, then write them</span>
+<span class="cm">// inside a transaction scoped to the caller's identity.</span>
+<span class="kw">await</span> <span class="fn">withTandemSession</span>(pool, userId, <span class="kw">async</span> (client) => {
+  <span class="kw">const</span> { status } = <span class="fn">qualifyLead</span>({ vehicleCount: <span class="str">12</span> }, defaultTandemConfig);
+  <span class="kw">await</span> client.<span class="fn">query</span>(<span class="str">'insert into tandem.events (...) values (...)'</span>, [<span class="cm">/* ... */</span>]);
 });
 
-<span class="cm">// Adapters map external payloads to typed events.</span>
-<span class="kw">await</span> crm.<span class="fn">append</span>({
-  type: <span class="str">'commission.earned'</span>,
-  payload: { /* ... */ },
-  partnerId: <span class="str">'partner_123'</span>,
-});
-
-<span class="cm">// Escrow release runs on pg_cron inside Postgres.</span>
-<span class="cm">// No worker process. No external queue.</span></pre>
+<span class="cm">// release_due_commissions() runs inside Postgres. Wire it to pg_cron</span>
+<span class="cm">// or any scheduler you already have. No separate worker process.</span></pre>
   </div>
 </section>
 
@@ -934,7 +932,7 @@
     <div class="roadmap-cell">
       <span class="status status-live">Live</span>
       <h3>Core</h3>
-      <p>The engine, and the one module every install needs. Event log, projections, integer money math, idempotency, escrow release via <code>pg_cron</code>, Supabase auth adapter. Running in production.</p>
+      <p>The engine, and the one module every install needs. Event log, projections, integer money math, idempotency, an escrow release function ready for <code>pg_cron</code>, and an RLS layer verified on both Supabase and plain Postgres. Running in production on Supabase.</p>
     </div>
     <div class="roadmap-cell">
       <span class="status status-soon">Planned</span>
