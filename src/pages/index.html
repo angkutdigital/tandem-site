@@ -281,6 +281,16 @@
     border-color: var(--ink-dim);
   }
 
+  .version-link {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .version-link:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
   .gh-stat-icon {
     font-size: 13px;
   }
@@ -718,6 +728,15 @@
     </div>
 
     <div class="right-block">
+      <div class="right-header">
+        <span>Version</span>
+      </div>
+      <div class="right-value">
+        <a href="https://github.com/angkutdigital/tandem-crm/releases" target="_blank" rel="noopener" class="version-link" data-gh-version>v0.1.0</a>
+      </div>
+    </div>
+
+    <div class="right-block">
       <div class="right-header" style="justify-content: flex-end; margin-bottom: 8px;">Modules</div>
       <ul class="stack-list">
         <li>
@@ -1088,6 +1107,18 @@
         });
         document.querySelectorAll('[data-gh-stat="forks"]').forEach(function (el) {
           el.textContent = format(data.forks_count);
+        });
+      })
+      .catch(function () {});
+
+    // 404s until the repo cuts its first tagged release; the markup's
+    // hardcoded v0.1.0 (package.json's current version) stands in until then.
+    fetch('https://api.github.com/repos/angkutdigital/tandem-crm/releases/latest')
+      .then(function (res) { return res.ok ? res.json() : null; })
+      .then(function (data) {
+        if (!data || !data.tag_name) return;
+        document.querySelectorAll('[data-gh-version]').forEach(function (el) {
+          el.textContent = data.tag_name;
         });
       })
       .catch(function () {});
