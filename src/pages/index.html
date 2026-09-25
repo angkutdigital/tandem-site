@@ -373,24 +373,24 @@
   .logo-item {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
     font-family: 'IBM Plex Mono', monospace;
-    font-size: 15px;
+    font-size: 18px;
     color: var(--ink-dim);
     white-space: nowrap;
     flex-shrink: 0;
-    padding: 0 32px;
+    padding: 0 40px;
   }
 
   .logo-item svg {
-    width: 22px;
-    height: 22px;
+    width: 30px;
+    height: 30px;
     flex-shrink: 0;
     color: var(--brand, var(--ink-dim));
   }
 
   .logo-img {
-    height: 22px;
+    height: 30px;
     width: auto;
     display: block;
     flex-shrink: 0;
@@ -965,17 +965,36 @@
 
   function startMarquee() {
     if (!track || reduceMotion) return;
+    const firstGroup = track.querySelector('.logo-group');
+    if (!firstGroup) return;
+
     // Measured only after every image in the track has finished loading —
     // measuring earlier under-counts the track's real width (images still
     // at 0x0) and makes the loop snap back before the second copy lines up.
-    const distance = track.scrollWidth / 2;
+    const groupWidth = firstGroup.getBoundingClientRect().width;
+    const wrap = track.closest('.logo-marquee');
+    const viewportWidth = wrap.getBoundingClientRect().width || window.innerWidth;
+
+    // Two copies is only enough on narrow screens. On a wide viewport, two
+    // copies can be shorter than the visible area itself, so the track runs
+    // out of content mid-loop and visibly "ends" before the next copy
+    // catches up. Keep cloning the first group until there's at least a
+    // full two viewport-widths of content queued.
+    const existingGroups = track.querySelectorAll('.logo-group').length;
+    const neededGroups = Math.max(2, Math.ceil((viewportWidth * 2) / groupWidth));
+    for (let i = existingGroups; i < neededGroups; i++) {
+      track.appendChild(firstGroup.cloneNode(true));
+    }
+
+    // Distance is always exactly one group's width: consecutive groups are
+    // identical, so looping by that amount is seamless no matter how many
+    // total copies ended up queued above.
     const controls = animate(
       track,
-      { x: [0, -distance] },
+      { x: [0, -groupWidth] },
       { duration: 32, repeat: Infinity, ease: 'linear' }
     );
 
-    const wrap = track.closest('.logo-marquee');
     wrap.addEventListener('mouseenter', () => controls.pause());
     wrap.addEventListener('mouseleave', () => controls.play());
   }
