@@ -1,2 +1,4 @@
 # tandem-site
-Landing page and docs for TandemCRM — an embeddable, event-sourced partner commission engine for Next.js.
+
+Landing page and documentation for [TandemCRM](https://github.com/jglapp/tandem-core).
+Built with Astro. Deployed to Cloudflare Pages.
