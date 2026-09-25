@@ -344,6 +344,17 @@
     margin-left: 6px;
   }
 
+  .module-version {
+    display: block;
+    font-size: 11px;
+    color: var(--ink-dim);
+    margin-top: 2px;
+  }
+
+  .module-version:hover {
+    color: var(--ink);
+  }
+
   /* Logo marquee */
   .logos-block {
     border-top: 1px solid var(--line);
@@ -728,24 +739,23 @@
     </div>
 
     <div class="right-block">
-      <div class="right-header">
-        <span>Version</span>
-      </div>
-      <div class="right-value">
-        <a href="https://github.com/angkutdigital/tandem-crm/releases" target="_blank" rel="noopener" class="version-link" data-gh-version>v0.1.0</a>
-      </div>
-    </div>
-
-    <div class="right-block">
+      <!-- Every shipped module currently ships under one package version
+           (there is no independent per-module release process yet), so
+           each one links to the same GitHub releases page and picks up
+           the same fetched tag. The per-row layout is here so that if
+           this project ever does tag modules independently, only the
+           fetch logic needs to change, not this markup. -->
       <div class="right-header" style="justify-content: flex-end; margin-bottom: 8px;">Modules</div>
       <ul class="stack-list">
         <li>
           <span class="pkg">Core</span>
           <span class="status">· in use</span>
+          <a href="https://github.com/angkutdigital/tandem-crm/releases" target="_blank" rel="noopener" class="version-link module-version" data-gh-version>v0.1.0</a>
         </li>
         <li>
           <span class="pkg">Ramp</span>
           <span class="status">· in use</span>
+          <a href="https://github.com/angkutdigital/tandem-crm/releases" target="_blank" rel="noopener" class="version-link module-version" data-gh-version>v0.1.0</a>
         </li>
         <li>
           <span class="pkg">CRM / Admin UI</span>
