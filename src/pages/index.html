@@ -3,17 +3,17 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>TandemCRM — Partner commission engine for Next.js</title>
+<title>TandemCRM: Partner commission engine for Next.js</title>
 <meta name="description" content="An embeddable, event-sourced partner commission engine for Next.js. Runs in your own Postgres. No servers, no workers, no vendor lock-in." />
 <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-<meta property="og:title" content="TandemCRM — Partner commission engine for Next.js" />
+<meta property="og:title" content="TandemCRM: Partner commission engine for Next.js" />
 <meta property="og:description" content="An embeddable, event-sourced partner commission engine for Next.js. Runs in your own Postgres. No servers, no workers, no vendor lock-in." />
 <meta property="og:image" content="/og-image.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="TandemCRM — Partner commission engine for Next.js" />
+<meta name="twitter:title" content="TandemCRM: Partner commission engine for Next.js" />
 <meta name="twitter:description" content="An embeddable, event-sourced partner commission engine for Next.js. Runs in your own Postgres. No servers, no workers, no vendor lock-in." />
 <meta name="twitter:image" content="/og-image.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -654,8 +654,8 @@
     </div>
     <div class="stat-block">
       <div class="stat-label">Runtime deps</div>
-      <div class="stat-value">0</div>
-      <div class="stat-sub">pure TypeScript</div>
+      <div class="stat-value">1</div>
+      <div class="stat-sub">pg</div>
     </div>
     <div class="stat-block">
       <div class="stat-label">Database</div>
@@ -694,11 +694,11 @@
     <div class="gh-live-stats">
       <a href="https://github.com/angkutdigital/tandem-crm/stargazers" target="_blank" rel="noopener" class="gh-stat-pill">
         <span class="gh-stat-icon">&#9733;</span> Star
-        <span data-gh-stat="stars">&ndash;</span>
+        <span data-gh-stat="stars"></span>
       </a>
       <a href="https://github.com/angkutdigital/tandem-crm/fork" target="_blank" rel="noopener" class="gh-stat-pill">
         <span class="gh-stat-icon">&#8991;</span> Fork
-        <span data-gh-stat="forks">&ndash;</span>
+        <span data-gh-stat="forks"></span>
       </a>
     </div>
   </div>
@@ -716,19 +716,19 @@
       <ul class="stack-list">
         <li>
           <span class="pkg">Core</span>
-          <span class="status">— in use</span>
+          <span class="status">· in use</span>
         </li>
         <li>
           <span class="pkg">CRM / Admin UI</span>
-          <span class="status">— planned</span>
+          <span class="status">· planned</span>
         </li>
         <li>
           <span class="pkg">Ramp</span>
-          <span class="status">— planned</span>
+          <span class="status">· planned</span>
         </li>
         <li>
           <span class="pkg">Coaster</span>
-          <span class="status">— planned</span>
+          <span class="status">· planned</span>
         </li>
       </ul>
     </div>
@@ -843,7 +843,7 @@
   </h2>
   <p class="lead">
     Every piece is a pure function you can test in isolation.
-    The engine never touches money — it emits payout tasks.
+    The engine never touches money; it emits payout tasks.
   </p>
 
   <div class="feature-grid">
@@ -968,7 +968,7 @@
 <section class="cta-block">
   <div class="eyebrow">// READ THE CODE</div>
   <h2>
-    Zero runtime dependencies.<br />
+    One runtime dependency.<br />
     <span class="light">Read it in an afternoon.</span>
   </h2>
   <p class="lead">
@@ -1000,7 +1000,7 @@
     const firstGroup = track.querySelector('.logo-group');
     if (!firstGroup) return;
 
-    // Measured only after every image in the track has finished loading —
+    // Measured only after every image in the track has finished loading:
     // measuring earlier under-counts the track's real width (images still
     // at 0x0) and makes the loop snap back before the second copy lines up.
     const groupWidth = firstGroup.getBoundingClientRect().width;

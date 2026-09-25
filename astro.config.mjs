@@ -6,7 +6,7 @@ export default defineConfig({
   integrations: [
     starlight({
       title: 'TandemCRM',
-      description: 'Docs for TandemCRM — an embeddable, event-sourced partner-attribution and commission-payout engine for Postgres.',
+      description: 'Docs for TandemCRM: an embeddable, event-sourced partner-attribution and commission-payout engine for Postgres.',
       logo: {
         src: './src/assets/logo-mark.svg',
         replacesTitle: false,
