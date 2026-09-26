@@ -1,5 +1,29 @@
 # Tandem site handoff
 
+## Update (2026-09-27): stable product documentation started
+
+- Reworked the opening Starlight page into a short route map. It explains the
+  current package boundary and clearly says the self-serve first-workspace
+  installer is still in progress.
+- Added source-grounded guides for the stable surface only: the Terrain event
+  model, Postgres migrations and RLS, host-owned authentication, Trail sales
+  activity, Waypoint routing, Ascent onboarding, and Belay disputes. Each
+  guide uses plain language and a small code example that matches the exported
+  TypeScript API.
+- Deliberately excluded Camp mount/setup instructions, dashboard internals,
+  and generic install/onboarding steps. Those are active product work and
+  should remain absent until their public contracts are tested.
+- Deliberately excluded the proposed Payout Adapter guide from this commit.
+  `TandemPayoutAdapter`, `resolveConnectedAccountId`, and
+  `STRIPE_CONNECTED_ACCOUNTS` are not present in the checked-out public source,
+  so writing that guide now would risk documenting a missing or stale API.
+
+**Verified:** `npm run build` succeeds and Starlight generated all nine guide
+routes. The sidebar discovers the new Markdown files automatically. Existing
+Astro warnings remain unchanged: empty i18n/docs 404 content and no configured
+sitemap `site` value. Do not add a Camp or self-serve install guide until the
+implementation lands on `main`.
+
 ## Update (2026-09-27): corrected module art placement and Cloud card
 
 - The owner clarified that the field-guide illustrations belong only on the
