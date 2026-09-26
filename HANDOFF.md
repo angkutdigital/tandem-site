@@ -1,5 +1,23 @@
 # Tandem site handoff
 
+## Update (2026-09-27): mobile facts return and roadmap cards get a width cap
+
+- The owner asked for the useful package facts to return on mobile without
+  reverting to the squeezed desktop sidebar. Added a mobile-only field-card
+  grid above the hero with the engine, runtime dependency, database, MIT
+  license, and the static transparent Cloud marker. Desktop continues to use
+  the original sidebars, so facts are defined once visually for each layout.
+- Roadmap cards now have a deliberate maximum width of 380px and stay centered
+  in their section. This prevents wide screens from stretching the module art
+  and long copy across oversized cards. Tablet uses two capped cards and mobile
+  remains one card per row.
+
+**Verified:** `npm run build` succeeds. A 390px visual check confirms the
+mobile fact grid stays compact and leads naturally into the main claim. The
+Roadmap’s capped grid is centered by CSS at wide widths, with each card kept
+between 280px and 380px. Existing Astro warnings remain unchanged: empty
+i18n/docs 404 content and no configured sitemap `site` value.
+
 ## Update (2026-09-27): focused mobile hero and transparent Cloud accent
 
 - Mobile no longer squeezes the desktop sidebars into a two-column grid. Below

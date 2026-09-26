@@ -126,6 +126,8 @@
     border-right: 1px solid var(--line);
   }
 
+  .mobile-facts { display: none; }
+
   .stat-block {
     padding: 24px 20px;
     border-bottom: 1px solid var(--line);
@@ -647,7 +649,8 @@
   /* Roadmap */
   .roadmap {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(280px, 380px));
+    justify-content: center;
     border-top: 1px solid var(--line);
     border-left: 1px solid var(--line);
   }
@@ -766,13 +769,43 @@
   @media (max-width: 1024px) {
     .hero { grid-template-columns: 180px 1fr 180px; }
     .hero-center { padding: 60px 32px; }
-    .feature-grid, .roadmap { grid-template-columns: repeat(2, 1fr); }
+    .feature-grid { grid-template-columns: repeat(2, 1fr); }
+    .roadmap { grid-template-columns: repeat(2, minmax(280px, 380px)); }
   }
 
   @media (max-width: 768px) {
     .nav-links { display: none; }
     .hero { display: block; padding: 0 16px; }
     .hero-left, .hero-right { display: none; }
+    .mobile-facts {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      border: 1px solid var(--line);
+      border-bottom: 0;
+    }
+    .mobile-fact {
+      min-height: 132px;
+      padding: 22px 20px;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+    .mobile-fact:nth-child(2n) { border-right: 0; }
+    .mobile-fact--cloud {
+      grid-column: 1 / -1;
+      min-height: 118px;
+      position: relative;
+      overflow: hidden;
+    }
+    .mobile-fact--cloud .cloud-art {
+      top: 0;
+      right: -8px;
+      width: 164px;
+      height: 108px;
+      opacity: 0.19;
+    }
+    .mobile-fact--cloud .stat-label,
+    .mobile-fact--cloud .stat-value,
+    .mobile-fact--cloud .stat-sub { position: relative; z-index: 1; }
     .hero-center {
       min-height: 570px;
       padding: 74px 24px 52px;
@@ -834,6 +867,33 @@
       <div class="stat-sub">coming soon</div>
     </div>
   </aside>
+
+  <div class="mobile-facts" aria-label="TandemCRM package facts">
+    <div class="mobile-fact">
+      <div class="hero-title-block">Embeddable<br />CRM Engine</div>
+    </div>
+    <div class="mobile-fact">
+      <div class="stat-label">Runtime deps</div>
+      <div class="stat-value" data-deps-count>1</div>
+      <div class="stat-sub" data-deps-list>pg</div>
+    </div>
+    <div class="mobile-fact">
+      <div class="stat-label">Database</div>
+      <div class="stat-value">Postgres</div>
+      <div class="stat-sub">14+ · any host</div>
+    </div>
+    <div class="mobile-fact">
+      <div class="stat-label">License</div>
+      <div class="stat-value">MIT</div>
+      <div class="stat-sub">Angkut Digital Enterprise</div>
+    </div>
+    <div class="mobile-fact mobile-fact--cloud">
+      <img class="cloud-art" src="/illustrations/tandem-cloud-v2.png" alt="" aria-hidden="true" />
+      <div class="stat-label">Managed tandem-crm</div>
+      <div class="stat-value">tandem Cloud</div>
+      <div class="stat-sub">coming soon</div>
+    </div>
+  </div>
 
   <div class="hero-center">
     <h1>
