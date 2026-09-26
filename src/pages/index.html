@@ -126,7 +126,7 @@
     border-right: 1px solid var(--line);
   }
 
-  .mobile-facts { display: none; }
+  .mobile-folds { display: none; }
 
   .stat-block {
     padding: 24px 20px;
@@ -649,8 +649,7 @@
   /* Roadmap */
   .roadmap {
     display: grid;
-    grid-template-columns: repeat(3, minmax(280px, 380px));
-    justify-content: center;
+    grid-template-columns: repeat(3, 1fr);
     border-top: 1px solid var(--line);
     border-left: 1px solid var(--line);
   }
@@ -666,22 +665,34 @@
   .roadmap-cell:hover { background: var(--white); }
 
   .module-art {
+    position: relative;
     height: 210px;
     margin: -28px -24px 24px;
     background-color: #f5f4ef;
-    background-image: url('/illustrations/tandem-module-field-guide-v2.png');
-    background-repeat: no-repeat;
-    background-size: 300% 200%;
+    overflow: hidden;
     border-bottom: 1px solid var(--line);
     will-change: transform, opacity;
   }
 
-  .module-art--terrain { background-position: 0% 0%; }
-  .module-art--ascent { background-position: 50% 0%; }
-  .module-art--camp { background-position: 100% 0%; }
-  .module-art--trail { background-position: 0% 100%; }
-  .module-art--waypoint { background-position: 50% 100%; }
-  .module-art--belay { background-position: 100% 100%; }
+  .module-art::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 320px;
+    height: 320px;
+    transform: translate(-50%, -50%);
+    background-image: url('/illustrations/tandem-module-field-guide-v2.png');
+    background-repeat: no-repeat;
+    background-size: 960px 640px;
+  }
+
+  .module-art--terrain::before { background-position: 0 0; }
+  .module-art--ascent::before { background-position: -320px 0; }
+  .module-art--camp::before { background-position: -640px 0; }
+  .module-art--trail::before { background-position: 0 -320px; }
+  .module-art--waypoint::before { background-position: -320px -320px; }
+  .module-art--belay::before { background-position: -640px -320px; }
 
   .roadmap-cell .status {
     font-family: 'IBM Plex Mono', monospace;
@@ -769,43 +780,36 @@
   @media (max-width: 1024px) {
     .hero { grid-template-columns: 180px 1fr 180px; }
     .hero-center { padding: 60px 32px; }
-    .feature-grid { grid-template-columns: repeat(2, 1fr); }
-    .roadmap { grid-template-columns: repeat(2, minmax(280px, 380px)); }
+    .feature-grid, .roadmap { grid-template-columns: repeat(2, 1fr); }
   }
 
   @media (max-width: 768px) {
     .nav-links { display: none; }
     .hero { display: block; padding: 0 16px; }
     .hero-left, .hero-right { display: none; }
-    .mobile-facts {
+    .mobile-folds {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      border: 1px solid var(--line);
-      border-bottom: 0;
+      padding: 16px 8px 8px;
+      gap: 16px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
     }
-    .mobile-fact {
-      min-height: 132px;
-      padding: 22px 20px;
-      border-right: 1px solid var(--line);
-      border-bottom: 1px solid var(--line);
+    .mobile-fold:last-child { text-align: right; }
+    .mobile-fold summary {
+      cursor: pointer;
+      color: var(--ink-dim);
+      list-style: none;
     }
-    .mobile-fact:nth-child(2n) { border-right: 0; }
-    .mobile-fact--cloud {
-      grid-column: 1 / -1;
-      min-height: 118px;
-      position: relative;
-      overflow: hidden;
+    .mobile-fold summary::-webkit-details-marker { display: none; }
+    .mobile-fold summary::after { content: ' +'; }
+    .mobile-fold[open] summary::after { content: ' −'; }
+    .mobile-fold ul {
+      list-style: none;
+      margin: 10px 0 0;
+      padding: 0;
+      line-height: 1.9;
     }
-    .mobile-fact--cloud .cloud-art {
-      top: 0;
-      right: -8px;
-      width: 164px;
-      height: 108px;
-      opacity: 0.19;
-    }
-    .mobile-fact--cloud .stat-label,
-    .mobile-fact--cloud .stat-value,
-    .mobile-fact--cloud .stat-sub { position: relative; z-index: 1; }
     .hero-center {
       min-height: 570px;
       padding: 74px 24px 52px;
@@ -868,31 +872,27 @@
     </div>
   </aside>
 
-  <div class="mobile-facts" aria-label="TandemCRM package facts">
-    <div class="mobile-fact">
-      <div class="hero-title-block">Embeddable<br />CRM Engine</div>
-    </div>
-    <div class="mobile-fact">
-      <div class="stat-label">Runtime deps</div>
-      <div class="stat-value" data-deps-count>1</div>
-      <div class="stat-sub" data-deps-list>pg</div>
-    </div>
-    <div class="mobile-fact">
-      <div class="stat-label">Database</div>
-      <div class="stat-value">Postgres</div>
-      <div class="stat-sub">14+ · any host</div>
-    </div>
-    <div class="mobile-fact">
-      <div class="stat-label">License</div>
-      <div class="stat-value">MIT</div>
-      <div class="stat-sub">Angkut Digital Enterprise</div>
-    </div>
-    <div class="mobile-fact mobile-fact--cloud">
-      <img class="cloud-art" src="/illustrations/tandem-cloud-v2.png" alt="" aria-hidden="true" />
-      <div class="stat-label">Managed tandem-crm</div>
-      <div class="stat-value">tandem Cloud</div>
-      <div class="stat-sub">coming soon</div>
-    </div>
+  <div class="mobile-folds" aria-label="TandemCRM links">
+    <details class="mobile-fold">
+      <summary>Modules</summary>
+      <ul>
+        <li><a href="#roadmap">Terrain</a></li>
+        <li><a href="#roadmap">Ascent</a></li>
+        <li><a href="#roadmap">Trail</a></li>
+        <li><a href="#roadmap">Waypoint</a></li>
+        <li><a href="#roadmap">Camp</a></li>
+        <li><a href="#roadmap">Belay</a></li>
+      </ul>
+    </details>
+    <details class="mobile-fold">
+      <summary>Docs</summary>
+      <ul>
+        <li><a href="/guides/getting-started/">Start here</a></li>
+        <li><a href="/guides/how-tandem-records-change/">Event history</a></li>
+        <li><a href="/guides/database-migrations-and-rls/">Database setup</a></li>
+        <li><a href="/guides/bring-your-own-auth/">Authentication</a></li>
+      </ul>
+    </details>
   </div>
 
   <div class="hero-center">

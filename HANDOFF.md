@@ -1,5 +1,24 @@
 # Tandem site handoff
 
+## Update (2026-09-27): corrected mobile folds and fixed-width roadmap art
+
+- The owner clarified that the card widths were correct and only the generated
+  artwork was stretching. Restored the original responsive roadmap grid: three
+  equal cards on desktop, two on tablet, and one on mobile. Each card header
+  now contains a fixed 320px centered sprite window from the module atlas, so
+  the field-guide drawings keep their intended proportions at every card width.
+- Replaced the mobile fact-card grid with two unboxed native disclosure folds:
+  Modules on the left and Docs on the right. They sit above the unchanged hero
+  and expand only when a visitor wants the links, keeping the first mobile
+  screen focused on the product claim.
+
+**Verified:** `npm run build` succeeds. A 390px visual check confirms that
+the plain Modules and Docs folds sit above the unchanged hero, and the Modules
+fold expands to the expected links. Module art now renders through a fixed
+320px pseudo-element centered within the header, so its size cannot grow with
+the card. Existing Astro warnings remain unchanged: empty i18n/docs 404
+content and no configured sitemap `site` value.
+
 ## Update (2026-09-27): mobile facts return and roadmap cards get a width cap
 
 - The owner asked for the useful package facts to return on mobile without
