@@ -1,5 +1,32 @@
 # Tandem site handoff
 
+## Update (2026-09-26): public module naming + Tandem hero
+
+- Fetched and read the current `tandem-crm` `main` README and handoff first
+  (currently `b53aea9`). The site copy remains aligned with the real product:
+  an embeddable, event-sourced CRM engine; the installable admin and a
+  first-class sales stage are still explicitly in progress.
+- The public-facing module names now follow the agreed expedition system:
+  **Terrain, Camp, Ascent, Trail, Waypoint, Belay**. This is a website naming
+  update only; package/source renaming is being handled separately. The module
+  atlas continues to map one original hand-drawn panel to each name.
+- Added `public/illustrations/tandem-climbers-hero-v2.png`: two climbers tied
+  to the same rope, climbing together toward one yellow flag. It makes the
+  origin of “Tandem” visible without adding decorative copy. The dark, inked
+  asset is intentionally tucked into the hero edge so the product claim stays
+  readable on desktop and mobile.
+- Generated with the built-in image workflow. Prompt: original editorial
+  field-guide black-ink climbers, sparse hatching, one restrained yellow flag,
+  no text or logos. It is original artwork, not an imitation of another
+  company’s illustration system.
+
+**Verified:** `npm run build` succeeds. The local preview was checked once at
+desktop width and once at 390px mobile width: the new names render in the
+hero and atlas, the climbers stay decorative rather than covering the claim,
+and the module cards remain one-column/readable on mobile. The known Astro
+warnings are unchanged: the empty i18n collection/docs 404 entry and missing
+`site` value for sitemap generation.
+
 ## Update (2026-09-26): copy corrected for the embeddable CRM direction
 
 - Read the current `tandem-crm` main README and handoff before this edit. The

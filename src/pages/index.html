@@ -164,6 +164,7 @@
   }
 
   .hero-center {
+    position: relative;
     padding: 80px 60px;
     text-align: center;
     display: flex;
@@ -171,6 +172,32 @@
     align-items: center;
     justify-content: center;
     min-height: 620px;
+    overflow: hidden;
+  }
+
+  .hero-climbers {
+    position: absolute;
+    right: -18px;
+    bottom: -12px;
+    width: 210px;
+    height: 320px;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.98;
+  }
+
+  .hero-climbers img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 62% center;
+  }
+
+  .hero-center > :not(.hero-climbers) {
+    position: relative;
+    z-index: 1;
   }
 
   .announcement-pill {
@@ -618,12 +645,12 @@
     will-change: transform, opacity;
   }
 
-  .module-art--core { background-position: 0% 0%; }
-  .module-art--ramp { background-position: 50% 0%; }
-  .module-art--nest { background-position: 100% 0%; }
+  .module-art--terrain { background-position: 0% 0%; }
+  .module-art--ascent { background-position: 50% 0%; }
+  .module-art--camp { background-position: 100% 0%; }
   .module-art--trail { background-position: 0% 100%; }
-  .module-art--routing { background-position: 50% 100%; }
-  .module-art--coaster { background-position: 100% 100%; }
+  .module-art--waypoint { background-position: 50% 100%; }
+  .module-art--belay { background-position: 100% 100%; }
 
   .roadmap-cell .status {
     font-family: 'IBM Plex Mono', monospace;
@@ -732,6 +759,7 @@
       border-left: 1px solid var(--line);
       border-right: 1px solid var(--line);
     }
+    .hero-climbers { width: 144px; height: 216px; right: -20px; bottom: -8px; opacity: 0.45; }
     .feature-grid, .roadmap { grid-template-columns: 1fr; }
     .expedition-panel { grid-template-columns: 1fr; margin: 0 16px; }
     .expedition-copy { border-right: 0; border-bottom: 1px solid #34342f; padding: 32px 24px; }
@@ -801,6 +829,9 @@
       <a href="https://github.com/angkutdigital/tandem-crm" target="_blank" rel="noopener" class="btn btn-dark">View on GitHub</a>
       <a href="#how" class="btn btn-outline">See how it works</a>
     </div>
+    <figure class="hero-climbers" aria-label="Two climbers moving together up the same route">
+      <img src="/illustrations/tandem-climbers-hero-v2.png" alt="" />
+    </figure>
 
     <div class="gh-live-stats">
       <span class="gh-mark" aria-hidden="true">
@@ -835,20 +866,20 @@
       <div class="right-header" style="justify-content: flex-end; margin-bottom: 8px;">Modules</div>
       <ul class="stack-list">
         <li>
-          <span class="pkg">Core</span>
+          <span class="pkg">Terrain</span>
           <span class="status">· in use</span>
           <a href="https://github.com/angkutdigital/tandem-crm/releases" target="_blank" rel="noopener" class="version-link module-version" data-gh-version>v0.1.0</a>
         </li>
         <li>
-          <span class="pkg">Ramp</span>
+          <span class="pkg">Ascent</span>
           <span class="status">· in use</span>
           <a href="https://github.com/angkutdigital/tandem-crm/releases" target="_blank" rel="noopener" class="version-link module-version" data-gh-version>v0.1.0</a>
         </li>
         <li><span class="pkg">Trail</span><span class="status">· in use</span></li>
-        <li><span class="pkg">Routing</span><span class="status">· in use</span></li>
-        <li><span class="pkg">Nest</span><span class="status">· in progress</span></li>
+        <li><span class="pkg">Waypoint</span><span class="status">· in use</span></li>
+        <li><span class="pkg">Camp</span><span class="status">· in progress</span></li>
         <li>
-          <span class="pkg">Coaster</span>
+          <span class="pkg">Belay</span>
           <span class="status">· in use</span>
           <a href="https://github.com/angkutdigital/tandem-crm/releases" target="_blank" rel="noopener" class="version-link module-version" data-gh-version>v0.1.0</a>
         </li>
@@ -1065,21 +1096,21 @@
 
   <div class="roadmap">
     <div class="roadmap-cell">
-      <div class="module-art module-art--core" aria-hidden="true"></div>
+      <div class="module-art module-art--terrain" aria-hidden="true"></div>
       <span class="status status-live">Live</span>
-      <h3>Core</h3>
-      <p>The durable CRM foundation: leads, typed event history, rebuildable state, exact money math, and tenant-safe Postgres access.</p>
+      <h3>Terrain</h3>
+      <p>The ground truth beneath the CRM: leads, typed event history, rebuildable state, exact money math, and tenant-safe Postgres access.</p>
     </div>
     <div class="roadmap-cell">
-      <div class="module-art module-art--ramp" aria-hidden="true"></div>
+      <div class="module-art module-art--ascent" aria-hidden="true"></div>
       <span class="status status-live">Live</span>
-      <h3>Ramp</h3>
+      <h3>Ascent</h3>
       <p>Agent onboarding and certification. Teams define the checkpoints; agents complete them; your app decides what certification unlocks.</p>
     </div>
     <div class="roadmap-cell">
-      <div class="module-art module-art--nest" aria-hidden="true"></div>
+      <div class="module-art module-art--camp" aria-hidden="true"></div>
       <span class="status status-progress">In progress</span>
-      <h3>Nest</h3>
+      <h3>Camp</h3>
       <p>The installable admin workspace for Tandem. Today it is a proven reference dashboard; next it mounts into a host Next.js app instead of being a repo to fork.</p>
     </div>
     <div class="roadmap-cell">
@@ -1089,15 +1120,15 @@
       <p>Lightweight sales activity for a real CRM: calls, emails, visits, confidence, stages, corrections, and retractions without deleting history.</p>
     </div>
     <div class="roadmap-cell">
-      <div class="module-art module-art--routing" aria-hidden="true"></div>
+      <div class="module-art module-art--waypoint" aria-hidden="true"></div>
       <span class="status status-live">Live</span>
-      <h3>Routing</h3>
-      <p>Territory-aware recommendations for who should own a lead: round-robin, least-loaded, or manual. Tandem suggests; your app decides.</p>
+      <h3>Waypoint</h3>
+      <p>Territory-aware recommendations for who should own a lead: round-robin, least-loaded, or manual. Terrain records what is true; Waypoint recommends where to go next.</p>
     </div>
     <div class="roadmap-cell">
-      <div class="module-art module-art--coaster" aria-hidden="true"></div>
+      <div class="module-art module-art--belay" aria-hidden="true"></div>
       <span class="status status-live">Live</span>
-      <h3>Coaster</h3>
+      <h3>Belay</h3>
       <p>Commission disputes with operator-only resolution, payout protection while a case is open, and an auditable outcome—not an automatic money movement.</p>
     </div>
   </div>
