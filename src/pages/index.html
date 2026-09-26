@@ -398,38 +398,31 @@
   .right-block:last-child { border-bottom: 0; flex: 1; }
 
   .cloud-block {
-    padding: 14px 20px 20px;
-    border-bottom: 1px solid var(--line);
-    text-align: center;
+    position: relative;
+    min-height: 148px;
+    overflow: hidden;
+    border-bottom: 0;
   }
 
   .cloud-art {
-    width: 132px;
-    height: 72px;
+    position: absolute;
+    z-index: 0;
+    top: 8px;
+    right: -20px;
+    width: 144px;
+    height: 96px;
     object-fit: cover;
     object-position: center;
     display: block;
-    margin: 0 auto 6px;
     mix-blend-mode: multiply;
+    opacity: 0.38;
+    pointer-events: none;
     will-change: transform, opacity;
   }
 
-  .cloud-name {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 7px;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-  }
-
-  .cloud-status {
-    border: 1px solid var(--accent);
-    border-radius: 999px;
-    padding: 2px 6px;
-    letter-spacing: 0.04em;
-    font-size: 9px;
-  }
+  .cloud-block .stat-label,
+  .cloud-block .stat-value,
+  .cloud-block .stat-sub { position: relative; z-index: 1; }
 
   .right-header {
     display: flex;
@@ -461,12 +454,6 @@
   .stack-list .pkg {
     font-family: 'IBM Plex Mono', monospace;
     font-size: 12px;
-  }
-
-  .stack-list .status {
-    color: var(--ink-dim);
-    font-size: 12px;
-    margin-left: 6px;
   }
 
   .module-version {
@@ -593,31 +580,13 @@
   .feature-cell {
     border-right: 1px solid var(--line);
     border-bottom: 1px solid var(--line);
-    padding: 28px;
-    min-height: 320px;
+    padding: 32px 28px;
+    min-height: 220px;
     overflow: hidden;
     transition: background 0.2s ease;
   }
 
   .feature-cell:hover { background: var(--white); }
-
-  .feature-art {
-    height: 126px;
-    margin: -28px -28px 20px;
-    background-image: url('/illustrations/tandem-feature-field-guide-v2.png');
-    background-size: 300% 200%;
-    background-repeat: no-repeat;
-    background-color: #f5f4ef;
-    border-bottom: 1px solid var(--line);
-    will-change: transform, opacity;
-  }
-
-  .feature-art--events { background-position: 0% 0%; }
-  .feature-art--projections { background-position: 50% 0%; }
-  .feature-art--money { background-position: 100% 0%; }
-  .feature-art--rules { background-position: 0% 100%; }
-  .feature-art--escrow { background-position: 50% 100%; }
-  .feature-art--access { background-position: 100% 100%; }
 
   .feature-cell .num {
     font-family: 'IBM Plex Mono', monospace;
@@ -695,10 +664,10 @@
   .roadmap-cell:hover { background: var(--white); }
 
   .module-art {
-    height: 148px;
+    height: 210px;
     margin: -28px -24px 24px;
-    background-color: #1c1c19;
-    background-image: url('/illustrations/tandem-module-atlas.png');
+    background-color: #f5f4ef;
+    background-image: url('/illustrations/tandem-module-field-guide-v2.png');
     background-repeat: no-repeat;
     background-size: 300% 200%;
     border-bottom: 1px solid var(--line);
@@ -866,9 +835,11 @@
       <div class="stat-value">MIT</div>
       <div class="stat-sub">Angkut Digital Enterprise</div>
     </div>
-    <div class="cloud-block">
-      <img class="cloud-art" src="/illustrations/tandem-cloud-v1.png" alt="Hand-drawn cloud over a mountain ridge" />
-      <div class="cloud-name">TandemCRM Cloud <span class="cloud-status">COMING SOON</span></div>
+    <div class="stat-block cloud-block">
+      <img class="cloud-art" src="/illustrations/tandem-cloud-v1.png" alt="" aria-hidden="true" />
+      <div class="stat-label">Managed tandem-crm</div>
+      <div class="stat-value">tandem Cloud</div>
+      <div class="stat-sub">coming soon</div>
     </div>
   </aside>
 
@@ -920,30 +891,21 @@
     </div>
 
     <div class="right-block">
-      <!-- Every shipped module currently ships under one package version
-           (there is no independent per-module release process yet), so
-           each one links to the same GitHub releases page and picks up
-           the same fetched tag. The per-row layout is here so that if
-           this project ever does tag modules independently, only the
-           fetch logic needs to change, not this markup. -->
       <div class="right-header" style="justify-content: flex-end; margin-bottom: 8px;">Modules</div>
       <ul class="stack-list">
         <li>
           <span class="pkg">Terrain</span>
-          <span class="status">· in use</span>
           <a href="https://github.com/angkutdigital/tandem-crm/releases" target="_blank" rel="noopener" class="version-link module-version" data-gh-version>v0.1.0</a>
         </li>
         <li>
           <span class="pkg">Ascent</span>
-          <span class="status">· in use</span>
           <a href="https://github.com/angkutdigital/tandem-crm/releases" target="_blank" rel="noopener" class="version-link module-version" data-gh-version>v0.1.0</a>
         </li>
-        <li><span class="pkg">Trail</span><span class="status">· in use</span></li>
-        <li><span class="pkg">Waypoint</span><span class="status">· in use</span></li>
-        <li><span class="pkg">Camp</span><span class="status">· in progress</span></li>
+        <li><span class="pkg">Trail</span><a href="https://github.com/angkutdigital/tandem-crm/releases" target="_blank" rel="noopener" class="version-link module-version" data-gh-version>v0.1.0</a></li>
+        <li><span class="pkg">Waypoint</span><a href="https://github.com/angkutdigital/tandem-crm/releases" target="_blank" rel="noopener" class="version-link module-version" data-gh-version>v0.1.0</a></li>
+        <li><span class="pkg">Camp</span><a href="https://github.com/angkutdigital/tandem-crm/releases" target="_blank" rel="noopener" class="version-link module-version" data-gh-version>v0.1.0</a></li>
         <li>
           <span class="pkg">Belay</span>
-          <span class="status">· in use</span>
           <a href="https://github.com/angkutdigital/tandem-crm/releases" target="_blank" rel="noopener" class="version-link module-version" data-gh-version>v0.1.0</a>
         </li>
       </ul>
@@ -1077,37 +1039,31 @@
 
   <div class="feature-grid">
     <div class="feature-cell">
-      <div class="feature-art feature-art--events" aria-hidden="true"></div>
       <div class="num">01 / EVENT LOG</div>
       <h3>Append-only source of truth</h3>
       <p>Every important change is a typed event. You can trace the story without losing earlier decisions.</p>
     </div>
     <div class="feature-cell">
-      <div class="feature-art feature-art--projections" aria-hidden="true"></div>
       <div class="num">02 / PROJECTIONS</div>
       <h3>Rebuildable state</h3>
       <p>Lead, payout, and activity views build from events. Rebuild them whenever you need to.</p>
     </div>
     <div class="feature-cell">
-      <div class="feature-art feature-art--money" aria-hidden="true"></div>
       <div class="num">03 / MONEY</div>
       <h3>Integer minor units</h3>
       <p>Commission amounts use whole cents or sen. Rounding is part of the rule, so the numbers stay clear.</p>
     </div>
     <div class="feature-cell">
-      <div class="feature-art feature-art--rules" aria-hidden="true"></div>
       <div class="num">04 / RULES</div>
       <h3>Qualification &amp; routing</h3>
       <p>Set a qualification threshold. Choose round robin, least loaded, or manual assignment for each lead.</p>
     </div>
     <div class="feature-cell">
-      <div class="feature-art feature-art--escrow" aria-hidden="true"></div>
       <div class="num">05 / ESCROW</div>
       <h3>Escrow, ready to schedule</h3>
       <p>Hold commissions until they are ready. Run <code>release_due_commissions()</code> on the schedule that suits your app.</p>
     </div>
     <div class="feature-cell">
-      <div class="feature-art feature-art--access" aria-hidden="true"></div>
       <div class="num">06 / AUTH</div>
       <h3>Vendor-neutral RLS</h3>
       <p>Use Supabase, plain Postgres, or your own identity provider. Tandem keeps each workspace separate.</p>
@@ -1344,24 +1300,6 @@
       });
       art.closest('.roadmap-cell')?.addEventListener('mouseleave', () => {
         animate(art, { y: 0 }, { duration: 0.24, ease: 'easeOut' });
-      });
-    });
-
-    const featureArt = document.querySelectorAll('.feature-art');
-    featureArt.forEach((art) => {
-      art.style.opacity = '0';
-      inView(art, (element) => {
-        animate(
-          element,
-          { opacity: [0, 1], y: [18, 0], scale: [0.96, 1] },
-          { duration: 0.5, ease: 'easeOut' }
-        );
-      }, { margin: '0px 0px -12% 0px', amount: 0.25 });
-      art.closest('.feature-cell')?.addEventListener('mouseenter', () => {
-        animate(art, { y: -5, scale: 1.02 }, { duration: 0.24, ease: 'easeOut' });
-      });
-      art.closest('.feature-cell')?.addEventListener('mouseleave', () => {
-        animate(art, { y: 0, scale: 1 }, { duration: 0.28, ease: 'easeOut' });
       });
     });
 

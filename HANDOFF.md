@@ -1,5 +1,32 @@
 # Tandem site handoff
 
+## Update (2026-09-27): corrected module art placement and Cloud card
+
+- The owner clarified that the field-guide illustrations belong only on the
+  six roadmap module cards, never in the “A CRM foundation for your app”
+  feature grid. That grid is text-led again.
+- Added `public/illustrations/tandem-module-field-guide-v2.png`, an original
+  six-panel stippled ink atlas designed for the shallow module-card headers:
+  Terrain is a topo map and stone, Ascent is an uphill checkpoint path, Camp
+  is a team shelter, Trail is footprints and a field notebook, Waypoint is a
+  clear destination pin and route, and Belay is rope, carabiner, and belay
+  hardware. The art replaces the previous dark generic atlas in the roadmap.
+- Rebuilt the final left hero card using the same stat-card hierarchy as the
+  MIT block: “Managed tandem-crm”, “tandem Cloud”, and “coming soon”. Its cloud
+  is now a subdued background accent in the card’s top-right corner, and the
+  final card has no bottom separator.
+- Removed every “in use” and “in progress” label from the right-side module
+  list. Each public module now shows a version link, leaving room for future
+  independent module releases without making an adoption claim in the hero.
+
+**Verified:** `npm run build` succeeds. A desktop visual check confirms the
+Cloud card now follows the MIT card hierarchy and module statuses are gone. A
+single 390px mobile Roadmap check confirms the feature grid is text-only and
+the new Terrain, Ascent, Camp, and Waypoint cards frame their individual
+drawings cleanly; Waypoint is a clear pin and route rather than a stretched
+generic image. Existing Astro warnings remain unchanged: empty i18n/docs 404
+content and no configured sitemap `site` value.
+
 ## Update (2026-09-27): field-guide feature cards, Cloud marker, and simpler copy
 
 - Fetched the latest `tandem-crm` `main` README (`c828b16`) before editing.
