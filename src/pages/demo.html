@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Live demo — TandemCRM</title>
+<meta name="description" content="Click around a real, live TandemCRM dashboard while watching its own append-only event log update in real time." />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef;
+    --bg-alt: #ebe9e2;
+    --ink: #0a0a0a;
+    --ink-dim: #6b6b6b;
+    --ink-faint: #a8a8a0;
+    --line: #d6d3c9;
+    --accent: #f0d800;
+    --white: #ffffff;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; text-decoration: none; }
+  .mono { font-family: 'IBM Plex Mono', 'SF Mono', monospace; }
+
+  nav {
+    border-bottom: 1px solid var(--line);
+    background: var(--bg);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding: 16px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .logo { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 15px; }
+  .logo img { width: 20px; height: 20px; }
+  .back-link { font-size: 13px; color: var(--ink-dim); }
+  .back-link:hover { color: var(--ink); }
+
+  header.intro {
+    padding: 32px 32px 20px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  header.intro h1 {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+  header.intro p {
+    color: var(--ink-dim);
+    max-width: 640px;
+    font-size: 15px;
+  }
+
+  .demo-layout {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 32px 48px;
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: 20px;
+    align-items: stretch;
+  }
+
+  .pane {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .pane-header {
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--line);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--ink-faint);
+    display: inline-block;
+    margin-right: 6px;
+  }
+  .dot.live { background: #2ea043; animation: pulse 1.6s ease-in-out infinite; }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.35; }
+  }
+
+  .dashboard-frame {
+    flex: 1;
+    min-height: 640px;
+    border: none;
+    width: 100%;
+  }
+
+  .feed-panel {
+    flex: 1;
+    min-height: 640px;
+    background: #0d0d0d;
+    color: #d8d8d2;
+    padding: 12px 14px;
+    overflow-y: auto;
+    font-size: 12.5px;
+    line-height: 1.7;
+  }
+  .feed-empty { color: #6b6b6b; padding: 8px 2px; }
+  .feed-row { display: flex; gap: 8px; padding: 3px 0; border-bottom: 1px solid #1c1c1c; }
+  .feed-row .ts { color: #6b6b6b; white-space: nowrap; }
+  .feed-row .src { color: #f0d800; white-space: nowrap; }
+  .feed-row .type { color: #d8d8d2; }
+  .feed-note {
+    padding: 10px 16px;
+    font-size: 12px;
+    color: var(--ink-dim);
+    border-top: 1px solid var(--line);
+    background: var(--bg-alt);
+  }
+
+  @media (max-width: 860px) {
+    .demo-layout { grid-template-columns: 1fr; }
+    .dashboard-frame, .feed-panel { min-height: 480px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo">
+    <img src="/logo.svg" alt="" />
+    tandem-crm
+  </a>
+  <a href="/" class="back-link">&larr; Back to home</a>
+</nav>
+
+<header class="intro">
+  <h1>A real dashboard, and the event log behind it.</h1>
+  <p>
+    Click around the actual live demo on the left. Every action — approving a payout, resolving a dispute,
+    logging a sales visit — is a typed, append-only fact in Postgres. The panel on the right streams that
+    same event log in real time, straight from the database: this is what "event-sourced" actually looks like,
+    not just what the docs claim.
+  </p>
+</header>
+
+<div class="demo-layout">
+  <div class="pane">
+    <div class="pane-header">
+      <span><span class="dot"></span>Live dashboard</span>
+      <span class="mono">tandem-crm-demo.vercel.app</span>
+    </div>
+    <iframe class="dashboard-frame" src="https://tandem-crm-demo.vercel.app" title="TandemCRM live demo dashboard" loading="lazy"></iframe>
+  </div>
+
+  <div class="pane">
+    <div class="pane-header">
+      <span><span class="dot" id="feed-dot"></span>Event log</span>
+      <span class="mono" id="feed-count">0 events</span>
+    </div>
+    <div class="feed-panel mono" id="feed-panel">
+      <div class="feed-empty" id="feed-empty">Waiting for activity in the dashboard on the left…</div>
+    </div>
+    <div class="feed-note">Type + timestamp only, streamed straight from this demo's own <span class="mono">tandem.events</span>/<span class="mono">tandem.dispute_events</span>/<span class="mono">tandem.trail_events</span> tables.</div>
+  </div>
+</div>
+
+<script>
+  const panel = document.getElementById('feed-panel');
+  const empty = document.getElementById('feed-empty');
+  const dot = document.getElementById('feed-dot');
+  const countEl = document.getElementById('feed-count');
+  const MAX_ROWS = 200;
+  let count = 0;
+
+  function formatTime(iso) {
+    return new Date(iso).toLocaleTimeString('en-US', { hour12: false });
+  }
+
+  function addRow(evt) {
+    if (empty.parentElement) empty.remove();
+    const row = document.createElement('div');
+    row.className = 'feed-row';
+    row.innerHTML =
+      '<span class="ts">' + formatTime(evt.occurredAt) + '</span>' +
+      '<span class="src">' + evt.source + '</span>' +
+      '<span class="type">' + evt.type + '</span>';
+    panel.appendChild(row);
+    count++;
+    countEl.textContent = count + (count === 1 ? ' event' : ' events');
+    while (panel.children.length > MAX_ROWS) panel.removeChild(panel.firstChild);
+    panel.scrollTop = panel.scrollHeight;
+  }
+
+  try {
+    const source = new EventSource('https://tandem-crm-demo.vercel.app/api/live-events');
+    source.onopen = () => { dot.classList.add('live'); };
+    source.onmessage = (event) => {
+      dot.classList.add('live');
+      try {
+        addRow(JSON.parse(event.data));
+      } catch {
+        // A keep-alive comment or malformed line; ignore.
+      }
+    };
+    source.onerror = () => { dot.classList.remove('live'); };
+  } catch {
+    empty.textContent = 'Live event feed unavailable in this browser.';
+  }
+</script>
+
+</body>
+</html>
