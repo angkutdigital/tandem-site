@@ -1,0 +1,45 @@
+/* Keep the documentation in the same visual family as the Tandem landing page. */
+@layer starlight.user {
+  :root,
+  :root[data-theme='light'],
+  :root[data-theme='dark'] {
+    --sl-color-white: #0a0a0a;
+    --sl-color-gray-1: #0a0a0a;
+    --sl-color-gray-2: #2c2c2a;
+    --sl-color-gray-3: #6b6b6b;
+    --sl-color-gray-4: #a8a8a0;
+    --sl-color-gray-5: #d6d3c9;
+    --sl-color-gray-6: #ebe9e2;
+    --sl-color-gray-7: #f5f4ef;
+    --sl-color-black: #f5f4ef;
+
+    --sl-color-text: #0a0a0a;
+    --sl-color-text-accent: #0a0a0a;
+    --sl-color-text-invert: #0a0a0a;
+    --sl-color-bg: #f5f4ef;
+    --sl-color-bg-nav: #f5f4ef;
+    --sl-color-bg-sidebar: #f5f4ef;
+    --sl-color-bg-inline-code: #ebe9e2;
+    --sl-color-bg-accent: #f0d800;
+    --sl-color-hairline-light: #d6d3c9;
+    --sl-color-hairline: #d6d3c9;
+    --sl-color-hairline-shade: #d6d3c9;
+
+    --sl-color-accent-low: #fff8bd;
+    --sl-color-accent: #f0d800;
+    --sl-color-accent-high: #0a0a0a;
+
+    --sl-shadow-sm: none;
+    --sl-shadow-md: none;
+    --sl-shadow-lg: none;
+  }
+
+  .sl-markdown-content :not(a) > code {
+    border: 1px solid var(--sl-color-hairline);
+  }
+
+  .sl-markdown-content a {
+    text-decoration-color: currentColor;
+    text-underline-offset: 0.18em;
+  }
+}

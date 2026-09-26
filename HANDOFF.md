@@ -1,5 +1,18 @@
 # Tandem site handoff
 
+## Update (2026-09-27): Starlight now shares the landing-page palette
+
+- Added a Starlight theme override with the landing page's cream background,
+  near-black text, muted grey, yellow accent, and light grey borders.
+- The override applies in either Starlight colour-mode preference so the docs
+  remain visually consistent with the landing page.
+- Documentation content and navigation are unchanged.
+
+**Verified:** `npm run build` succeeds and the generated Starlight stylesheet
+contains Tandem's `#f5f4ef` background and `#0a0a0a` text tokens. The local
+development server was still holding its earlier configuration, so this check
+uses the freshly built output rather than that stale tab.
+
 ## Update (2026-09-27): transparent module atlas restores seamless card headers
 
 - Reverted the prior warm-paper header-color experiment. Module headers are

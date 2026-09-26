@@ -7,6 +7,7 @@ export default defineConfig({
     starlight({
       title: 'TandemCRM',
       description: 'Docs for TandemCRM: an embeddable, event-sourced partner-attribution and commission-payout engine for Postgres.',
+      customCss: ['./src/styles/starlight-tandem.css'],
       logo: {
         src: './src/assets/logo-mark.svg',
         replacesTitle: false,
