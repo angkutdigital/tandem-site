@@ -1,5 +1,20 @@
 # Tandem site handoff
 
+## Update (2026-09-27): transparent module atlas restores seamless card headers
+
+- Reverted the prior warm-paper header-color experiment. Module headers are
+  back to their original page grey.
+- Added `public/illustrations/tandem-module-field-guide-transparent-v1.png`,
+  a genuine alpha-transparent version of the six-panel atlas. The existing
+  fixed 320px centered sprite now reads from this asset, so the surrounding
+  header shows the card’s own background rather than an opaque image canvas.
+- No grid, card, copy, mobile-fold, or motion behavior changed in this pass.
+
+**Verified:** `npm run build` succeeds. The browser confirms the module header
+uses the original `rgb(245, 244, 239)` grey while its pseudo-element is a
+centered 320px transparent atlas sprite. The cards, grid, copy, mobile folds,
+and motion are unchanged.
+
 ## Update (2026-09-27): module artwork panel background corrected
 
 - Per the owner’s narrow request, changed only `.module-art`’s background from
