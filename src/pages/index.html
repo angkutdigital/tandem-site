@@ -4,17 +4,17 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>TandemCRM: an embeddable open-source CRM engine for Postgres</title>
-<meta name="description" content="An open-source CRM engine for leads, agents, sales activity, commissions, and disputes—installed directly into your Node app and Postgres database." />
+<meta name="description" content="An open-source CRM engine for leads, agents, sales activity, commissions, and disputes. Add it to your Node app and Postgres database." />
 <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 <meta property="og:title" content="TandemCRM: an embeddable open-source CRM engine for Postgres" />
-<meta property="og:description" content="Leads, agents, sales activity, commissions, and disputes—inside your own Node app and Postgres database." />
+<meta property="og:description" content="Leads, agents, sales activity, commissions, and disputes inside your own Node app and Postgres database." />
 <meta property="og:image" content="/og-image.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="TandemCRM: an embeddable open-source CRM engine for Postgres" />
-<meta name="twitter:description" content="Leads, agents, sales activity, commissions, and disputes—inside your own Node app and Postgres database." />
+<meta name="twitter:description" content="Leads, agents, sales activity, commissions, and disputes inside your own Node app and Postgres database." />
 <meta name="twitter:image" content="/og-image.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -332,6 +332,8 @@
   .hero-right {
     border-left: 1px solid var(--line);
     border-right: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
   }
 
   /* Expedition field plate. This is the visual counterpart to Tandem's
@@ -391,6 +393,42 @@
   .right-block {
     padding: 24px 20px;
     border-bottom: 1px solid var(--line);
+  }
+
+  .right-block:last-child { border-bottom: 0; flex: 1; }
+
+  .cloud-block {
+    padding: 14px 20px 20px;
+    border-bottom: 1px solid var(--line);
+    text-align: center;
+  }
+
+  .cloud-art {
+    width: 132px;
+    height: 72px;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    margin: 0 auto 6px;
+    mix-blend-mode: multiply;
+    will-change: transform, opacity;
+  }
+
+  .cloud-name {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 7px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+  }
+
+  .cloud-status {
+    border: 1px solid var(--accent);
+    border-radius: 999px;
+    padding: 2px 6px;
+    letter-spacing: 0.04em;
+    font-size: 9px;
   }
 
   .right-header {
@@ -555,9 +593,31 @@
   .feature-cell {
     border-right: 1px solid var(--line);
     border-bottom: 1px solid var(--line);
-    padding: 32px 28px;
-    min-height: 220px;
+    padding: 28px;
+    min-height: 320px;
+    overflow: hidden;
+    transition: background 0.2s ease;
   }
+
+  .feature-cell:hover { background: var(--white); }
+
+  .feature-art {
+    height: 126px;
+    margin: -28px -28px 20px;
+    background-image: url('/illustrations/tandem-feature-field-guide-v2.png');
+    background-size: 300% 200%;
+    background-repeat: no-repeat;
+    background-color: #f5f4ef;
+    border-bottom: 1px solid var(--line);
+    will-change: transform, opacity;
+  }
+
+  .feature-art--events { background-position: 0% 0%; }
+  .feature-art--projections { background-position: 50% 0%; }
+  .feature-art--money { background-position: 100% 0%; }
+  .feature-art--rules { background-position: 0% 100%; }
+  .feature-art--escrow { background-position: 50% 100%; }
+  .feature-art--access { background-position: 100% 100%; }
 
   .feature-cell .num {
     font-family: 'IBM Plex Mono', monospace;
@@ -760,6 +820,8 @@
       border-right: 1px solid var(--line);
     }
     .hero-climbers { width: 144px; height: 216px; right: -20px; bottom: -8px; opacity: 0.45; }
+    .cloud-block { padding: 12px; }
+    .cloud-art { width: 110px; height: 58px; }
     .feature-grid, .roadmap { grid-template-columns: 1fr; }
     .expedition-panel { grid-template-columns: 1fr; margin: 0 16px; }
     .expedition-copy { border-right: 0; border-bottom: 1px solid #34342f; padding: 32px 24px; }
@@ -779,9 +841,6 @@
       <a href="#how">How it works</a>
       <a href="#roadmap">Roadmap</a>
       <a href="https://github.com/angkutdigital/tandem-crm" target="_blank" rel="noopener">GitHub</a>
-    </div>
-    <div class="nav-right">
-      <a href="https://github.com/angkutdigital/tandem-crm" target="_blank" rel="noopener" class="nav-cta">GitHub →</a>
     </div>
   </div>
 </nav>
@@ -807,6 +866,10 @@
       <div class="stat-value">MIT</div>
       <div class="stat-sub">Angkut Digital Enterprise</div>
     </div>
+    <div class="cloud-block">
+      <img class="cloud-art" src="/illustrations/tandem-cloud-v1.png" alt="Hand-drawn cloud over a mountain ridge" />
+      <div class="cloud-name">TandemCRM Cloud <span class="cloud-status">COMING SOON</span></div>
+    </div>
   </aside>
 
   <div class="hero-center">
@@ -822,7 +885,7 @@
 
     <p class="hero-sub">
       An open source CRM engine for leads, agents, sales activity, partner commissions, and disputes.
-      Install it directly into your Node and Postgres app—no separate service, no forced vendor, no trapped data.
+      Add it to the Node app and Postgres database you already run. Your data stays in your database.
     </p>
 
     <div class="hero-buttons">
@@ -1005,43 +1068,49 @@
 <section class="block" id="features">
   <div class="eyebrow">// WHAT IT DOES</div>
   <h2>
-    A CRM foundation for your app,<br />
-    <span class="light">not another SaaS to work around.</span>
+    A CRM foundation<br />
+    <span class="light">for your app.</span>
   </h2>
   <p class="lead">
-    Typed, append-only facts make the business workflow durable; Postgres stores it; your app stays in control of every real-world action.
+    Tandem keeps a clear record in Postgres so your app can show the whole sales journey and your team can trace what happened.
   </p>
 
   <div class="feature-grid">
     <div class="feature-cell">
+      <div class="feature-art feature-art--events" aria-hidden="true"></div>
       <div class="num">01 / EVENT LOG</div>
       <h3>Append-only source of truth</h3>
-      <p>One table. Typed events. No updates, no deletes. Every projection is a fold over this log.</p>
+      <p>Every important change is a typed event. You can trace the story without losing earlier decisions.</p>
     </div>
     <div class="feature-cell">
+      <div class="feature-art feature-art--projections" aria-hidden="true"></div>
       <div class="num">02 / PROJECTIONS</div>
       <h3>Rebuildable state</h3>
-      <p>Leads, payouts, and timelines derive from the event log. Drop a table, replay, done.</p>
+      <p>Lead, payout, and activity views build from events. Rebuild them whenever you need to.</p>
     </div>
     <div class="feature-cell">
+      <div class="feature-art feature-art--money" aria-hidden="true"></div>
       <div class="num">03 / MONEY</div>
       <h3>Integer minor units</h3>
-      <p>No floats. Commission math uses exact integer arithmetic. Rounding rules are explicit.</p>
+      <p>Commission amounts use whole cents or sen. Rounding is part of the rule, so the numbers stay clear.</p>
     </div>
     <div class="feature-cell">
+      <div class="feature-art feature-art--rules" aria-hidden="true"></div>
       <div class="num">04 / RULES</div>
       <h3>Qualification &amp; routing</h3>
-      <p>You set a qualification threshold that decides automated setup vs. manual review. Round-robin, least-loaded, or manual routing presets suggest an agent, and your app decides whether to act on it.</p>
+      <p>Set a qualification threshold. Choose round robin, least loaded, or manual assignment for each lead.</p>
     </div>
     <div class="feature-cell">
+      <div class="feature-art feature-art--escrow" aria-hidden="true"></div>
       <div class="num">05 / ESCROW</div>
       <h3>Escrow, ready to schedule</h3>
-      <p>Commissions sit in a held state. <code>release_due_commissions()</code> does the release atomically inside Postgres; wiring it to pg_cron (or any scheduler) is a migration you write for your own project.</p>
+      <p>Hold commissions until they are ready. Run <code>release_due_commissions()</code> on the schedule that suits your app.</p>
     </div>
     <div class="feature-cell">
+      <div class="feature-art feature-art--access" aria-hidden="true"></div>
       <div class="num">06 / AUTH</div>
       <h3>Vendor-neutral RLS</h3>
-      <p>Policies resolve identity through a portable session variable, falling back to Supabase's <code>auth.uid()</code> only where it exists. Verified on plain Postgres, not just Supabase.</p>
+      <p>Use Supabase, plain Postgres, or your own identity provider. Tandem keeps each workspace separate.</p>
     </div>
   </div>
 </section>
@@ -1050,11 +1119,11 @@
 <section class="block" id="how">
   <div class="eyebrow">// HOW IT WORKS</div>
   <h2>
-    Four steps,<br />
-    <span class="light">no orchestration layer to run.</span>
+    Start with your app<br />
+    <span class="light">and Postgres.</span>
   </h2>
   <p class="lead">
-    It runs inside the Node app and Postgres database you already have.
+    Tandem fits into the routes and database you already use.
   </p>
 
   <div class="code-window">
@@ -1087,11 +1156,11 @@
 <section class="block" id="roadmap">
   <div class="eyebrow">// ROADMAP</div>
   <h2>
-    The CRM stack,<br />
-    <span class="light">module by module.</span>
+    The customer journey,<br />
+    <span class="light">kept together.</span>
   </h2>
   <p class="lead">
-    Each module stays narrow, composable, and honest about what is live today.
+    A customer's journey from first lead to a clear, lasting record.
   </p>
 
   <div class="roadmap">
@@ -1111,7 +1180,7 @@
       <div class="module-art module-art--camp" aria-hidden="true"></div>
       <span class="status status-progress">In progress</span>
       <h3>Camp</h3>
-      <p>The installable admin workspace for Tandem. Today it is a proven reference dashboard; next it mounts into a host Next.js app instead of being a repo to fork.</p>
+      <p>A workspace for your team. It is a reference dashboard today and will install inside a Next.js app.</p>
     </div>
     <div class="roadmap-cell">
       <div class="module-art module-art--trail" aria-hidden="true"></div>
@@ -1129,7 +1198,7 @@
       <div class="module-art module-art--belay" aria-hidden="true"></div>
       <span class="status status-live">Live</span>
       <h3>Belay</h3>
-      <p>Commission disputes with operator-only resolution, payout protection while a case is open, and an auditable outcome—not an automatic money movement.</p>
+      <p>A safe place to handle commission disputes. It holds a payout while a case is open and records the operator's decision.</p>
     </div>
   </div>
 </section>
@@ -1164,6 +1233,13 @@
   import { animate, inView, stagger } from '/vendor/motion-animate.mjs';
 
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const marqueeBlock = document.querySelector('.logos-block');
+  const expeditionPanel = document.querySelector('.expedition-panel');
+
+  // Keep the compatible-hosts strip immediately before the field plate.
+  // This lets the journey move from a team's own Postgres to the CRM story.
+  if (marqueeBlock && expeditionPanel) expeditionPanel.before(marqueeBlock);
+
   const track = document.querySelector('.logo-track');
 
   function startMarquee() {
@@ -1221,6 +1297,17 @@
   }
 
   if (!reduceMotion) {
+    const climbers = document.querySelector('.hero-climbers');
+    if (climbers) {
+      climbers.style.opacity = '0';
+      animate(climbers, { opacity: [0, 0.98], x: [18, 0] }, { duration: 0.7, ease: 'easeOut', delay: 0.15 });
+    }
+
+    const cloudArt = document.querySelector('.cloud-art');
+    if (cloudArt) {
+      animate(cloudArt, { y: [0, -4, 0] }, { duration: 4.2, repeat: Infinity, ease: 'easeInOut' });
+    }
+
     const revealTargets = document.querySelectorAll(
       '.eyebrow, .block h2, .cta-block h2, .feature-cell, .roadmap-cell'
     );
@@ -1259,6 +1346,34 @@
         animate(art, { y: 0 }, { duration: 0.24, ease: 'easeOut' });
       });
     });
+
+    const featureArt = document.querySelectorAll('.feature-art');
+    featureArt.forEach((art) => {
+      art.style.opacity = '0';
+      inView(art, (element) => {
+        animate(
+          element,
+          { opacity: [0, 1], y: [18, 0], scale: [0.96, 1] },
+          { duration: 0.5, ease: 'easeOut' }
+        );
+      }, { margin: '0px 0px -12% 0px', amount: 0.25 });
+      art.closest('.feature-cell')?.addEventListener('mouseenter', () => {
+        animate(art, { y: -5, scale: 1.02 }, { duration: 0.24, ease: 'easeOut' });
+      });
+      art.closest('.feature-cell')?.addEventListener('mouseleave', () => {
+        animate(art, { y: 0, scale: 1 }, { duration: 0.28, ease: 'easeOut' });
+      });
+    });
+
+    const expeditionArt = document.querySelector('.expedition-art img');
+    if (expeditionArt && expeditionPanel) {
+      expeditionPanel.addEventListener('mouseenter', () => {
+        animate(expeditionArt, { scale: 1.035 }, { duration: 0.45, ease: 'easeOut' });
+      });
+      expeditionPanel.addEventListener('mouseleave', () => {
+        animate(expeditionArt, { scale: 1 }, { duration: 0.5, ease: 'easeOut' });
+      });
+    }
   }
 </script>
 

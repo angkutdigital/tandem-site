@@ -1,5 +1,36 @@
 # Tandem site handoff
 
+## Update (2026-09-27): field-guide feature cards, Cloud marker, and simpler copy
+
+- Fetched the latest `tandem-crm` `main` README (`c828b16`) before editing.
+  It now explicitly confirms that **Terrain, Camp, Ascent, Trail, Waypoint,
+  and Belay** are the public names while the source identifiers are renamed
+  separately. The site continues to use the public names only.
+- Added `public/illustrations/tandem-feature-field-guide-v2.png`, a six-panel
+  original stippled ink atlas for the lower feature cards: event notebook,
+  rebuildable maps, locked ledger, signpost, safety rope, and shelter key.
+  The cards crop the matching panel rather than reuse a generic icon.
+- Added `public/illustrations/tandem-cloud-v1.png` below the MIT block in the
+  hero. It introduces **TandemCRM Cloud** as `COMING SOON` only. The owner
+  explicitly requested this marketing placeholder; it does not claim Cloud is
+  available or alter the package architecture.
+- Moved the compatible-host marquee ahead of the dark expedition field plate.
+  Removed the top-right GitHub button, removed the bottom divider after Docs,
+  and replaced the roadmap subtitle with the customer journey message.
+- Rewrote the visible product copy in plainer language and removed em dashes
+  and contrast-led framing such as “not another SaaS.”
+- Motion now includes a calm hero entrance, a floating Cloud mark, feature
+  art reveals and hover movement, as well as the existing marquee and module
+  atlas behavior. Every Motion effect remains disabled for reduced-motion
+  visitors.
+
+**Verified:** `npm run build` succeeds. A desktop check confirms the top-right
+GitHub button is gone, Cloud sits beneath the MIT card, and the host marquee
+appears before the black field plate. A 390px mobile check confirms the Docs
+area ends cleanly and the individual feature drawings and their card copy stay
+readable. The known Astro warnings are unchanged: empty i18n/docs 404 content
+and a missing `site` value for sitemap generation.
+
 ## Update (2026-09-26): public module naming + Tandem hero
 
 - Fetched and read the current `tandem-crm` `main` README and handoff first
