@@ -1,5 +1,16 @@
 # Tandem site handoff
 
+## Update (2026-09-27): module artwork panel background corrected
+
+- Per the owner’s narrow request, changed only `.module-art`’s background from
+  the page grey to the warm paper color used by the generated atlas. The fixed
+  centered artwork remains untouched, so each header is now one continuous
+  paper-colored panel without visible side strips or image stretching.
+
+**Verified:** `npm run build` succeeds. No layout, copy, mobile-fold, motion,
+or asset behavior changed in this pass. Existing Astro warnings remain
+unchanged: empty i18n/docs 404 content and no configured sitemap `site` value.
+
 ## Update (2026-09-27): corrected mobile folds and fixed-width roadmap art
 
 - The owner clarified that the card widths were correct and only the generated
