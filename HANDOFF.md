@@ -1,5 +1,25 @@
 # Tandem site handoff
 
+## Update (2026-09-27): focused mobile hero and transparent Cloud accent
+
+- Mobile no longer squeezes the desktop sidebars into a two-column grid. Below
+  768px it now hides the desktop-only facts, module list, and docs list, then
+  presents a single bordered hero with the product claim, concise explanation,
+  actions, and the tandem-climbers art. This keeps the first screen focused on
+  what Tandem is and lets the rest of the landing page explain the detail.
+- Removed the Early / Pre-1.0 announcement and status treatment from the hero
+  on every screen size.
+- Added `public/illustrations/tandem-cloud-v2.png`, a genuine alpha-transparent
+  cloud-and-ridge PNG. It replaces the off-white-background asset in the
+  desktop Cloud card. Cloud is now static and has no Motion animation.
+
+**Verified:** `npm run build` succeeds. A 390px visual check confirms the
+mobile page now opens with the focused hero and has no sidebar grid. A desktop
+check confirms the Early/Pre-1.0 copy is absent and Cloud is a static
+alpha-transparent accent with no opaque rectangle. Existing Astro warnings
+remain unchanged: empty i18n/docs 404 content and no configured sitemap
+`site` value.
+
 ## Update (2026-09-27): stable product documentation started
 
 - Reworked the opening Starlight page into a short route map. It explains the

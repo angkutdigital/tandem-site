@@ -414,8 +414,7 @@
     object-fit: cover;
     object-position: center;
     display: block;
-    mix-blend-mode: multiply;
-    opacity: 0.38;
+    opacity: 0.22;
     pointer-events: none;
     will-change: transform, opacity;
   }
@@ -772,25 +771,18 @@
 
   @media (max-width: 768px) {
     .nav-links { display: none; }
-    .hero { grid-template-columns: 1fr; padding: 0 16px; }
-    .hero-left, .hero-right {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      border-left: 1px solid var(--line);
-      border-right: 1px solid var(--line);
-    }
-    .hero-left > *, .hero-right > * {
-      border-right: 1px solid var(--line);
-    }
+    .hero { display: block; padding: 0 16px; }
+    .hero-left, .hero-right { display: none; }
     .hero-center {
-      padding: 48px 20px;
-      min-height: auto;
+      min-height: 570px;
+      padding: 74px 24px 52px;
       border-left: 1px solid var(--line);
       border-right: 1px solid var(--line);
+      border-top: 1px solid var(--line);
     }
-    .hero-climbers { width: 144px; height: 216px; right: -20px; bottom: -8px; opacity: 0.45; }
-    .cloud-block { padding: 12px; }
-    .cloud-art { width: 110px; height: 58px; }
+    .hero-center h1 { font-size: clamp(42px, 13vw, 58px); }
+    .hero-sub { font-size: 14px; line-height: 1.65; margin-bottom: 32px; }
+    .hero-climbers { width: 150px; height: 225px; right: -20px; bottom: -8px; opacity: 0.45; }
     .feature-grid, .roadmap { grid-template-columns: 1fr; }
     .expedition-panel { grid-template-columns: 1fr; margin: 0 16px; }
     .expedition-copy { border-right: 0; border-bottom: 1px solid #34342f; padding: 32px 24px; }
@@ -836,7 +828,7 @@
       <div class="stat-sub">Angkut Digital Enterprise</div>
     </div>
     <div class="stat-block cloud-block">
-      <img class="cloud-art" src="/illustrations/tandem-cloud-v1.png" alt="" aria-hidden="true" />
+      <img class="cloud-art" src="/illustrations/tandem-cloud-v2.png" alt="" aria-hidden="true" />
       <div class="stat-label">Managed tandem-crm</div>
       <div class="stat-value">tandem Cloud</div>
       <div class="stat-sub">coming soon</div>
@@ -844,11 +836,6 @@
   </aside>
 
   <div class="hero-center">
-    <div class="announcement-pill">
-      <span class="tag">EARLY</span>
-      <span class="text">Pre-1.0 and looking for our first real users →</span>
-    </div>
-
     <h1>
       Your sales cycle,<br />
       <span class="light">inside your own app.</span>
@@ -883,13 +870,6 @@
   </div>
 
   <aside class="hero-right">
-    <div class="right-block">
-      <div class="right-header">
-        <span>Status</span>
-      </div>
-      <div class="right-value">Pre-1.0</div>
-    </div>
-
     <div class="right-block">
       <div class="right-header" style="justify-content: flex-end; margin-bottom: 8px;">Modules</div>
       <ul class="stack-list">
@@ -1257,11 +1237,6 @@
     if (climbers) {
       climbers.style.opacity = '0';
       animate(climbers, { opacity: [0, 0.98], x: [18, 0] }, { duration: 0.7, ease: 'easeOut', delay: 0.15 });
-    }
-
-    const cloudArt = document.querySelector('.cloud-art');
-    if (cloudArt) {
-      animate(cloudArt, { y: [0, -4, 0] }, { duration: 4.2, repeat: Infinity, ease: 'easeInOut' });
     }
 
     const revealTargets = document.querySelectorAll(
