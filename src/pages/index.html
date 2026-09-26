@@ -295,6 +295,12 @@
     font-size: 13px;
   }
 
+  .gh-mark {
+    display: inline-flex;
+    align-items: center;
+    color: var(--ink-dim);
+  }
+
   /* Right column */
   .hero-right {
     border-left: 1px solid var(--line);
@@ -681,8 +687,8 @@
     </div>
     <div class="stat-block">
       <div class="stat-label">Runtime deps</div>
-      <div class="stat-value">1</div>
-      <div class="stat-sub">pg</div>
+      <div class="stat-value" data-deps-count>1</div>
+      <div class="stat-sub" data-deps-list>pg</div>
     </div>
     <div class="stat-block">
       <div class="stat-label">Database</div>
@@ -719,6 +725,9 @@
     </div>
 
     <div class="gh-live-stats">
+      <span class="gh-mark" aria-hidden="true">
+        <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+      </span>
       <a href="https://github.com/angkutdigital/tandem-crm/stargazers" target="_blank" rel="noopener" class="gh-stat-pill">
         <span class="gh-stat-icon">&#9733;</span> Star
         <span data-gh-stat="stars"></span>
@@ -763,7 +772,8 @@
         </li>
         <li>
           <span class="pkg">Coaster</span>
-          <span class="status">· planned</span>
+          <span class="status">· in use</span>
+          <a href="https://github.com/angkutdigital/tandem-crm/releases" target="_blank" rel="noopener" class="version-link module-version" data-gh-version>v0.1.0</a>
         </li>
       </ul>
     </div>
@@ -977,12 +987,12 @@
     <div class="roadmap-cell">
       <span class="status status-progress">In progress</span>
       <h3>CRM / Admin UI</h3>
-      <p>A reference dashboard in <code>examples/dashboard</code>, built on shadcn/ui. The overview page and the Ramp onboarding flow work end to end against a real Postgres database. Leads, payouts, and routing screens are next.</p>
+      <p>A reference dashboard in <code>examples/dashboard</code>, built on shadcn/ui. Overview, Ramp onboarding, payouts, routing, agent detail, and leads all work end to end against a real Postgres database. A Coaster (dispute) screen is next.</p>
     </div>
     <div class="roadmap-cell">
-      <span class="status status-soon">Planned</span>
+      <span class="status status-live">Live</span>
       <h3>Coaster</h3>
-      <p>Clawbacks, disputes, and payout blocking. The brakes on the commission engine.</p>
+      <p>Partner-initiated disputes, operator resolution, payout blocking while a dispute is open, and the events to act on a resolved one: adjust an amount, reinstate a voided commission, or record a clawback. The brakes on the commission engine.</p>
     </div>
     <div class="roadmap-cell">
       <span class="status status-live">Live</span>
@@ -1130,6 +1140,23 @@
         if (!data || !data.tag_name) return;
         document.querySelectorAll('[data-gh-version]').forEach(function (el) {
           el.textContent = data.tag_name;
+        });
+      })
+      .catch(function () {});
+
+    // Reads the real package.json off the default branch, so this count
+    // never silently drifts from the actual dependencies list the way a
+    // hardcoded number would the day someone adds or removes one.
+    fetch('https://raw.githubusercontent.com/angkutdigital/tandem-crm/main/package.json')
+      .then(function (res) { return res.ok ? res.json() : null; })
+      .then(function (data) {
+        var deps = data && data.dependencies ? Object.keys(data.dependencies) : null;
+        if (!deps || deps.length === 0) return;
+        document.querySelectorAll('[data-deps-count]').forEach(function (el) {
+          el.textContent = String(deps.length);
+        });
+        document.querySelectorAll('[data-deps-list]').forEach(function (el) {
+          el.textContent = deps.join(', ');
         });
       })
       .catch(function () {});
