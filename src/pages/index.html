@@ -307,6 +307,60 @@
     border-right: 1px solid var(--line);
   }
 
+  /* Expedition field plate. This is the visual counterpart to Tandem's
+     modular engine: one landscape, several deliberately connected paths. */
+  .expedition-panel {
+    max-width: 1440px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: minmax(260px, .72fr) minmax(0, 1.6fr);
+    background: var(--ink);
+    color: var(--white);
+    border: 1px solid var(--ink);
+  }
+
+  .expedition-copy {
+    padding: 42px 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 28px;
+    border-right: 1px solid #34342f;
+  }
+
+  .expedition-copy .eyebrow { color: #aaa99f; margin-bottom: 14px; }
+  .expedition-copy h2 { color: var(--white); font-size: clamp(28px, 3vw, 42px); margin-bottom: 0; }
+  .expedition-copy h2 .light { color: #aaa99f; }
+  .expedition-note {
+    color: #bcbcb2;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    line-height: 1.7;
+  }
+
+  .expedition-note .marker {
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  .expedition-art {
+    min-height: 390px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: #080808;
+  }
+
+  .expedition-art img {
+    width: 100%;
+    height: 100%;
+    min-height: 390px;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
+
   .right-block {
     padding: 24px 20px;
     border-bottom: 1px solid var(--line);
@@ -657,6 +711,9 @@
       border-right: 1px solid var(--line);
     }
     .feature-grid, .roadmap { grid-template-columns: 1fr; }
+    .expedition-panel { grid-template-columns: 1fr; margin: 0 16px; }
+    .expedition-copy { border-right: 0; border-bottom: 1px solid #34342f; padding: 32px 24px; }
+    .expedition-art, .expedition-art img { min-height: 260px; }
   }
 </style>
 </head>
@@ -788,6 +845,20 @@
       </ul>
     </div>
   </aside>
+</section>
+
+<!-- Expedition illustration: an original field-guide scene, not a product UI. -->
+<section class="expedition-panel" aria-labelledby="expedition-title">
+  <div class="expedition-copy">
+    <div>
+      <div class="eyebrow">// YOUR OWN TERRAIN</div>
+      <h2 id="expedition-title">One trail system.<br /><span class="light">Your rules, your data.</span></h2>
+    </div>
+    <p class="expedition-note"><span class="marker">▲</span> Nest your team. Mark the Trail. Take the Ramp. Choose each route. Tandem records the ground truth while your app stays in command.</p>
+  </div>
+  <div class="expedition-art">
+    <img src="/illustrations/tandem-expedition-hero.png" alt="Hand-drawn canyon expedition scene with a nest, hikers, trail fork, river, and distant summit" />
+  </div>
 </section>
 
 <!-- Logo marquee -->
@@ -987,7 +1058,7 @@
     <div class="roadmap-cell">
       <span class="status status-progress">In progress</span>
       <h3>CRM / Admin UI</h3>
-      <p>A reference dashboard in <code>examples/dashboard</code>, built on shadcn/ui. Overview, Ramp onboarding, payouts, routing, agent detail, and leads all work end to end against a real Postgres database. A Coaster (dispute) screen is next.</p>
+      <p>A reference dashboard in <code>examples/dashboard</code>, built on shadcn/ui. Leads, Trail activity, Ramp onboarding, earnings, payouts, routing, agent profiles, and Coaster disputes work end to end against a real Postgres database. It remains a reference UI while the generic first-run install path is completed.</p>
     </div>
     <div class="roadmap-cell">
       <span class="status status-live">Live</span>
