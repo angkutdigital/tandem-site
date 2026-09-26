@@ -3,18 +3,18 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>TandemCRM: an open source partner commission engine for Postgres</title>
-<meta name="description" content="An open source, event-sourced commission engine you install straight into your own Node app and Postgres database." />
+<title>TandemCRM: an embeddable open-source CRM engine for Postgres</title>
+<meta name="description" content="An open-source CRM engine for leads, agents, sales activity, commissions, and disputes—installed directly into your Node app and Postgres database." />
 <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-<meta property="og:title" content="TandemCRM: an open source partner commission engine for Postgres" />
-<meta property="og:description" content="An open source, event-sourced commission engine you install straight into your own Node app and Postgres database." />
+<meta property="og:title" content="TandemCRM: an embeddable open-source CRM engine for Postgres" />
+<meta property="og:description" content="Leads, agents, sales activity, commissions, and disputes—inside your own Node app and Postgres database." />
 <meta property="og:image" content="/og-image.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="TandemCRM: an open source partner commission engine for Postgres" />
-<meta name="twitter:description" content="An open source, event-sourced commission engine you install straight into your own Node app and Postgres database." />
+<meta name="twitter:title" content="TandemCRM: an embeddable open-source CRM engine for Postgres" />
+<meta name="twitter:description" content="Leads, agents, sales activity, commissions, and disputes—inside your own Node app and Postgres database." />
 <meta name="twitter:image" content="/og-image.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -601,7 +601,29 @@
     border-right: 1px solid var(--line);
     border-bottom: 1px solid var(--line);
     padding: 28px 24px;
+    overflow: hidden;
+    transition: background 0.2s ease;
   }
+
+  .roadmap-cell:hover { background: var(--white); }
+
+  .module-art {
+    height: 148px;
+    margin: -28px -24px 24px;
+    background-color: #1c1c19;
+    background-image: url('/illustrations/tandem-module-atlas.png');
+    background-repeat: no-repeat;
+    background-size: 300% 200%;
+    border-bottom: 1px solid var(--line);
+    will-change: transform, opacity;
+  }
+
+  .module-art--core { background-position: 0% 0%; }
+  .module-art--ramp { background-position: 50% 0%; }
+  .module-art--nest { background-position: 100% 0%; }
+  .module-art--trail { background-position: 0% 100%; }
+  .module-art--routing { background-position: 50% 100%; }
+  .module-art--coaster { background-position: 100% 100%; }
 
   .roadmap-cell .status {
     font-family: 'IBM Plex Mono', monospace;
@@ -740,7 +762,7 @@
 <section class="hero">
   <aside class="hero-left">
     <div class="stat-block">
-      <div class="hero-title-block">Partner<br />Commission<br />Engine</div>
+      <div class="hero-title-block">Embeddable<br />CRM<br />Engine</div>
     </div>
     <div class="stat-block">
       <div class="stat-label">Runtime deps</div>
@@ -766,14 +788,13 @@
     </div>
 
     <h1>
-      Partner commissions,<br />
-      <span class="light">running in your own Postgres.</span>
+      Your sales cycle,<br />
+      <span class="light">inside your own app.</span>
     </h1>
 
     <p class="hero-sub">
-      An open source, event-sourced commission engine you install straight into your Node app.
-      The event log is the source of truth, and escrow release runs as a plain Postgres function you
-      schedule with pg_cron.
+      An open source CRM engine for leads, agents, sales activity, partner commissions, and disputes.
+      Install it directly into your Node and Postgres app—no separate service, no forced vendor, no trapped data.
     </p>
 
     <div class="hero-buttons">
@@ -823,10 +844,9 @@
           <span class="status">· in use</span>
           <a href="https://github.com/angkutdigital/tandem-crm/releases" target="_blank" rel="noopener" class="version-link module-version" data-gh-version>v0.1.0</a>
         </li>
-        <li>
-          <span class="pkg">CRM / Admin UI</span>
-          <span class="status">· in progress</span>
-        </li>
+        <li><span class="pkg">Trail</span><span class="status">· in use</span></li>
+        <li><span class="pkg">Routing</span><span class="status">· in use</span></li>
+        <li><span class="pkg">Nest</span><span class="status">· in progress</span></li>
         <li>
           <span class="pkg">Coaster</span>
           <span class="status">· in use</span>
@@ -851,10 +871,10 @@
 <section class="expedition-panel" aria-labelledby="expedition-title">
   <div class="expedition-copy">
     <div>
-      <div class="eyebrow">// YOUR OWN TERRAIN</div>
-      <h2 id="expedition-title">One trail system.<br /><span class="light">Your rules, your data.</span></h2>
+      <div class="eyebrow">// ONE SALES CYCLE, END TO END</div>
+      <h2 id="expedition-title">From first lead<br /><span class="light">to a clean payout record.</span></h2>
     </div>
-    <p class="expedition-note"><span class="marker">▲</span> Nest your team. Mark the Trail. Take the Ramp. Choose each route. Tandem records the ground truth while your app stays in command.</p>
+    <p class="expedition-note"><span class="marker">▲</span> Capture a lead. Route it to the right agent. Keep the sales trail. Hold and release commission. Resolve disputes with a record you can replay. Tandem gives your app the workflow primitives; you keep the decisions.</p>
   </div>
   <div class="expedition-art">
     <img src="/illustrations/tandem-expedition-hero.png" alt="Hand-drawn canyon expedition scene with a nest, hikers, trail fork, river, and distant summit" />
@@ -954,12 +974,11 @@
 <section class="block" id="features">
   <div class="eyebrow">// WHAT IT DOES</div>
   <h2>
-    Everything the engine does<br />
-    <span class="light">lives inside Postgres, as pure functions.</span>
+    A CRM foundation for your app,<br />
+    <span class="light">not another SaaS to work around.</span>
   </h2>
   <p class="lead">
-    Each piece is testable in isolation, and the engine never moves money itself.
-    It just decides what should happen and emits the payout task for your app to act on.
+    Typed, append-only facts make the business workflow durable; Postgres stores it; your app stays in control of every real-world action.
   </p>
 
   <div class="feature-grid">
@@ -1037,43 +1056,49 @@
 <section class="block" id="roadmap">
   <div class="eyebrow">// ROADMAP</div>
   <h2>
-    Where things actually stand,<br />
+    The CRM stack,<br />
     <span class="light">module by module.</span>
   </h2>
   <p class="lead">
-    We'd rather list something as "in progress" than promise a feature before it exists.
+    Each module stays narrow, composable, and honest about what is live today.
   </p>
 
   <div class="roadmap">
     <div class="roadmap-cell">
+      <div class="module-art module-art--core" aria-hidden="true"></div>
       <span class="status status-live">Live</span>
       <h3>Core</h3>
-      <p>The engine, and the one module every install needs. Event log, projections, integer money math, idempotency, lead routing, an escrow release function ready for <code>pg_cron</code>, and an RLS layer verified on both Supabase and plain Postgres. Running in production on Supabase.</p>
+      <p>The durable CRM foundation: leads, typed event history, rebuildable state, exact money math, and tenant-safe Postgres access.</p>
     </div>
     <div class="roadmap-cell">
+      <div class="module-art module-art--ramp" aria-hidden="true"></div>
       <span class="status status-live">Live</span>
       <h3>Ramp</h3>
-      <p>Agent onboarding and certification. Its own event log, reducers, and RLS, sitting next to Core's. An agent works through the required steps and certifies themselves once they're done; your app decides what certification unlocks.</p>
+      <p>Agent onboarding and certification. Teams define the checkpoints; agents complete them; your app decides what certification unlocks.</p>
     </div>
     <div class="roadmap-cell">
+      <div class="module-art module-art--nest" aria-hidden="true"></div>
       <span class="status status-progress">In progress</span>
-      <h3>CRM / Admin UI</h3>
-      <p>A reference dashboard in <code>examples/dashboard</code>, built on shadcn/ui. Leads, Trail activity, Ramp onboarding, earnings, payouts, routing, agent profiles, and Coaster disputes work end to end against a real Postgres database. It remains a reference UI while the generic first-run install path is completed.</p>
+      <h3>Nest</h3>
+      <p>The installable admin workspace for Tandem. Today it is a proven reference dashboard; next it mounts into a host Next.js app instead of being a repo to fork.</p>
     </div>
     <div class="roadmap-cell">
+      <div class="module-art module-art--trail" aria-hidden="true"></div>
+      <span class="status status-live">Live</span>
+      <h3>Trail</h3>
+      <p>Lightweight sales activity for a real CRM: calls, emails, visits, confidence, stages, corrections, and retractions without deleting history.</p>
+    </div>
+    <div class="roadmap-cell">
+      <div class="module-art module-art--routing" aria-hidden="true"></div>
+      <span class="status status-live">Live</span>
+      <h3>Routing</h3>
+      <p>Territory-aware recommendations for who should own a lead: round-robin, least-loaded, or manual. Tandem suggests; your app decides.</p>
+    </div>
+    <div class="roadmap-cell">
+      <div class="module-art module-art--coaster" aria-hidden="true"></div>
       <span class="status status-live">Live</span>
       <h3>Coaster</h3>
-      <p>Partner-initiated disputes, operator resolution, payout blocking while a dispute is open, and the events to act on a resolved one: adjust an amount, reinstate a voided commission, or record a clawback. The brakes on the commission engine.</p>
-    </div>
-    <div class="roadmap-cell">
-      <span class="status status-live">Live</span>
-      <h3>Auth adapter</h3>
-      <p>Three functions are all Tandem needs from your identity provider: who's signed in, and their membership row. Implement them once against Supabase Auth, Clerk, BetterAuth, or a table you built yourself, and RLS enforces the rest.</p>
-    </div>
-    <div class="roadmap-cell">
-      <span class="status status-soon">Planned</span>
-      <h3>Tandem Cloud</h3>
-      <p>A hosted version of the same open-source engine, at tandemcrm.dev, for teams who'd rather not run their own migrations and cron jobs. Same license underneath, just less ops. Not started yet.</p>
+      <p>Commission disputes with operator-only resolution, payout protection while a case is open, and an auditable outcome—not an automatic money movement.</p>
     </div>
   </div>
 </section>
@@ -1182,6 +1207,27 @@
       },
       { margin: '0px 0px -10% 0px', amount: 0.2 }
     );
+
+    // The atlas is intentionally restrained: each module illustration rises
+    // once when it enters view, then gives a small tactile response on hover.
+    // Motion runs only for people who have not requested reduced motion.
+    const moduleArt = document.querySelectorAll('.module-art');
+    moduleArt.forEach((art) => {
+      art.style.opacity = '0';
+      inView(art, (element) => {
+        animate(
+          element,
+          { opacity: [0, 1], y: [14, 0], scale: [0.97, 1] },
+          { duration: 0.45, ease: 'easeOut' }
+        );
+      }, { margin: '0px 0px -12% 0px', amount: 0.35 });
+      art.closest('.roadmap-cell')?.addEventListener('mouseenter', () => {
+        animate(art, { y: -4 }, { duration: 0.2, ease: 'easeOut' });
+      });
+      art.closest('.roadmap-cell')?.addEventListener('mouseleave', () => {
+        animate(art, { y: 0 }, { duration: 0.24, ease: 'easeOut' });
+      });
+    });
   }
 </script>
 
