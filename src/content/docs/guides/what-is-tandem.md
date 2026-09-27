@@ -24,7 +24,7 @@ The public module names are:
 | Trail | Sales activity on a lead. |
 | Waypoint | Lead-owner recommendations. |
 | Belay | Commission disputes. |
-| Camp | A team workspace. It is still in progress. |
+| Camp | An installable admin UI: a full CRM interface (leads, agents, sales activity, commissions, disputes) that mounts into your own Next.js app. |
 
 ## What stays in your app
 
