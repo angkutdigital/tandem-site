@@ -1,32 +1,54 @@
 # TandemCRM
 
-> An embeddable, event-sourced partner-attribution and commission-payout engine for Postgres. Self-hosted inside your own app; no servers or vendor lock-in. MIT licensed, pre-1.0.
+> An embeddable, event-sourced CRM engine for Postgres, built for partner attribution and commission payouts. It installs into your own app and database. MIT licensed, pre-1.0.
 
-TandemCRM is not a hosted SaaS product. It ships as an npm package (`tandem-crm`) plus a set of SQL migrations that install into a Postgres database you already run (Supabase, Neon, RDS, Aiven, or plain Postgres 14+). An append-only event log is the source of truth; leads, payouts, and onboarding state are all rebuildable projections over that log. Row-level security enforces tenant isolation at the database layer, not just in application code.
+TandemCRM is not a hosted SaaS product. It ships as two npm packages plus a set of SQL migrations that install into a Postgres database you already run (Supabase, Neon, RDS, Aiven, or plain Postgres 14+):
 
-## Core concepts
+- `tandem-crm`: the engine. Leads, an append-only event log, projections, money rules, migrations, row-level security.
+- `tandem-camp`: an optional admin UI that mounts into your own Next.js app. Leads, agents, sales activity, commissions, disputes.
 
-- [Getting started](/guides/getting-started/): install, run the migrations, first webhook.
-- Event log: one append-only table (`tandem.events`); every projection is a fold over it. No updates, no deletes.
-- Escrow release: commissions sit in a held state until `release_due_commissions()` releases them; wire it to `pg_cron` or any scheduler.
-- Money: integer minor units only, no floating point.
-- Auth adapter: implement `TandemAuthAdapter` (three functions) against any identity provider (Supabase Auth, Clerk, BetterAuth, your own session table); RLS enforces the rest.
+An append-only event log is the source of truth. Leads, payouts and onboarding state are projections you can rebuild from it. Row-level security enforces tenant isolation in the database, not only in application code.
+
+## Guides
+
+- [Start here](/guides/getting-started/): install, run the migrations, load sample data, first lead.
+- [What TandemCRM is](/guides/what-is-tandem/): the jobs it handles and what stays in your app.
+- [What you can build with it](/guides/use-cases/): example setups, and when to pick something else.
+- [How Tandem records change](/guides/how-tandem-records-change/): the event log and projections.
+- [Database, migrations and RLS](/guides/database-migrations-and-rls/): running the SQL, roles, and row-level security.
+- [Bring your own auth](/guides/bring-your-own-auth/): connect any identity provider.
+- [Camp, the admin UI](/guides/camp-admin-ui/): install, stylesheet, config, routes, payout adapter.
+- [Trail](/guides/trail-sales-activity/), [Waypoint](/guides/waypoint-lead-ownership/), [Ascent](/guides/ascent-agent-onboarding/), [Belay](/guides/belay-commission-disputes/): one guide per module.
 
 ## Modules
 
-- **Core** (live): event log, projections, integer money math, idempotency, lead routing presets, escrow release, RLS. Running in production on Supabase, verified on plain Postgres.
-- **Ramp** (live): agent onboarding and certification, its own event log and RLS, sitting next to Core's.
-- **Coaster** (in progress): partner-initiated commission disputes and operator adjudication, modeled on how Awin (the largest EU affiliate network) handles this. Resolving a dispute records the outcome only; it does not yet execute a clawback or create a replacement commission.
-- **CRM / Admin UI** (in progress): a reference dashboard in the package's `examples/dashboard` directory, built on Next.js and shadcn/ui.
+- **Terrain**: leads, events, projections, money rules, migrations, workspace isolation.
+- **Ascent**: agent onboarding steps and certification.
+- **Trail**: sales activity on a lead (phone, email, WhatsApp, in person) with confidence, sales stage and CHAMP qualification.
+- **Waypoint**: lead-owner recommendations (round robin, least loaded, manual).
+- **Belay**: commission disputes, operator decisions, and the events for acting on an upheld dispute.
+- **Camp**: the installable admin UI.
+
+## Key facts
+
+- Money is integer minor units only. No floating point.
+- Commissions sit in a held state until `release_due_commissions()` releases them. Wire it to `pg_cron` or any scheduler.
+- The engine never moves money. Payments go through a payout adapter you supply (a Stripe example is included).
+- Agents can append only `lead.lost`, `lead.stage_changed` and `conversion.confirmed`. Approving, paying and adjusting commissions needs an owner or admin.
+- Auth: implement `TandemAuthAdapter` (three functions) for Supabase Auth, Clerk, BetterAuth, or your own sessions.
+
+## Try it
+
+- Live demo: https://tandem-crm-demo.vercel.app, embedded with a live event feed and the code behind each event at /demo/. It is public and resets every Monday, so it holds no real data.
 
 ## Source
 
 - Repository: https://github.com/angkutdigital/tandem-crm
-- Package: https://www.npmjs.com/package/tandem-crm (once published; not yet on the npm registry as of this file's writing)
+- Packages: https://www.npmjs.com/package/tandem-crm and https://www.npmjs.com/package/tandem-camp (not on the registry until the first release)
 - Releases: https://github.com/angkutdigital/tandem-crm/releases
 - Issues: https://github.com/angkutdigital/tandem-crm/issues
 - License: MIT
 
 ## Notes for AI agents
 
-This project has no public API to query; everything runs inside the consuming application's own Postgres instance and Node process. There is no hosted playground or demo endpoint. To evaluate or answer questions about it, read the repository directly, particularly `README.md` and the SQL files in `db/migrations/`. The Modules section above reflects what was actually shipped as of this file's last update, not aspirational scope; check the repository's own roadmap section and commit history for the current state before relying on it.
+TandemCRM has no public API to query. It runs inside the consuming application's own Postgres instance and Node process. To answer questions about it, read the guides above, then the repository's `README.md` and the SQL files in `db/migrations/`. If a guide and the code disagree, trust the code and the commit history.
