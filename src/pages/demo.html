@@ -64,6 +64,11 @@
     max-width: 640px;
     font-size: 15px;
   }
+  header.intro p.notice {
+    margin-top: 10px;
+    font-size: 13px;
+    color: var(--ink-dim);
+  }
 
   .demo-layout {
     max-width: 1100px;
@@ -188,7 +193,8 @@
     font-size: 12px;
     line-height: 1.6;
     overflow-x: auto;
-    white-space: pre;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
     padding: 10px 12px;
     margin: 0;
   }
@@ -219,10 +225,12 @@
 <header class="intro">
   <h1>A real dashboard, and the event log behind it.</h1>
   <p>
-    Click around the actual live demo on the left. Approving a payout, resolving a dispute, logging a sales
-    visit: each one is a typed, append-only fact in Postgres. The panel on the right streams that same event
-    log in real time, straight from the database. This is what "event-sourced" actually looks like, not just
-    what the docs claim.
+    Click around the live demo on the left. Every action you take is stored in Postgres as a typed,
+    append-only event, and the panel on the right shows that log as it happens. Click any event to see
+    the code that checks it.
+  </p>
+  <p class="notice">
+    Everything you type here is public and resets every Monday, so please don't enter real personal details.
   </p>
 </header>
 
@@ -243,7 +251,7 @@
     <div class="feed-panel mono" id="feed-panel">
       <div class="feed-empty" id="feed-empty">Waiting for activity in the dashboard on the left…</div>
     </div>
-    <div class="feed-note">Each row shows the event type, its time, and the shape of its payload. Click a row to see the code that validates it.</div>
+    <div class="feed-note">Click any row to see the code that validates that event and the shape of its payload. Times are UTC, matching the dashboard.</div>
   </div>
 </div>
 
@@ -278,7 +286,7 @@
   }
 
   function formatTime(iso) {
-    return new Date(iso).toLocaleTimeString('en-US', { hour12: false });
+    return new Date(iso).toLocaleTimeString('en-US', { hour12: false, timeZone: 'UTC' });
   }
 
   function addRow(evt) {
@@ -340,7 +348,7 @@
 
     const meta = document.createElement('div');
     meta.className = 'detail-meta';
-    meta.textContent = evt.source + ' at ' + formatTime(evt.occurredAt);
+    meta.textContent = evt.source + ' at ' + formatTime(evt.occurredAt) + ' UTC';
     detail.appendChild(meta);
 
     // Section 1: the reducer code that validates this event type.
