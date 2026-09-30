@@ -423,21 +423,36 @@
     if (e.key === 'Escape' && panel.querySelector('.detail')) closeDetail();
   });
 
-  try {
-    const source = new EventSource('https://tandem-crm-demo.vercel.app/api/live-events');
-    source.onopen = () => { dot.classList.add('live'); };
-    source.onmessage = (event) => {
-      dot.classList.add('live');
-      try {
-        addRow(JSON.parse(event.data));
-      } catch {
-        // A keep-alive comment or malformed line; ignore.
-      }
-    };
-    source.onerror = () => { dot.classList.remove('live'); };
-  } catch {
-    empty.textContent = 'Live event feed unavailable in this browser.';
+  // One connection while the tab is visible. A hidden tab closes it, so a
+  // pile of forgotten tabs does not keep the demo's database awake.
+  let source = null;
+  function connect() {
+    if (source) return;
+    try {
+      source = new EventSource('https://tandem-crm-demo.vercel.app/api/live-events');
+      source.onopen = () => { dot.classList.add('live'); };
+      source.onmessage = (event) => {
+        dot.classList.add('live');
+        try {
+          addRow(JSON.parse(event.data));
+        } catch {
+          // A keep-alive comment or malformed line; ignore.
+        }
+      };
+      source.onerror = () => { dot.classList.remove('live'); };
+    } catch {
+      empty.textContent = 'Live event feed unavailable in this browser.';
+    }
   }
+  function disconnect() {
+    if (source) source.close();
+    source = null;
+    dot.classList.remove('live');
+  }
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) disconnect(); else connect();
+  });
+  if (!document.hidden) connect();
 </script>
 
 </body>
