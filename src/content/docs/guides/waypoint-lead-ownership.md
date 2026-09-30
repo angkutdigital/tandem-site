@@ -2,7 +2,7 @@
 title: "Waypoint: lead ownership"
 description: Choose a recommended lead owner with round robin, least loaded, or manual routing.
 sidebar:
-  order: 9
+  order: 10
 ---
 
 Waypoint helps an application choose who should own a lead. It takes the

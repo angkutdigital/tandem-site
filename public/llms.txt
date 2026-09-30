@@ -16,6 +16,7 @@ An append-only event log is the source of truth. Leads, payouts and onboarding s
 - [Start here](/guides/getting-started/): install, run the migrations, load sample data, first lead.
 - [What TandemCRM is](/guides/what-is-tandem/): the jobs it handles and what stays in your app.
 - [What you can build with it](/guides/use-cases/): example setups, and when to pick something else.
+- [Qualifying leads](/guides/qualifying-leads/): what `qualificationMetric` is, the threshold rule, and what to put in it.
 - [How Tandem records change](/guides/how-tandem-records-change/): the event log and projections.
 - [Database, migrations and RLS](/guides/database-migrations-and-rls/): running the SQL, roles, and row-level security.
 - [Bring your own auth](/guides/bring-your-own-auth/): connect any identity provider.

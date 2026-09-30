@@ -2,7 +2,7 @@
 title: "Belay: commission disputes"
 description: Keep a clear record when a partner questions a commission.
 sidebar:
-  order: 11
+  order: 12
 ---
 
 Belay records a partner-initiated dispute against a held, eligible, or

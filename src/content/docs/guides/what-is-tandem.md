@@ -59,6 +59,9 @@ if (result.requiresHumanReview) {
 }
 ```
 
+The `qualificationMetric` is one number you choose that says how big a lead
+is. [Qualifying leads](/guides/qualifying-leads/) explains what to put in it.
+
 If you are still deciding whether Tandem fits, read
 [What you can build with it](/guides/use-cases/). Otherwise read
 [How Tandem records change](/guides/how-tandem-records-change/) next for the

@@ -2,7 +2,7 @@
 title: "Camp: the admin UI"
 description: Add a ready-made CRM admin to your own Next.js app with one route and one config file.
 sidebar:
-  order: 7
+  order: 8
 ---
 
 Camp is a set of admin screens for Tandem. It mounts inside your own Next.js
