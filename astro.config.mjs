@@ -3,10 +3,11 @@ import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 
 export default defineConfig({
+  site: 'https://tandemcrm.dev',
   integrations: [
     starlight({
       title: 'TandemCRM',
-      description: 'Docs for TandemCRM: an embeddable, event-sourced partner-attribution and commission-payout engine for Postgres.',
+      description: 'Docs for TandemCRM: partner commissions with holds, approvals, disputes and a replayable audit trail, stored in your own Postgres.',
       customCss: ['./src/styles/starlight-tandem.css'],
       logo: {
         src: './src/assets/logo-mark.svg',

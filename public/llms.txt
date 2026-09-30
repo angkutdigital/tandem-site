@@ -1,5 +1,7 @@
 # TandemCRM
 
+Website and docs: https://tandemcrm.dev
+
 > An embeddable, event-sourced CRM engine for Postgres, built for partner attribution and commission payouts. It installs into your own app and database. MIT licensed, pre-1.0.
 
 TandemCRM is not a hosted SaaS product. It ships as two npm packages plus a set of SQL migrations that install into a Postgres database you already run (Supabase, Neon, RDS, Aiven, or plain Postgres 14+):
@@ -40,7 +42,7 @@ An append-only event log is the source of truth. Leads, payouts and onboarding s
 ## Source
 
 - Repository: https://github.com/angkutdigital/tandem-crm
-- Packages: https://www.npmjs.com/package/tandem-crm and https://www.npmjs.com/package/tandem-camp (not on the registry until the first release)
+- Packages: https://www.npmjs.com/package/tandem-crm and https://www.npmjs.com/package/tandem-camp
 - Releases: https://github.com/angkutdigital/tandem-crm/releases
 - Issues: https://github.com/angkutdigital/tandem-crm/issues
 - License: MIT
