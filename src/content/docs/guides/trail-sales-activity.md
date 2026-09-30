@@ -1,11 +1,13 @@
 ---
 title: "Trail: sales activity"
 description: Record calls, emails, visits, confidence, and sales stage without losing history.
+sidebar:
+  order: 8
 ---
 
 Trail is Tandem’s lightweight activity log for a lead. An agent can log a
-phone call, email, or in-person visit with a confidence rating, a sales stage,
-and a note. It keeps the focus on the relationship work around a lead without
+phone call, email, WhatsApp conversation, or in-person visit with a confidence
+rating, a sales stage, and what they learned. It keeps the focus on the relationship work around a lead without
 adding another contact or task system to your application.
 
 ## What an activity entry contains
@@ -15,6 +17,7 @@ Trail accepts these channels:
 - `phone`
 - `email`
 - `physical`
+- `whatsapp`
 
 It also accepts a confidence rating from 1 to 10 and one of these stages:
 
@@ -46,6 +49,34 @@ const event: TrailEvent = {
   },
 };
 ```
+
+## Record what you learned with CHAMP
+
+CHAMP is a simple way to qualify a lead: Challenges, Authority, Money, and
+Prioritization. A visit report has a field for each one, and every field is
+optional.
+
+```ts
+data: {
+  channel: "whatsapp",
+  confidenceRating: 7,
+  salesStage: "Qualified",
+  challenges: "Tracking which trucks are due for inspection.",
+  authority: "The fleet manager decides and reports to the owner.",
+  budget: "Around RM8,000 a month.",
+  prioritization: "Wants it running before year end.",
+},
+```
+
+An entry needs text in at least one of `note`, `challenges`, `authority`,
+`budget`, or `prioritization`. Entries logged before CHAMP existed only have a
+note, and they still work, so nothing you already recorded needs to change.
+
+The money field is plain text on purpose. It records what the prospect told
+you, and it is not a committed figure. Real amounts belong on Terrain's
+`payment.confirmed` event.
+
+Camp's Log activity form includes all five fields.
 
 ## Correct or retract an entry
 

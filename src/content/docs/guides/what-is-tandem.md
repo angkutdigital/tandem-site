@@ -1,6 +1,8 @@
 ---
 title: What TandemCRM is
 description: A practical introduction to TandemCRM and the jobs it handles.
+sidebar:
+  order: 2
 ---
 
 TandemCRM is an embeddable CRM engine for Node applications using Postgres.
@@ -20,11 +22,11 @@ The public module names are:
 | Module | What it handles |
 | --- | --- |
 | Terrain | Leads, events, projections, money rules, migrations, and workspace isolation. |
-| Ascent | Agent onboarding steps and certification. |
-| Trail | Sales activity on a lead. |
-| Waypoint | Lead-owner recommendations. |
-| Belay | Commission disputes. |
-| Camp | An installable admin UI: a full CRM interface (leads, agents, sales activity, commissions, disputes) that mounts into your own Next.js app. |
+| [Ascent](/guides/ascent-agent-onboarding/) | Agent onboarding steps and certification. |
+| [Trail](/guides/trail-sales-activity/) | Sales activity on a lead. |
+| [Waypoint](/guides/waypoint-lead-ownership/) | Lead-owner recommendations. |
+| [Belay](/guides/belay-commission-disputes/) | Commission disputes. |
+| [Camp](/guides/camp-admin-ui/) | An installable admin UI: a full CRM interface (leads, agents, sales activity, commissions, disputes) that mounts into your own Next.js app. |
 
 ## What stays in your app
 
@@ -57,5 +59,7 @@ if (result.requiresHumanReview) {
 }
 ```
 
-Read [How Tandem records change](/guides/how-tandem-records-change/) next for
-the event and projection model that sits beneath every module.
+If you are still deciding whether Tandem fits, read
+[What you can build with it](/guides/use-cases/). Otherwise read
+[How Tandem records change](/guides/how-tandem-records-change/) next for the
+event and projection model that sits beneath every module.

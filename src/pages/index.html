@@ -310,16 +310,6 @@
     border-color: var(--ink-dim);
   }
 
-  .version-link {
-    color: inherit;
-    text-decoration: none;
-  }
-
-  .version-link:hover {
-    text-decoration: underline;
-    text-underline-offset: 3px;
-  }
-
   .gh-stat-icon {
     font-size: 13px;
   }
@@ -457,15 +447,9 @@
     font-size: 12px;
   }
 
-  .module-version {
-    display: block;
-    font-size: 11px;
-    color: var(--ink-dim);
-    margin-top: 2px;
-  }
-
-  .module-version:hover {
-    color: var(--ink);
+  .stack-list a.pkg {
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
 
   /* Logo marquee */
@@ -934,21 +918,12 @@
     <div class="right-block">
       <div class="right-header" style="justify-content: flex-end; margin-bottom: 8px;">Modules</div>
       <ul class="stack-list">
-        <li>
-          <span class="pkg">Terrain</span>
-          <a href="https://github.com/angkutdigital/tandem-crm/releases" target="_blank" rel="noopener" class="version-link module-version" data-gh-version>v0.1.0</a>
-        </li>
-        <li>
-          <span class="pkg">Ascent</span>
-          <a href="https://github.com/angkutdigital/tandem-crm/releases" target="_blank" rel="noopener" class="version-link module-version" data-gh-version>v0.1.0</a>
-        </li>
-        <li><span class="pkg">Trail</span><a href="https://github.com/angkutdigital/tandem-crm/releases" target="_blank" rel="noopener" class="version-link module-version" data-gh-version>v0.1.0</a></li>
-        <li><span class="pkg">Waypoint</span><a href="https://github.com/angkutdigital/tandem-crm/releases" target="_blank" rel="noopener" class="version-link module-version" data-gh-version>v0.1.0</a></li>
-        <li><span class="pkg">Camp</span><a href="https://github.com/angkutdigital/tandem-crm/releases" target="_blank" rel="noopener" class="version-link module-version" data-gh-version>v0.1.0</a></li>
-        <li>
-          <span class="pkg">Belay</span>
-          <a href="https://github.com/angkutdigital/tandem-crm/releases" target="_blank" rel="noopener" class="version-link module-version" data-gh-version>v0.1.0</a>
-        </li>
+        <li><a class="pkg" href="/guides/what-is-tandem/">Terrain</a></li>
+        <li><a class="pkg" href="/guides/ascent-agent-onboarding/">Ascent</a></li>
+        <li><a class="pkg" href="/guides/trail-sales-activity/">Trail</a></li>
+        <li><a class="pkg" href="/guides/waypoint-lead-ownership/">Waypoint</a></li>
+        <li><a class="pkg" href="/guides/camp-admin-ui/">Camp</a></li>
+        <li><a class="pkg" href="/guides/belay-commission-disputes/">Belay</a></li>
       </ul>
     </div>
 
@@ -956,9 +931,9 @@
       <div class="right-header" style="justify-content: flex-end; margin-bottom: 8px;">Docs</div>
       <ul class="stack-list">
         <li><a href="/guides/getting-started/" style="text-decoration: underline; text-underline-offset: 3px;">Getting started</a></li>
-        <li><a href="/guides/getting-started/" style="text-decoration: underline; text-underline-offset: 3px;">Event log</a></li>
-        <li><a href="/guides/getting-started/" style="text-decoration: underline; text-underline-offset: 3px;">Escrow &amp; pg_cron</a></li>
-        <li><a href="/guides/getting-started/" style="text-decoration: underline; text-underline-offset: 3px;">Configuration</a></li>
+        <li><a href="/guides/how-tandem-records-change/" style="text-decoration: underline; text-underline-offset: 3px;">Event log</a></li>
+        <li><a href="/guides/database-migrations-and-rls/" style="text-decoration: underline; text-underline-offset: 3px;">Database and migrations</a></li>
+        <li><a href="/guides/camp-admin-ui/" style="text-decoration: underline; text-underline-offset: 3px;">Admin UI</a></li>
       </ul>
     </div>
   </aside>
@@ -1366,18 +1341,6 @@
         });
         document.querySelectorAll('[data-gh-stat="forks"]').forEach(function (el) {
           el.textContent = format(data.forks_count);
-        });
-      })
-      .catch(function () {});
-
-    // 404s until the repo cuts its first tagged release; the markup's
-    // hardcoded v0.1.0 (package.json's current version) stands in until then.
-    fetch('https://api.github.com/repos/angkutdigital/tandem-crm/releases/latest')
-      .then(function (res) { return res.ok ? res.json() : null; })
-      .then(function (data) {
-        if (!data || !data.tag_name) return;
-        document.querySelectorAll('[data-gh-version]').forEach(function (el) {
-          el.textContent = data.tag_name;
         });
       })
       .catch(function () {});

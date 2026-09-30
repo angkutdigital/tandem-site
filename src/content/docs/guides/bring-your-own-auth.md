@@ -1,6 +1,8 @@
 ---
 title: Bring your own authentication
 description: Connect Tandem to the user and membership system your app already uses.
+sidebar:
+  order: 6
 ---
 
 Tandem does not create user accounts or require an authentication vendor. Your

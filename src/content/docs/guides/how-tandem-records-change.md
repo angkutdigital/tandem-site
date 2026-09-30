@@ -1,6 +1,8 @@
 ---
 title: How Tandem records change
 description: Learn how events and projections give a sales record a trustworthy history.
+sidebar:
+  order: 4
 ---
 
 Tandem records business facts as typed events. A lead can be created,

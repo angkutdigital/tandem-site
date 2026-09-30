@@ -1,6 +1,8 @@
 ---
 title: "Ascent: agent onboarding"
 description: Track required onboarding steps and keep agent certification current.
+sidebar:
+  order: 10
 ---
 
 Ascent tracks a workspace-defined checklist for each agent. It is useful when
