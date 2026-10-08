@@ -74,6 +74,7 @@ never create a file per page.
 
 ```tsx
 // app/admin/[[...segments]]/page.tsx
+import { Suspense } from "react";
 import "../../../tandem-camp.config";
 import { CampRootPage } from "tandem-camp";
 
@@ -81,9 +82,18 @@ export default function Page(props: {
   params: Promise<{ segments?: string[] }>;
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
-  return <CampRootPage {...props} basePath="/admin" />;
+  return (
+    <Suspense>
+      <CampRootPage {...props} basePath="/admin" />
+    </Suspense>
+  );
 }
 ```
+
+The `<Suspense>` wrapper matters on new Next.js apps, which turn on
+`cacheComponents` by default. Camp reads your database on every request, and
+without the wrapper `next build` stops with "uncached or runtime data during
+prerendering".
 
 Set `basePath` to the path where you mounted the route, because Camp builds
 its links from it. The config import has to come first so Camp is set up
