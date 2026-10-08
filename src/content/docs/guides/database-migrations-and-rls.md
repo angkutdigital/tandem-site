@@ -2,7 +2,7 @@
 title: Database, migrations, and RLS
 description: Apply Tandem’s Postgres schema and keep workspace data isolated.
 sidebar:
-  order: 6
+  order: 7
 ---
 
 Tandem stores its tables in a private `tandem` schema in your Postgres

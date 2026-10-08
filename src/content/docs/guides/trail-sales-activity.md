@@ -2,7 +2,7 @@
 title: "Trail: sales activity"
 description: Record calls, emails, visits, confidence, and sales stage without losing history.
 sidebar:
-  order: 9
+  order: 10
 ---
 
 Trail is Tandem’s lightweight activity log for a lead. An agent can log a

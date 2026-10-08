@@ -21,7 +21,7 @@ The public module names are:
 
 | Module | What it handles |
 | --- | --- |
-| Terrain | Leads, events, projections, money rules, migrations, and workspace isolation. |
+| Terrain | Leads, events, projections, money rules, [lifetime commission](/guides/lifetime-commission/), migrations, and workspace isolation. |
 | [Ascent](/guides/ascent-agent-onboarding/) | Agent onboarding steps and certification. |
 | [Trail](/guides/trail-sales-activity/) | Sales activity on a lead. |
 | [Waypoint](/guides/waypoint-lead-ownership/) | Lead-owner recommendations. |

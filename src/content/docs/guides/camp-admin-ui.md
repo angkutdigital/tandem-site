@@ -2,7 +2,7 @@
 title: "Camp: the admin UI"
 description: Add a ready-made CRM admin to your own Next.js app with one route and one config file.
 sidebar:
-  order: 8
+  order: 9
 ---
 
 Camp is a set of admin screens for Tandem. It mounts inside your own Next.js
@@ -98,7 +98,7 @@ Open `/admin` and you should see the Overview screen.
 | Overview | Open leads, wins, pending payouts, and agent progress. An agent sees their own onboarding checklist instead. |
 | Leads | A list and a kanban board. Each lead has a page with its event history and its Trail activity, including CHAMP notes. |
 | Agents | Onboarding progress, territory coverage, and assigned leads. |
-| Payouts | Approve and pay commissions. |
+| Payouts | One row per commission line, with the payment it came from, the rate, who it is owed to, and any clawback still owed. Approve and pay each line. |
 | Earnings | Totals and a monthly chart of paid commissions. |
 | Disputes | Review a dispute, ask a question, resolve it, and act on the result. |
 | Settings | Onboarding steps, territories, commission rules, linking accounts, and lead routing. |
@@ -118,7 +118,8 @@ working.
 import type { TandemPayoutAdapter } from "tandem-crm";
 
 const payoutAdapter: TandemPayoutAdapter = {
-  async executePayout({ payoutId, partnerId, amountMinor, currency }) {
+  async executePayout({ payoutId, partnerId, amountMinor, currency, beneficiary }) {
+    // beneficiary is "house" for a line moved to your house account.
     // Send the transfer with your payment provider. Use payoutId as the
     // idempotency key so a retry can never pay twice.
     const transfer = await sendTransfer({ payoutId, partnerId, amountMinor, currency });

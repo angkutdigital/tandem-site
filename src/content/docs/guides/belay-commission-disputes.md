@@ -2,7 +2,7 @@
 title: "Belay: commission disputes"
 description: Keep a clear record when a partner questions a commission.
 sidebar:
-  order: 12
+  order: 13
 ---
 
 Belay records a partner-initiated dispute against a held, eligible, or
@@ -78,3 +78,10 @@ Belay records the outcome and keeps a payout on hold while a case is open or
 queried. It does not create a replacement commission, change an amount, or
 move money. Your application makes any financial follow-up as a separate,
 reviewable action.
+
+## Clawbacks add up
+
+A clawback request on a paid line adds to any clawback already there, for
+example from a refund, and the total can never pass what was paid. See
+[Lifetime commission](/guides/lifetime-commission/) for refunds and for
+recording money you got back.

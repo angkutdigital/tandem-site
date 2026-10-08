@@ -73,5 +73,8 @@ const commissionMinor = calculateCommissionMinor(125_00, 800);
 // 1000, meaning 10.00 in a two-decimal currency.
 ```
 
-The `commission.held` event snapshots the amount, currency, and release time.
-Changing a workspace rule later does not rewrite a past commission decision.
+The `commission.held` event snapshots the amount, currency, and release time,
+and since 0.2 the rate and the customer's age too. Changing a workspace rule
+later does not rewrite a past commission decision. A lead can hold many
+payments, each with its own line. See
+[Lifetime commission](/guides/lifetime-commission/).

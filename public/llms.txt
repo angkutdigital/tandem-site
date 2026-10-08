@@ -17,6 +17,7 @@ An append-only event log is the source of truth. Leads, payouts and onboarding s
 - [What TandemCRM is](/guides/what-is-tandem/): the jobs it handles and what stays in your app.
 - [What you can build with it](/guides/use-cases/): example setups, and when to pick something else.
 - [Qualifying leads](/guides/qualifying-leads/): what `qualificationMetric` is, the threshold rule, and what to put in it.
+- [Lifetime commission](/guides/lifetime-commission/): a commission line per payment, rates by customer age, partial refunds, clawbacks, and the house account when a partner leaves.
 - [How Tandem records change](/guides/how-tandem-records-change/): the event log and projections.
 - [Database, migrations and RLS](/guides/database-migrations-and-rls/): running the SQL, roles, and row-level security.
 - [Bring your own auth](/guides/bring-your-own-auth/): connect any identity provider.
@@ -35,9 +36,10 @@ An append-only event log is the source of truth. Leads, payouts and onboarding s
 ## Key facts
 
 - Money is integer minor units only. No floating point.
+- Every payment gets its own commission line. Rates can depend on how long the customer has been paying.
 - Commissions sit in a held state until `release_due_commissions()` releases them. Wire it to `pg_cron` or any scheduler.
 - The engine never moves money. Payments go through a payout adapter you supply (a Stripe example is included).
-- Agents can append only `lead.lost`, `lead.stage_changed` and `conversion.confirmed`. Approving, paying and adjusting commissions needs an owner or admin.
+- Agents can append only `lead.lost`, `lead.stage_changed` and `conversion.confirmed`. Recording payments, approving, paying, adjusting and moving commissions needs an owner or admin.
 - Auth: implement `TandemAuthAdapter` (three functions) for Supabase Auth, Clerk, BetterAuth, or your own sessions.
 
 ## Source
