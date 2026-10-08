@@ -13,6 +13,38 @@ Each payment gets its own commission line. A line has its own 30 day hold,
 its own approval and its own payout, so January's commission can be paid
 while February's is still on hold.
 
+## A lead needs a partner
+
+Commission is only worked out for a lead that has a partner. Set it when you
+create the lead, as `partnerId` on `lead.created`. In Camp, fill in
+"Referred by partner" on the New lead form.
+
+If a lead was created without one, attach the partner later. Leads from 0.1
+are like this: 0.1 kept the partner on the commission, not on the lead.
+
+```ts
+import { withTandemSession, attributePartner } from "tandem-crm/db";
+
+await withTandemSession(pool, adminUserId, (client) =>
+  attributePartner(client, {
+    workspaceId, leadId,
+    partnerId: "partner-42",
+    reason: "referral confirmed by the partner team",
+  })
+);
+```
+
+- Only an owner or admin can do this, and only once per lead.
+- It is refused if the lead already has a partner, or if an existing
+  commission line names a different partner.
+- Payments already recorded keep their decision. The next payment earns
+  commission.
+
+When a payment arrives for a lead with no partner, Tandem still records it,
+together with a `commission.skipped` event that says why no commission was
+created. The same happens when a commission would round to zero. A payment
+without a commission line is always a visible decision in the history.
+
 ## Record a payment
 
 Call `recordPayment` from your payment webhook. It locks the lead, works out
@@ -87,7 +119,8 @@ refund window for annual plans, pass `holdDays` for that payment.
 
 ## Refunds
 
-Use `recordRefund` for a full or partial refund of one payment.
+Use `recordRefund` for a full or partial refund of one payment. Call it once
+per refund, with the amount of that refund only.
 
 ```ts
 import { recordRefund } from "tandem-crm/db";
@@ -101,6 +134,11 @@ await recordRefund(client, {
   source: "stripe",
 });
 ```
+
+`amountMinor` is the amount of this one refund. Stripe's `refund.amount` is
+exactly that. Do not pass a charge's `amount_refunded`: that is the running
+total of every refund so far, and passing it would count earlier refunds
+twice.
 
 What happens to the payment's commission line depends on where it is.
 
@@ -162,16 +200,25 @@ partners: {
 - An approved line that moves goes back to eligible, because the approval was
   for a different recipient.
 - Reactivating a partner needs no special step. New payments go to them
-  again. Lines already moved stay with the house.
+  again. Lines already moved stay with the house, and payments forfeited
+  while the partner was inactive stay forfeited.
 
 Commit the change in your own records before you call `deactivatePartner`.
 Then a payment that arrives at the same moment sees the partner as inactive.
 Tandem reads the partner's status after it locks the lead, and the sweep
 takes the same lock, so the result is the same whichever happens first.
 
-If your house account is your own business, there is usually nothing to
-transfer. Your payout adapter receives `beneficiary: "house"` and can skip
-those lines.
+A house line is owed to your own business, so there is no one to transfer
+money to. Camp shows it as "House" and has no Pay action for it, and Camp's
+pay action refuses it. If you write your own pay flow, do the same, or
+handle `beneficiary: "house"` in your payout adapter.
+
+## Releasing a line
+
+Only the scheduled release job, `tandem.release_due_commissions()`, moves a
+line from held to eligible, and only once its hold has ended by the
+database's clock. Your app cannot append `commission.eligible`, and no event
+may be stamped more than five minutes in the future.
 
 ## What Tandem does not do yet
 

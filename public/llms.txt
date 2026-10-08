@@ -37,6 +37,7 @@ An append-only event log is the source of truth. Leads, payouts and onboarding s
 
 - Money is integer minor units only. No floating point.
 - Every payment gets its own commission line. Rates can depend on how long the customer has been paying.
+- A lead earns commission only if it has a partner: `partnerId` on `lead.created`, or attached later with `attributePartner`. A payment with no commission line records why (`commission.skipped`).
 - Commissions sit in a held state until `release_due_commissions()` releases them. Wire it to `pg_cron` or any scheduler.
 - The engine never moves money. Payments go through a payout adapter you supply (a Stripe example is included).
 - Agents can append only `lead.lost`, `lead.stage_changed` and `conversion.confirmed`. Recording payments, approving, paying, adjusting and moving commissions needs an owner or admin.
