@@ -104,6 +104,10 @@ commission line in one step.
 
 ## Worth knowing
 
+- Running the script a second time is safe. Step 1 finds the lead it already
+  made and returns it, so you do not get a duplicate. Step 2 then stops with
+  "invalid transition", because that lead is already won. Change the
+  `sourceEventId` to make a new lead.
 - Call these helpers inside `withTandemSession`, as above. They never commit by
   themselves, so the transaction is yours.
 - Only owners and admins can create leads. An agent gets a clear error, and the
