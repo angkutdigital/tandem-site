@@ -35,8 +35,9 @@ Next.js app. It takes one config file and one route.
 
 - [Camp: the admin UI](/guides/camp-admin-ui/)
 
-If you are building your own interface, use the engine directly. Read these
-first:
+If you are building your own interface, use the engine directly. Start with
+[Create a lead from your code](/guides/first-lead-from-code/), which takes a
+lead from creation to a recorded payment in one script. Then read these:
 
 - [What TandemCRM is](/guides/what-is-tandem/)
 - [How Tandem records change](/guides/how-tandem-records-change/)

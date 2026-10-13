@@ -14,6 +14,7 @@ An append-only event log is the source of truth. Leads, payouts and onboarding s
 ## Guides
 
 - [Start here](/guides/getting-started/): install, run the migrations, load sample data, first lead.
+- [Create a lead from your code](/guides/first-lead-from-code/): `createLead`, `appendLeadEvents` and `recordPayment` in one script, with no admin UI.
 - [What TandemCRM is](/guides/what-is-tandem/): the jobs it handles and what stays in your app.
 - [What you can build with it](/guides/use-cases/): example setups, and when to pick something else.
 - [Qualifying leads](/guides/qualifying-leads/): what `qualificationMetric` is, the threshold rule, and what to put in it.
@@ -37,6 +38,7 @@ An append-only event log is the source of truth. Leads, payouts and onboarding s
 
 - Money is integer minor units only. No floating point.
 - Every payment gets its own commission line. Rates can depend on how long the customer has been paying.
+- Create leads with `createLead` from `tandem-crm/db`. It writes the first event and the lead row together and is safe to retry.
 - A lead earns commission only if it has a partner: `partnerId` on `lead.created`, or attached later with `attributePartner`. A payment with no commission line records why (`commission.skipped`).
 - Commissions sit in a held state until `release_due_commissions()` releases them. Wire it to `pg_cron` or any scheduler.
 - The engine never moves money. Payments go through a payout adapter you supply (a Stripe example is included).

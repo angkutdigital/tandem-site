@@ -16,7 +16,8 @@ while February's is still on hold.
 ## A lead needs a partner
 
 Commission is only worked out for a lead that has a partner. Set it when you
-create the lead, as `partnerId` on `lead.created`. In Camp, fill in
+create the lead, as `partnerId` in `createLead` (see
+[Create a lead from your code](/guides/first-lead-from-code/)). In Camp, fill in
 "Referred by partner" on the New lead form.
 
 If a lead was created without one, attach the partner later. Leads from 0.1
