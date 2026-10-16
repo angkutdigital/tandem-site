@@ -45,6 +45,10 @@ An append-only event log is the source of truth. Leads, payouts and onboarding s
 - Agents can append only `lead.lost`, `lead.stage_changed` and `conversion.confirmed`. Recording payments, approving, paying, adjusting and moving commissions needs an owner or admin.
 - Auth: implement `TandemAuthAdapter` (three functions) for Supabase Auth, Clerk, BetterAuth, or your own sessions.
 
+## About
+
+- [About Tandem](/about/): who builds it (Angkut Digital), why, and how to contribute.
+
 ## Source
 
 - Repository: https://github.com/angkutdigital/tandem-crm
