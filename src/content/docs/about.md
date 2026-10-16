@@ -27,7 +27,7 @@ If Tandem resonates with you, we would love your help.
 - **Contribute.** Read the [contributing guide](https://github.com/angkutdigital/tandem-crm/blob/main/CONTRIBUTING.md) and look for a [good first issue](https://github.com/angkutdigital/tandem-crm/labels/good%20first%20issue).
 - **Try it on your Postgres host.** Tell us how it went with a [host report](https://github.com/angkutdigital/tandem-crm/issues/new?template=host_report.yml). A failure is as useful as a pass.
 - **Fork it.** Tandem is MIT licensed, so you can shape it to your own needs. We would like to hear what you changed.
-- **Ask or report.** Open an [issue](https://github.com/angkutdigital/tandem-crm/issues). If you have found a security problem, please write to security@angkutdigital.com instead of posting it publicly.
+- **Ask or report.** Open an [issue](https://github.com/angkutdigital/tandem-crm/issues). If you have found a security problem, please email hello@angkut.co with "Tandem security" in the subject instead of posting it publicly.
 
 Everyone is welcome here, and we follow a [code of conduct](https://github.com/angkutdigital/tandem-crm/blob/main/CODE_OF_CONDUCT.md).
 
