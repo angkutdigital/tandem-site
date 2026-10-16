@@ -27,6 +27,28 @@ console.log("Applied Tandem migrations:", applied);
 Use a connection string for a role that can create the `tandem` schema and
 apply migrations. Keep that connection string on the server.
 
+## Hosts with their own certificate authority
+
+Neon, Supabase and several other hosts use certificates that Node already
+trusts. Some hosts, including Aiven, DigitalOcean and Amazon RDS, secure the
+connection with their own certificate authority. Node refuses those by default
+and you will see the error `SELF_SIGNED_CERT_IN_CHAIN`. `npx tandem-crm init`
+explains this when it happens.
+
+The fix is to tell Node which certificate to trust. Download the CA
+certificate from your host's dashboard, then add two parameters to your
+connection string:
+
+```sh
+postgres://user:password@host:port/dbname?sslmode=verify-full&sslrootcert=/path/to/ca.pem
+```
+
+The connection stays fully verified. Make sure the certificate file is
+available wherever your app runs, not only on your laptop.
+
+For a throwaway test database you can use `sslmode=no-verify` instead. It
+switches certificate checking off, so do not use it with real data.
+
 ## Run request queries with an identity
 
 Tandem uses Postgres row-level security to limit records to workspace members.
