@@ -819,6 +819,13 @@
   }
   .feature-cell a.more { color: var(--ink); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 2px; text-decoration-color: var(--accent); }
   .feature-cell a.more:hover { text-decoration-color: var(--ink); }
+  .compare-table { min-width: 880px; }
+  .compare-table th:first-child, .compare-table td:first-child { color: var(--ink-dim); font-size: 13px; width: 20%; }
+  .compare-table th.us, .compare-table td.us { background: #fbf8dc; color: var(--ink); font-weight: 500; }
+  .compare-table td.no { color: var(--ink-dim); }
+  .built-on { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 28px; }
+  @media (max-width: 700px) { .built-on { grid-template-columns: 1fr; } }
+  .built-on .feature-cell a.more { margin-top: 6px; }
   .feature-cell code, .tested-note code, .lead code {
     font-family: ui-monospace, 'SF Mono', Menlo, monospace; font-size: 0.92em; background: var(--bg-alt); padding: 1px 5px; border-radius: 4px;
   }
@@ -848,6 +855,7 @@
       <img src="/logo.svg" alt="tandem-crm" />
     </a>
     <div class="nav-links">
+      <a href="#compare">Compare</a>
       <a href="#features">Features</a>
       <a href="#how">How it works</a>
       <a href="#tested">Tested on</a>
@@ -907,13 +915,13 @@
 
   <div class="hero-center">
     <h1>
-      A complete CRM<br />
-      <span class="light">inside your app.</span>
+      A CRM and partner<br />
+      commissions <span class="light">inside<br />your own app.</span>
     </h1>
 
     <p class="hero-sub">
-      Leads, agents, sales activity, lifetime partner commissions and disputes, as a library for your Node app
-      and your own Postgres. No servers, workers or containers to run.
+      An open source library and set of SQL migrations that adds leads, sales activity, agents and lifetime partner
+      commissions to your own Node app and your own Postgres. No separate server, worker or second login.
     </p>
 
     <div class="hero-buttons">
@@ -996,6 +1004,58 @@
 </section>
 
 <!-- Features -->
+<!-- Compare -->
+<section class="block" id="compare">
+  <div class="eyebrow">// HOW IT COMPARES</div>
+  <h2>
+    A CRM you adopt,<br />
+    <span class="light">or a CRM you embed.</span>
+  </h2>
+  <p class="lead">
+    Tandem is for developers building a product where partners, agents or resellers are part of the business.
+    If you want a CRM your team logs into today, use a hosted one. If you want a CRM and commissions inside your own
+    product, with your own login and your own data, that is what Tandem is for.
+  </p>
+  <div class="tested-wrap">
+    <table class="tested-table compare-table">
+      <thead>
+        <tr>
+          <th></th><th class="us">Tandem</th><th>Twenty</th><th>HubSpot, Pipedrive</th><th>Rewardful, FirstPromoter</th><th>Build it yourself</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>What it is</td><td class="us">A library you embed</td><td>An app you adopt</td><td>A hosted app</td><td>A hosted affiliate tool</td><td>Your own code</td></tr>
+        <tr><td>Extra server to run</td><td class="us">None</td><td>Self-hosted: yes. Or use their cloud</td><td class="no">None, it is theirs</td><td class="no">None, it is theirs</td><td>Up to you</td></tr>
+        <tr><td>Inside your app and login</td><td class="us">Yes</td><td class="no">No, a separate app</td><td class="no">No</td><td class="no">No</td><td>Yes</td></tr>
+        <tr><td>Data in your own Postgres</td><td class="us">Yes</td><td>If self-hosted</td><td class="no">No</td><td class="no">No</td><td>Yes</td></tr>
+        <tr><td>Lifetime commissions, holds, clawbacks</td><td class="us">Built in</td><td class="no">No</td><td class="no">Not built in</td><td>Recurring, within their settings</td><td>You write it</td></tr>
+        <tr><td>History that is never overwritten</td><td class="us">Yes</td><td>Varies</td><td>Varies</td><td>Limited</td><td>You write it</td></tr>
+        <tr><td>Team app ready on day one</td><td class="us">Basic (Camp)</td><td>Yes, polished</td><td>Yes</td><td>Yes</td><td class="no">No</td></tr>
+        <tr><td>Email sync, imports, integrations</td><td class="us">Not yet</td><td>Yes</td><td>Yes</td><td>Some</td><td class="no">No</td></tr>
+        <tr><td>Setup</td><td class="us">A developer, about an hour</td><td>Medium</td><td>Minutes</td><td>Minutes</td><td>Weeks</td></tr>
+        <tr><td>Cost</td><td class="us">Free, MIT</td><td>Free self-hosted, or paid cloud</td><td>Paid per seat</td><td>Paid monthly</td><td>Your time</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="tested-note">
+    We list what Tandem does not do on purpose. If you need email sync, a long integration list or a polished team
+    app on day one, pick one of the tools above. If you need a CRM and commissions that live inside your own product,
+    that is the gap Tandem fills.
+  </p>
+  <div class="built-on">
+    <div class="feature-cell">
+      <div class="num">IN USE</div>
+      <h3>Utuh partner commissions</h3>
+      <p>Tandem has run the sales-partner commission ledger for Utuh, our fleet compliance product, since 20 October 2026.</p>
+    </div>
+    <div class="feature-cell">
+      <div class="num">BUILT ON TANDEM</div>
+      <h3>Sunbear</h3>
+      <p>Sunbear, a CRM for sales agents, is built on Tandem. It is open source, so you can fork it, change it and build something better. <a class="more" href="https://sunbear.angkut.co" target="_blank" rel="noopener">See Sunbear &rarr;</a></p>
+    </div>
+  </div>
+</section>
+
 <section class="block" id="features">
   <div class="eyebrow">// WHAT IT DOES</div>
   <h2>
