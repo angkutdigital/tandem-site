@@ -2,7 +2,7 @@
 
 Website and docs: https://tandemcrm.dev
 
-> An embeddable, event-sourced CRM engine for Postgres, built for partner attribution and commission payouts. It installs into your own app and database. MIT licensed, pre-1.0.
+> A CRM and partner-commission engine you embed in your own app. Leads, sales activity, agents and lifetime partner commissions live in your own Postgres, behind your own login, with no separate server or worker. MIT licensed, pre-1.0. It is not a replacement for a hosted CRM such as HubSpot or Twenty: it has no email sync, imports or long integration list yet, and it is for developers building products where partners, agents or resellers are part of the business.
 
 Status (21 October 2026): early and not proven at scale. Tandem has run the sales-partner commission ledger for Utuh (utuh.com.my) since 20 October 2026, and Camp runs in Utuh's partners admin. It was verified end to end on the live Stripe account with a real card payment from an outside account and a real refund. No outside developers use the package yet, and payouts are still made by hand. Current npm versions: tandem-crm 0.2.1 and tandem-camp 0.2.0. Sunbear, a CRM for sales agents, is also built on Tandem.
 

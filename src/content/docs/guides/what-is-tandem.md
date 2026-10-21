@@ -5,7 +5,7 @@ sidebar:
   order: 2
 ---
 
-TandemCRM is an embeddable CRM engine for Node applications using Postgres.
+TandemCRM is a CRM and partner-commission engine you embed in your own Node app and your own Postgres.
 It gives an application a reliable way to record sales work and commission
 decisions while the application keeps control of its product experience.
 
