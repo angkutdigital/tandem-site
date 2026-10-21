@@ -18,7 +18,9 @@ We build with AI, and we are learning every step of the way. We try to be carefu
 
 ## Where it is today
 
-Tandem is early and pre-1.0. It has not been proven at scale, and it has rough edges. We would rather tell you that than have you find out. The [changelog](https://github.com/angkutdigital/tandem-crm/blob/main/CHANGELOG.md) shows what has shipped, and the [security notes](https://github.com/angkutdigital/tandem-crm/blob/main/SECURITY.md) say what the tests do and do not cover.
+Tandem is early and pre-1.0. It has not been proven at scale, and it has rough edges. We would rather tell you that than have you find out.
+
+Since 20 October 2026 Tandem has run the sales-partner commission ledger for Utuh, our own fleet product, and Camp runs in Utuh's partners admin. We checked it end to end on the live Stripe account, with a real card payment from an outside account and a real refund: a partner's sign-up link credited the new customer to the partner, the payment created a held commission, and the refund voided it. Sunbear, our CRM for sales agents, is also built on Tandem. No outside developers use the package yet, and payouts are still made by hand, by bank transfer. The [changelog](https://github.com/angkutdigital/tandem-crm/blob/main/CHANGELOG.md) shows what has shipped, and the [security notes](https://github.com/angkutdigital/tandem-crm/blob/main/SECURITY.md) say what the tests do and do not cover.
 
 ## Come aboard
 
